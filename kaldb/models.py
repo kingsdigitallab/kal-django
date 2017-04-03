@@ -10,7 +10,7 @@ from models_authlists import (Department, JobPosition, JobRole,
 # This has been left open to allow future links between interests...
 # Perhaps this could be auto-complete free text in the admin?
 class Interest(models.Model):
-    name = models.CharField(verbose_name='Interest Name', max_length=120,
+    name = models.CharField(verbose_name='Interest Name', max_length=1024,
                             blank=False)
     description = models.TextField(verbose_name='Description', blank=True,
                                    help_text='An optional description of the\
@@ -18,6 +18,12 @@ class Interest(models.Model):
     related_interests = models.ManyToManyField('self',
                                                verbose_name='Related\
                                                Interests')
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 # Specialisms
@@ -35,11 +41,18 @@ class Specialism(models.Model):
                                       default=True, help_text='Was this\
                                       research performed at KCL?')
 
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
 
 # Main Person/Researcher Model
 class Researcher(models.Model):
     # Personal
-    title = models.ForeignKey(Title, verbose_name='Title')
+    title = models.ForeignKey(Title, verbose_name='Title',
+                              blank=True, null=True)
     first_name = models.CharField(verbose_name='First Name', max_length=120,
                                   blank=False)
     middle_name = models.CharField(verbose_name='Middle Name(s)',
@@ -52,8 +65,10 @@ class Researcher(models.Model):
 
     # Job
     position = models.ForeignKey(JobPosition, verbose_name='Job Position',
-                                 help_text='e.g. Lecturer, Professor...')
-    role = models.ForeignKey(JobRole, help_text='e.g. \'in Roman Sculpture\'')
+                                 help_text='e.g. Lecturer, Professor...',
+                                 blank=True, null=True)
+    role = models.ForeignKey(JobRole, help_text='e.g. \'in Roman Sculpture\'',
+                             blank=True, null=True)
 
     # Contact Details
     email = models.CharField(verbose_name='E-Mail Address', max_length=120,
@@ -83,25 +98,47 @@ class Researcher(models.Model):
     research_interests = models.ManyToManyField(Interest,
                                                 verbose_name='Research\
                                                 Interests',
-                                                related_name='research_int')
+                                                related_name='research_int',
+                                                blank=True)
     teaching_interests = models.ManyToManyField(Interest,
                                                 verbose_name='Teaching\
                                                 Interests',
-                                                related_name='teaching_int')
+                                                related_name='teaching_int',
+                                                blank=True)
 
-    specialism = models.ManyToManyField(Specialism,
-                                        verbose_name='Specialisms')
+    specialisms = models.ManyToManyField(Specialism,
+                                         verbose_name='Specialisms',
+                                         blank=True)
+
+    def __unicode__(self):
+        if self.middle_name:
+            return "{} {} {}".format(self.first_name, self.middle_name,
+                                     self.last_name)
+        else:
+            return "{} {}".format(self.first_name, self.last_name)
+
+    class Meta:
+        ordering = ['last_name', 'first_name', 'middle_name']
 
 
 # OutReach Event
 class OutReachEvent(models.Model):
     researcher = models.ForeignKey(Researcher)
-    name = models.CharField(verbose_name='Outreach Title', max_length=120,
+    name = models.CharField(verbose_name='Outreach Title', max_length=1024,
                             blank=False)
     description = models.TextField(verbose_name='Description', blank=True,
                                    help_text='An optional description of the\
                                    outreach, to aid in matching/searching')
-    location = models.ForeignKey(OutReachLocation, verbose_name='Location')
-    frequency = models.ForeignKey(OutReachFrequency, verbose_name='Frequency')
+    location = models.ForeignKey(OutReachLocation, verbose_name='Location',
+                                 blank=True, null=True)
+    frequency = models.ForeignKey(OutReachFrequency, verbose_name='Frequency',
+                                  blank=True, null=True)
     medium = models.ForeignKey(OutReachMedium, verbose_name='Medium',
-                               help_text='Medium (e.g. Radio, TV, Talk...)')
+                               help_text='Medium (e.g. Radio, TV, Talk...)',
+                               blank=True, null=True)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']

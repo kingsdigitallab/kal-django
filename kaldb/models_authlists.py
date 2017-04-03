@@ -7,11 +7,23 @@ from django.db import models
 class Faculty(models.Model):
     name = models.CharField(verbose_name='Faculty Name', max_length=120)
 
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
 
 # Department within a Faculty
 class Department(models.Model):
     name = models.CharField(verbose_name='Department Name', max_length=120)
     faculty = models.ForeignKey(Faculty, verbose_name='Faculty')
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 # Job position
@@ -20,11 +32,23 @@ class JobPosition(models.Model):
                             help_text='Research Assistant, Lecturer,\
                             Professor...')
 
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
 
 # Job Role
 class JobRole(models.Model):
     name = models.CharField(verbose_name='Job Role', max_length=120,
                             help_text='e.g. \'in Roman Sculpture\'')
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 # Location of outreach activity
@@ -35,6 +59,12 @@ class OutReachCountry(models.Model):
                             needed if City is known, country will be\
                             automatically populated')
 
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
 
 # Location of outreach activity
 # Could be useful for geolocation
@@ -43,12 +73,24 @@ class OutReachCity(models.Model):
                             blank=True)
     country = models.ForeignKey(OutReachCountry)
 
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
 
 # Frequency of outreach activity (e.g. Once, occasionally, often...)
 # Could be useful for finding people who are active often
 class OutReachFrequency(models.Model):
     name = models.CharField(verbose_name='Name', max_length=120,
                             help_text='Once, Cccasionally, Often...')
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 # Location of outreach activity
@@ -67,8 +109,20 @@ class OutReachMedium(models.Model):
     name = models.CharField(verbose_name='Medium', max_length=120,
                             help_text='Radio, TV, Talk...')
 
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
 
 # Personal Title (e.g Mr, Ms, Dr...)
 class Title(models.Model):
     name = models.CharField(verbose_name='Title', max_length=120,
                             help_text='e.g. Mr, Ms, Dr...')
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
