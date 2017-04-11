@@ -52,6 +52,17 @@ class JobRole(models.Model):
         ordering = ['name']
 
 
+# Module Levels
+class ModuleLevel(models.Model):
+    name = models.CharField(verbose_name='Module Level', max_length=120)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
+
 # Location of outreach activity
 # Could be useful for geolocation
 class OutReachCountry(models.Model):

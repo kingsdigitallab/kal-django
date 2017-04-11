@@ -173,3 +173,14 @@ class Module(models.Model):
 
     class Meta:
         ordering = ['name']
+
+
+# A generic theme. This lets us link everything together nicely
+class Theme(models.Model):
+    name = models.CharField(verbose_name="Theme Name", max_length=1024,
+                            blank=False, null=False)
+    description = models.TextField(verbose_name="Description", blank=True)
+    roles = models.ManyToManyField(JobRole, verbose_name="Related\
+                                   Job Roles", blank=True)
+    modules = models.ManyToManyField(Module, verbose_name="Related\
+                                   Modules", blank=True)

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from kaldb.models import (Interest, OutReachEvent, Researcher, Specialism,
-                          Module)
+                          Module, Theme)
 from kaldb.models_authlists import (Department, Faculty, JobPosition,
                                     JobRole, OutReachCity, OutReachCountry,
                                     OutReachFrequency, OutReachLocation,
@@ -21,9 +21,14 @@ class ResearcherAdmin(admin.ModelAdmin):
     ]
 
 
-# Module Admin Panel - avoid conflicting name
+# Module Admin Panel
 class ModuleAdmin(admin.ModelAdmin):
     filter_horizontal = ('convenors', 'level',)
+
+
+# Theme Admin Panel
+class ThemeAdmin(admin.ModelAdmin):
+    filter_horizontal = ('roles', 'modules',)
 
 
 # Models
@@ -32,6 +37,7 @@ admin.site.register(Module, ModuleAdmin)
 admin.site.register(OutReachEvent)
 admin.site.register(Researcher, ResearcherAdmin)
 admin.site.register(Specialism)
+admin.site.register(Theme, ThemeAdmin)
 
 
 # Authlists
