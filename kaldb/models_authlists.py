@@ -12,6 +12,7 @@ class Faculty(models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name_plural = 'Faculties'
 
 
 # Department within a Faculty
@@ -51,17 +52,6 @@ class JobRole(models.Model):
         ordering = ['name']
 
 
-# Job Role
-class ModuleLevel(models.Model):
-    name = models.CharField(verbose_name='Module Level', max_length=120)
-
-    def __unicode__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-
-
 # Location of outreach activity
 # Could be useful for geolocation
 class OutReachCountry(models.Model):
@@ -75,6 +65,7 @@ class OutReachCountry(models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name_plural = 'Out reeach countries'
 
 
 # Location of outreach activity
@@ -89,6 +80,7 @@ class OutReachCity(models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name_plural = 'Out reach cities'
 
 
 # Frequency of outreach activity (e.g. Once, occasionally, often...)
@@ -102,6 +94,7 @@ class OutReachFrequency(models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name_plural = 'Out reach frequencies'
 
 
 # Location of outreach activity
