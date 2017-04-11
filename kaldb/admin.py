@@ -1,5 +1,6 @@
 from django.contrib import admin
-from kaldb.models import (Interest, OutReachEvent, Researcher, Specialism)
+from kaldb.models import (Interest, OutReachEvent, Researcher, Specialism,
+                          Module)
 from kaldb.models_authlists import (Department, Faculty, JobPosition,
                                     JobRole, OutReachCity, OutReachCountry,
                                     OutReachFrequency, OutReachLocation,
@@ -19,6 +20,7 @@ class ResearcherAdmin(admin.ModelAdmin):
 
 # Models
 admin.site.register(Interest)
+admin.site.register(Module)
 admin.site.register(OutReachEvent)
 admin.site.register(Researcher, ResearcherAdmin)
 admin.site.register(Specialism)

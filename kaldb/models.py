@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from models_authlists import (Department, JobPosition, JobRole,
+from models_authlists import (Department, JobPosition, JobRole, ModuleLevel,
                               OutReachFrequency, OutReachLocation,
                               OutReachMedium, Title)
 
@@ -139,6 +139,37 @@ class OutReachEvent(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        ordering = ['name']
+
+
+# A teachng module
+# Note - this can have links between departments - as the module
+# and (potentially) teachers can have different departments
+class Module(models.Model):
+    name = models.CharField(verbose_name="Module Title", max_length=1024,
+                            blank=False, null=False)
+    description = models.TextField(verbose_name='Description', blank=True)
+    assessment = models.TextField(verbose_name='Assessments',
+                                  blank=True)
+    convenors = models.ManyToManyField(Researcher,
+                                       verbose_name='Module Convenors',
+                                       blank=True)
+    department = models.ForeignKey(Department, null=True)
+    level = models.ManyToManyField(ModuleLevel,
+                                   verbose_name='Module Level',
+                                   blank=True)
+    teaching_pattern = models.TextField(verbose_name='Teaching\
+                                        Pattern', blank=True)
+    url = models.CharField(verbose_name='Module URL', max_length=512,
+                           blank=True, null=True)
+
+    def __unicode__(self):
+        if self.department:
+            return "{} ({})".format(self.name, self.department)
+        else:
+            return self.name
 
     class Meta:
         ordering = ['name']
