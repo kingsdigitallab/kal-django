@@ -12,15 +12,23 @@ class OutReachEventInline(admin.TabularInline):
     model = OutReachEvent
 
 
+# Researcher Admin Panel
 class ResearcherAdmin(admin.ModelAdmin):
+    filter_horizontal = ('research_interests', 'teaching_interests',
+                         'specialisms',)
     inlines = [
         OutReachEventInline,
     ]
 
 
+# Module Admin Panel - avoid conflicting name
+class ModuleAdmin(admin.ModelAdmin):
+    filter_horizontal = ('convenors', 'level',)
+
+
 # Models
 admin.site.register(Interest)
-admin.site.register(Module)
+admin.site.register(Module, ModuleAdmin)
 admin.site.register(OutReachEvent)
 admin.site.register(Researcher, ResearcherAdmin)
 admin.site.register(Specialism)
