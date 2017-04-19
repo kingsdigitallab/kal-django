@@ -1,13 +1,15 @@
 app: {name: kal}
 postgresql: {admin_user: postgres, cluster_name: main, cluster_reset: false, default_auth_method: trust,
   encoding: UTF-8, initial_data_file: kal.sql, locale: en_GB.UTF-8, user: kal,
-  version: 9.1}
+  version: 9.5}
 project_root: /vagrant
 python: {requirements: requirements-vagrant.txt, virtualenv_location: /home/vagrant/venv}
 system_packages: [ack-grep, zsh, vim-nox, python-dev, python-pip, python-psycopg2,
-  python-setuptools, python-virtualenv, nfs-common, postgresql, postgresql-client,
-  postgresql-server-dev-all, adminer, libldap2-dev, libsasl2-dev, libjpeg-dev, nodejs,
-  openjdk-7-jre, elasticsearch, libxml2-dev, libxslt-dev, git, git-core, binutils, libproj-dev, gdal-bin, postgis]
+  python-setuptools, python-virtualenv, nfs-common, liblwgeom-2.3-0, libpq5,
+  libsensors4, pgdg-keyring, postgresql-9.5, postgresql-9.5-postgis-2.2, postgresql-contrib-9.5,
+  postgresql-9.5-pgrouting, sysstat, adminer, libldap2-dev, libsasl2-dev,
+  libjpeg-dev, nodejs, openjdk-7-jre, elasticsearch, libxml2-dev, libxslt-dev, git, 
+  git-core, binutils, libproj-dev, gdal-bin, libgeos-dev, ]
 user_home: /home/vagrant
 vim: {spf13: 'http://j.mp/spf13-vim3', spf13_install: /home/vagrant/spf13.install}
 zsh: {oh_my_zsh: 'https://github.com/robbyrussell/oh-my-zsh.git', zshrc: zshrc}

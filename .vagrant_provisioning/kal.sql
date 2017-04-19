@@ -2,11 +2,25 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 9.5.6
+-- Dumped by pg_dump version 9.5.6
+
 SET statement_timeout = 0;
+SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: topology; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA topology;
+
+
+ALTER SCHEMA topology OWNER TO postgres;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
@@ -22,6 +36,62 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
+--
+-- Name: address_standardizer; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS address_standardizer WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION address_standardizer; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION address_standardizer IS 'Used to parse an address into constituent elements. Generally used to support geocoding address normalization step.';
+
+
+--
+-- Name: address_standardizer_data_us; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS address_standardizer_data_us WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION address_standardizer_data_us; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION address_standardizer_data_us IS 'Address Standardizer US dataset example';
+
+
+--
+-- Name: postgis; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
+
+
+--
+-- Name: postgis_topology; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis_topology WITH SCHEMA topology;
+
+
+--
+-- Name: EXTENSION postgis_topology; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION postgis_topology IS 'PostGIS topology spatial types and functions';
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -29,7 +99,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: auth_group; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE auth_group (
@@ -38,7 +108,7 @@ CREATE TABLE auth_group (
 );
 
 
-ALTER TABLE public.auth_group OWNER TO kal;
+ALTER TABLE auth_group OWNER TO kal;
 
 --
 -- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -52,7 +122,7 @@ CREATE SEQUENCE auth_group_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.auth_group_id_seq OWNER TO kal;
+ALTER TABLE auth_group_id_seq OWNER TO kal;
 
 --
 -- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -62,7 +132,7 @@ ALTER SEQUENCE auth_group_id_seq OWNED BY auth_group.id;
 
 
 --
--- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE auth_group_permissions (
@@ -72,7 +142,7 @@ CREATE TABLE auth_group_permissions (
 );
 
 
-ALTER TABLE public.auth_group_permissions OWNER TO kal;
+ALTER TABLE auth_group_permissions OWNER TO kal;
 
 --
 -- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -86,7 +156,7 @@ CREATE SEQUENCE auth_group_permissions_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.auth_group_permissions_id_seq OWNER TO kal;
+ALTER TABLE auth_group_permissions_id_seq OWNER TO kal;
 
 --
 -- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -96,7 +166,7 @@ ALTER SEQUENCE auth_group_permissions_id_seq OWNED BY auth_group_permissions.id;
 
 
 --
--- Name: auth_permission; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE auth_permission (
@@ -107,7 +177,7 @@ CREATE TABLE auth_permission (
 );
 
 
-ALTER TABLE public.auth_permission OWNER TO kal;
+ALTER TABLE auth_permission OWNER TO kal;
 
 --
 -- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -121,7 +191,7 @@ CREATE SEQUENCE auth_permission_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.auth_permission_id_seq OWNER TO kal;
+ALTER TABLE auth_permission_id_seq OWNER TO kal;
 
 --
 -- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -131,7 +201,7 @@ ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
 
 
 --
--- Name: auth_user; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE auth_user (
@@ -149,10 +219,10 @@ CREATE TABLE auth_user (
 );
 
 
-ALTER TABLE public.auth_user OWNER TO kal;
+ALTER TABLE auth_user OWNER TO kal;
 
 --
--- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE auth_user_groups (
@@ -162,7 +232,7 @@ CREATE TABLE auth_user_groups (
 );
 
 
-ALTER TABLE public.auth_user_groups OWNER TO kal;
+ALTER TABLE auth_user_groups OWNER TO kal;
 
 --
 -- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -176,7 +246,7 @@ CREATE SEQUENCE auth_user_groups_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.auth_user_groups_id_seq OWNER TO kal;
+ALTER TABLE auth_user_groups_id_seq OWNER TO kal;
 
 --
 -- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -197,7 +267,7 @@ CREATE SEQUENCE auth_user_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.auth_user_id_seq OWNER TO kal;
+ALTER TABLE auth_user_id_seq OWNER TO kal;
 
 --
 -- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -207,7 +277,7 @@ ALTER SEQUENCE auth_user_id_seq OWNED BY auth_user.id;
 
 
 --
--- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE auth_user_user_permissions (
@@ -217,7 +287,7 @@ CREATE TABLE auth_user_user_permissions (
 );
 
 
-ALTER TABLE public.auth_user_user_permissions OWNER TO kal;
+ALTER TABLE auth_user_user_permissions OWNER TO kal;
 
 --
 -- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -231,7 +301,7 @@ CREATE SEQUENCE auth_user_user_permissions_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.auth_user_user_permissions_id_seq OWNER TO kal;
+ALTER TABLE auth_user_user_permissions_id_seq OWNER TO kal;
 
 --
 -- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -241,7 +311,7 @@ ALTER SEQUENCE auth_user_user_permissions_id_seq OWNED BY auth_user_user_permiss
 
 
 --
--- Name: cms_blogindexpage; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: cms_blogindexpage; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE cms_blogindexpage (
@@ -250,10 +320,10 @@ CREATE TABLE cms_blogindexpage (
 );
 
 
-ALTER TABLE public.cms_blogindexpage OWNER TO kal;
+ALTER TABLE cms_blogindexpage OWNER TO kal;
 
 --
--- Name: cms_blogpost; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: cms_blogpost; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE cms_blogpost (
@@ -264,10 +334,10 @@ CREATE TABLE cms_blogpost (
 );
 
 
-ALTER TABLE public.cms_blogpost OWNER TO kal;
+ALTER TABLE cms_blogpost OWNER TO kal;
 
 --
--- Name: cms_blogposttag; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: cms_blogposttag; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE cms_blogposttag (
@@ -277,7 +347,7 @@ CREATE TABLE cms_blogposttag (
 );
 
 
-ALTER TABLE public.cms_blogposttag OWNER TO kal;
+ALTER TABLE cms_blogposttag OWNER TO kal;
 
 --
 -- Name: cms_blogposttag_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -291,7 +361,7 @@ CREATE SEQUENCE cms_blogposttag_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.cms_blogposttag_id_seq OWNER TO kal;
+ALTER TABLE cms_blogposttag_id_seq OWNER TO kal;
 
 --
 -- Name: cms_blogposttag_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -301,7 +371,7 @@ ALTER SEQUENCE cms_blogposttag_id_seq OWNED BY cms_blogposttag.id;
 
 
 --
--- Name: cms_homepage; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: cms_homepage; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE cms_homepage (
@@ -310,10 +380,10 @@ CREATE TABLE cms_homepage (
 );
 
 
-ALTER TABLE public.cms_homepage OWNER TO kal;
+ALTER TABLE cms_homepage OWNER TO kal;
 
 --
--- Name: cms_indexpage; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: cms_indexpage; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE cms_indexpage (
@@ -322,10 +392,10 @@ CREATE TABLE cms_indexpage (
 );
 
 
-ALTER TABLE public.cms_indexpage OWNER TO kal;
+ALTER TABLE cms_indexpage OWNER TO kal;
 
 --
--- Name: cms_richtextpage; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: cms_richtextpage; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE cms_richtextpage (
@@ -334,10 +404,10 @@ CREATE TABLE cms_richtextpage (
 );
 
 
-ALTER TABLE public.cms_richtextpage OWNER TO kal;
+ALTER TABLE cms_richtextpage OWNER TO kal;
 
 --
--- Name: django_admin_log; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE django_admin_log (
@@ -353,7 +423,7 @@ CREATE TABLE django_admin_log (
 );
 
 
-ALTER TABLE public.django_admin_log OWNER TO kal;
+ALTER TABLE django_admin_log OWNER TO kal;
 
 --
 -- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -367,7 +437,7 @@ CREATE SEQUENCE django_admin_log_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.django_admin_log_id_seq OWNER TO kal;
+ALTER TABLE django_admin_log_id_seq OWNER TO kal;
 
 --
 -- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -377,7 +447,7 @@ ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
 
 
 --
--- Name: django_content_type; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE django_content_type (
@@ -387,7 +457,7 @@ CREATE TABLE django_content_type (
 );
 
 
-ALTER TABLE public.django_content_type OWNER TO kal;
+ALTER TABLE django_content_type OWNER TO kal;
 
 --
 -- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -401,7 +471,7 @@ CREATE SEQUENCE django_content_type_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.django_content_type_id_seq OWNER TO kal;
+ALTER TABLE django_content_type_id_seq OWNER TO kal;
 
 --
 -- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -411,7 +481,7 @@ ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
 
 
 --
--- Name: django_migrations; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE django_migrations (
@@ -422,7 +492,7 @@ CREATE TABLE django_migrations (
 );
 
 
-ALTER TABLE public.django_migrations OWNER TO kal;
+ALTER TABLE django_migrations OWNER TO kal;
 
 --
 -- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -436,7 +506,7 @@ CREATE SEQUENCE django_migrations_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.django_migrations_id_seq OWNER TO kal;
+ALTER TABLE django_migrations_id_seq OWNER TO kal;
 
 --
 -- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -446,7 +516,7 @@ ALTER SEQUENCE django_migrations_id_seq OWNED BY django_migrations.id;
 
 
 --
--- Name: django_session; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: django_session; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE django_session (
@@ -456,10 +526,10 @@ CREATE TABLE django_session (
 );
 
 
-ALTER TABLE public.django_session OWNER TO kal;
+ALTER TABLE django_session OWNER TO kal;
 
 --
--- Name: kaldb_department; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_department; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_department (
@@ -469,7 +539,7 @@ CREATE TABLE kaldb_department (
 );
 
 
-ALTER TABLE public.kaldb_department OWNER TO kal;
+ALTER TABLE kaldb_department OWNER TO kal;
 
 --
 -- Name: kaldb_department_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -483,7 +553,7 @@ CREATE SEQUENCE kaldb_department_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_department_id_seq OWNER TO kal;
+ALTER TABLE kaldb_department_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_department_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -493,7 +563,7 @@ ALTER SEQUENCE kaldb_department_id_seq OWNED BY kaldb_department.id;
 
 
 --
--- Name: kaldb_faculty; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_faculty; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_faculty (
@@ -502,7 +572,7 @@ CREATE TABLE kaldb_faculty (
 );
 
 
-ALTER TABLE public.kaldb_faculty OWNER TO kal;
+ALTER TABLE kaldb_faculty OWNER TO kal;
 
 --
 -- Name: kaldb_faculty_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -516,7 +586,7 @@ CREATE SEQUENCE kaldb_faculty_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_faculty_id_seq OWNER TO kal;
+ALTER TABLE kaldb_faculty_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_faculty_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -526,7 +596,7 @@ ALTER SEQUENCE kaldb_faculty_id_seq OWNED BY kaldb_faculty.id;
 
 
 --
--- Name: kaldb_interest; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_interest; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_interest (
@@ -536,7 +606,7 @@ CREATE TABLE kaldb_interest (
 );
 
 
-ALTER TABLE public.kaldb_interest OWNER TO kal;
+ALTER TABLE kaldb_interest OWNER TO kal;
 
 --
 -- Name: kaldb_interest_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -550,7 +620,7 @@ CREATE SEQUENCE kaldb_interest_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_interest_id_seq OWNER TO kal;
+ALTER TABLE kaldb_interest_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_interest_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -560,7 +630,7 @@ ALTER SEQUENCE kaldb_interest_id_seq OWNED BY kaldb_interest.id;
 
 
 --
--- Name: kaldb_interest_related_interests; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_interest_related_interests; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_interest_related_interests (
@@ -570,7 +640,7 @@ CREATE TABLE kaldb_interest_related_interests (
 );
 
 
-ALTER TABLE public.kaldb_interest_related_interests OWNER TO kal;
+ALTER TABLE kaldb_interest_related_interests OWNER TO kal;
 
 --
 -- Name: kaldb_interest_related_interests_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -584,7 +654,7 @@ CREATE SEQUENCE kaldb_interest_related_interests_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_interest_related_interests_id_seq OWNER TO kal;
+ALTER TABLE kaldb_interest_related_interests_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_interest_related_interests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -594,7 +664,7 @@ ALTER SEQUENCE kaldb_interest_related_interests_id_seq OWNED BY kaldb_interest_r
 
 
 --
--- Name: kaldb_jobposition; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_jobposition; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_jobposition (
@@ -603,7 +673,7 @@ CREATE TABLE kaldb_jobposition (
 );
 
 
-ALTER TABLE public.kaldb_jobposition OWNER TO kal;
+ALTER TABLE kaldb_jobposition OWNER TO kal;
 
 --
 -- Name: kaldb_jobposition_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -617,7 +687,7 @@ CREATE SEQUENCE kaldb_jobposition_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_jobposition_id_seq OWNER TO kal;
+ALTER TABLE kaldb_jobposition_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_jobposition_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -627,7 +697,7 @@ ALTER SEQUENCE kaldb_jobposition_id_seq OWNED BY kaldb_jobposition.id;
 
 
 --
--- Name: kaldb_jobrole; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_jobrole; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_jobrole (
@@ -636,7 +706,7 @@ CREATE TABLE kaldb_jobrole (
 );
 
 
-ALTER TABLE public.kaldb_jobrole OWNER TO kal;
+ALTER TABLE kaldb_jobrole OWNER TO kal;
 
 --
 -- Name: kaldb_jobrole_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -650,7 +720,7 @@ CREATE SEQUENCE kaldb_jobrole_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_jobrole_id_seq OWNER TO kal;
+ALTER TABLE kaldb_jobrole_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_jobrole_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -660,7 +730,146 @@ ALTER SEQUENCE kaldb_jobrole_id_seq OWNED BY kaldb_jobrole.id;
 
 
 --
--- Name: kaldb_outreachcity; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_module; Type: TABLE; Schema: public; Owner: kal
+--
+
+CREATE TABLE kaldb_module (
+    id integer NOT NULL,
+    name character varying(1024) NOT NULL,
+    description text NOT NULL,
+    assessment text NOT NULL,
+    teaching_pattern text NOT NULL,
+    url character varying(512),
+    department_id integer
+);
+
+
+ALTER TABLE kaldb_module OWNER TO kal;
+
+--
+-- Name: kaldb_module_convenors; Type: TABLE; Schema: public; Owner: kal
+--
+
+CREATE TABLE kaldb_module_convenors (
+    id integer NOT NULL,
+    module_id integer NOT NULL,
+    researcher_id integer NOT NULL
+);
+
+
+ALTER TABLE kaldb_module_convenors OWNER TO kal;
+
+--
+-- Name: kaldb_module_convenors_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
+--
+
+CREATE SEQUENCE kaldb_module_convenors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE kaldb_module_convenors_id_seq OWNER TO kal;
+
+--
+-- Name: kaldb_module_convenors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
+--
+
+ALTER SEQUENCE kaldb_module_convenors_id_seq OWNED BY kaldb_module_convenors.id;
+
+
+--
+-- Name: kaldb_module_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
+--
+
+CREATE SEQUENCE kaldb_module_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE kaldb_module_id_seq OWNER TO kal;
+
+--
+-- Name: kaldb_module_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
+--
+
+ALTER SEQUENCE kaldb_module_id_seq OWNED BY kaldb_module.id;
+
+
+--
+-- Name: kaldb_module_level; Type: TABLE; Schema: public; Owner: kal
+--
+
+CREATE TABLE kaldb_module_level (
+    id integer NOT NULL,
+    module_id integer NOT NULL,
+    modulelevel_id integer NOT NULL
+);
+
+
+ALTER TABLE kaldb_module_level OWNER TO kal;
+
+--
+-- Name: kaldb_module_level_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
+--
+
+CREATE SEQUENCE kaldb_module_level_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE kaldb_module_level_id_seq OWNER TO kal;
+
+--
+-- Name: kaldb_module_level_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
+--
+
+ALTER SEQUENCE kaldb_module_level_id_seq OWNED BY kaldb_module_level.id;
+
+
+--
+-- Name: kaldb_modulelevel; Type: TABLE; Schema: public; Owner: kal
+--
+
+CREATE TABLE kaldb_modulelevel (
+    id integer NOT NULL,
+    name character varying(120) NOT NULL
+);
+
+
+ALTER TABLE kaldb_modulelevel OWNER TO kal;
+
+--
+-- Name: kaldb_modulelevel_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
+--
+
+CREATE SEQUENCE kaldb_modulelevel_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE kaldb_modulelevel_id_seq OWNER TO kal;
+
+--
+-- Name: kaldb_modulelevel_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
+--
+
+ALTER SEQUENCE kaldb_modulelevel_id_seq OWNED BY kaldb_modulelevel.id;
+
+
+--
+-- Name: kaldb_outreachcity; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_outreachcity (
@@ -670,7 +879,7 @@ CREATE TABLE kaldb_outreachcity (
 );
 
 
-ALTER TABLE public.kaldb_outreachcity OWNER TO kal;
+ALTER TABLE kaldb_outreachcity OWNER TO kal;
 
 --
 -- Name: kaldb_outreachcity_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -684,7 +893,7 @@ CREATE SEQUENCE kaldb_outreachcity_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_outreachcity_id_seq OWNER TO kal;
+ALTER TABLE kaldb_outreachcity_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_outreachcity_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -694,7 +903,7 @@ ALTER SEQUENCE kaldb_outreachcity_id_seq OWNED BY kaldb_outreachcity.id;
 
 
 --
--- Name: kaldb_outreachcountry; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachcountry; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_outreachcountry (
@@ -703,7 +912,7 @@ CREATE TABLE kaldb_outreachcountry (
 );
 
 
-ALTER TABLE public.kaldb_outreachcountry OWNER TO kal;
+ALTER TABLE kaldb_outreachcountry OWNER TO kal;
 
 --
 -- Name: kaldb_outreachcountry_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -717,7 +926,7 @@ CREATE SEQUENCE kaldb_outreachcountry_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_outreachcountry_id_seq OWNER TO kal;
+ALTER TABLE kaldb_outreachcountry_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_outreachcountry_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -727,7 +936,7 @@ ALTER SEQUENCE kaldb_outreachcountry_id_seq OWNED BY kaldb_outreachcountry.id;
 
 
 --
--- Name: kaldb_outreachevent; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachevent; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_outreachevent (
@@ -741,7 +950,7 @@ CREATE TABLE kaldb_outreachevent (
 );
 
 
-ALTER TABLE public.kaldb_outreachevent OWNER TO kal;
+ALTER TABLE kaldb_outreachevent OWNER TO kal;
 
 --
 -- Name: kaldb_outreachevent_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -755,7 +964,7 @@ CREATE SEQUENCE kaldb_outreachevent_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_outreachevent_id_seq OWNER TO kal;
+ALTER TABLE kaldb_outreachevent_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_outreachevent_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -765,7 +974,7 @@ ALTER SEQUENCE kaldb_outreachevent_id_seq OWNED BY kaldb_outreachevent.id;
 
 
 --
--- Name: kaldb_outreachfrequency; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachfrequency; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_outreachfrequency (
@@ -774,7 +983,7 @@ CREATE TABLE kaldb_outreachfrequency (
 );
 
 
-ALTER TABLE public.kaldb_outreachfrequency OWNER TO kal;
+ALTER TABLE kaldb_outreachfrequency OWNER TO kal;
 
 --
 -- Name: kaldb_outreachfrequency_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -788,7 +997,7 @@ CREATE SEQUENCE kaldb_outreachfrequency_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_outreachfrequency_id_seq OWNER TO kal;
+ALTER TABLE kaldb_outreachfrequency_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_outreachfrequency_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -798,7 +1007,7 @@ ALTER SEQUENCE kaldb_outreachfrequency_id_seq OWNED BY kaldb_outreachfrequency.i
 
 
 --
--- Name: kaldb_outreachlocation; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachlocation; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_outreachlocation (
@@ -810,7 +1019,7 @@ CREATE TABLE kaldb_outreachlocation (
 );
 
 
-ALTER TABLE public.kaldb_outreachlocation OWNER TO kal;
+ALTER TABLE kaldb_outreachlocation OWNER TO kal;
 
 --
 -- Name: kaldb_outreachlocation_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -824,7 +1033,7 @@ CREATE SEQUENCE kaldb_outreachlocation_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_outreachlocation_id_seq OWNER TO kal;
+ALTER TABLE kaldb_outreachlocation_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_outreachlocation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -834,7 +1043,7 @@ ALTER SEQUENCE kaldb_outreachlocation_id_seq OWNED BY kaldb_outreachlocation.id;
 
 
 --
--- Name: kaldb_outreachmedium; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachmedium; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_outreachmedium (
@@ -843,7 +1052,7 @@ CREATE TABLE kaldb_outreachmedium (
 );
 
 
-ALTER TABLE public.kaldb_outreachmedium OWNER TO kal;
+ALTER TABLE kaldb_outreachmedium OWNER TO kal;
 
 --
 -- Name: kaldb_outreachmedium_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -857,7 +1066,7 @@ CREATE SEQUENCE kaldb_outreachmedium_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_outreachmedium_id_seq OWNER TO kal;
+ALTER TABLE kaldb_outreachmedium_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_outreachmedium_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -867,7 +1076,7 @@ ALTER SEQUENCE kaldb_outreachmedium_id_seq OWNED BY kaldb_outreachmedium.id;
 
 
 --
--- Name: kaldb_researcher; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_researcher (
@@ -889,7 +1098,7 @@ CREATE TABLE kaldb_researcher (
 );
 
 
-ALTER TABLE public.kaldb_researcher OWNER TO kal;
+ALTER TABLE kaldb_researcher OWNER TO kal;
 
 --
 -- Name: kaldb_researcher_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -903,7 +1112,7 @@ CREATE SEQUENCE kaldb_researcher_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_researcher_id_seq OWNER TO kal;
+ALTER TABLE kaldb_researcher_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_researcher_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -913,7 +1122,7 @@ ALTER SEQUENCE kaldb_researcher_id_seq OWNED BY kaldb_researcher.id;
 
 
 --
--- Name: kaldb_researcher_research_interests; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_research_interests; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_researcher_research_interests (
@@ -923,7 +1132,7 @@ CREATE TABLE kaldb_researcher_research_interests (
 );
 
 
-ALTER TABLE public.kaldb_researcher_research_interests OWNER TO kal;
+ALTER TABLE kaldb_researcher_research_interests OWNER TO kal;
 
 --
 -- Name: kaldb_researcher_research_interests_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -937,7 +1146,7 @@ CREATE SEQUENCE kaldb_researcher_research_interests_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_researcher_research_interests_id_seq OWNER TO kal;
+ALTER TABLE kaldb_researcher_research_interests_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_researcher_research_interests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -947,7 +1156,7 @@ ALTER SEQUENCE kaldb_researcher_research_interests_id_seq OWNED BY kaldb_researc
 
 
 --
--- Name: kaldb_researcher_specialisms; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_specialisms; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_researcher_specialisms (
@@ -957,7 +1166,7 @@ CREATE TABLE kaldb_researcher_specialisms (
 );
 
 
-ALTER TABLE public.kaldb_researcher_specialisms OWNER TO kal;
+ALTER TABLE kaldb_researcher_specialisms OWNER TO kal;
 
 --
 -- Name: kaldb_researcher_specialism_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -971,7 +1180,7 @@ CREATE SEQUENCE kaldb_researcher_specialism_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_researcher_specialism_id_seq OWNER TO kal;
+ALTER TABLE kaldb_researcher_specialism_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_researcher_specialism_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -981,7 +1190,7 @@ ALTER SEQUENCE kaldb_researcher_specialism_id_seq OWNED BY kaldb_researcher_spec
 
 
 --
--- Name: kaldb_researcher_teaching_interests; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_teaching_interests; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_researcher_teaching_interests (
@@ -991,7 +1200,7 @@ CREATE TABLE kaldb_researcher_teaching_interests (
 );
 
 
-ALTER TABLE public.kaldb_researcher_teaching_interests OWNER TO kal;
+ALTER TABLE kaldb_researcher_teaching_interests OWNER TO kal;
 
 --
 -- Name: kaldb_researcher_teaching_interests_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1005,7 +1214,7 @@ CREATE SEQUENCE kaldb_researcher_teaching_interests_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_researcher_teaching_interests_id_seq OWNER TO kal;
+ALTER TABLE kaldb_researcher_teaching_interests_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_researcher_teaching_interests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1015,7 +1224,7 @@ ALTER SEQUENCE kaldb_researcher_teaching_interests_id_seq OWNED BY kaldb_researc
 
 
 --
--- Name: kaldb_specialism; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_specialism; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_specialism (
@@ -1027,7 +1236,7 @@ CREATE TABLE kaldb_specialism (
 );
 
 
-ALTER TABLE public.kaldb_specialism OWNER TO kal;
+ALTER TABLE kaldb_specialism OWNER TO kal;
 
 --
 -- Name: kaldb_specialism_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1041,7 +1250,7 @@ CREATE SEQUENCE kaldb_specialism_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_specialism_id_seq OWNER TO kal;
+ALTER TABLE kaldb_specialism_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_specialism_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1051,7 +1260,109 @@ ALTER SEQUENCE kaldb_specialism_id_seq OWNED BY kaldb_specialism.id;
 
 
 --
--- Name: kaldb_title; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_theme; Type: TABLE; Schema: public; Owner: kal
+--
+
+CREATE TABLE kaldb_theme (
+    id integer NOT NULL,
+    name character varying(1024) NOT NULL,
+    description text NOT NULL
+);
+
+
+ALTER TABLE kaldb_theme OWNER TO kal;
+
+--
+-- Name: kaldb_theme_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
+--
+
+CREATE SEQUENCE kaldb_theme_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE kaldb_theme_id_seq OWNER TO kal;
+
+--
+-- Name: kaldb_theme_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
+--
+
+ALTER SEQUENCE kaldb_theme_id_seq OWNED BY kaldb_theme.id;
+
+
+--
+-- Name: kaldb_theme_modules; Type: TABLE; Schema: public; Owner: kal
+--
+
+CREATE TABLE kaldb_theme_modules (
+    id integer NOT NULL,
+    theme_id integer NOT NULL,
+    module_id integer NOT NULL
+);
+
+
+ALTER TABLE kaldb_theme_modules OWNER TO kal;
+
+--
+-- Name: kaldb_theme_modules_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
+--
+
+CREATE SEQUENCE kaldb_theme_modules_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE kaldb_theme_modules_id_seq OWNER TO kal;
+
+--
+-- Name: kaldb_theme_modules_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
+--
+
+ALTER SEQUENCE kaldb_theme_modules_id_seq OWNED BY kaldb_theme_modules.id;
+
+
+--
+-- Name: kaldb_theme_roles; Type: TABLE; Schema: public; Owner: kal
+--
+
+CREATE TABLE kaldb_theme_roles (
+    id integer NOT NULL,
+    theme_id integer NOT NULL,
+    jobrole_id integer NOT NULL
+);
+
+
+ALTER TABLE kaldb_theme_roles OWNER TO kal;
+
+--
+-- Name: kaldb_theme_roles_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
+--
+
+CREATE SEQUENCE kaldb_theme_roles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE kaldb_theme_roles_id_seq OWNER TO kal;
+
+--
+-- Name: kaldb_theme_roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
+--
+
+ALTER SEQUENCE kaldb_theme_roles_id_seq OWNED BY kaldb_theme_roles.id;
+
+
+--
+-- Name: kaldb_title; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE kaldb_title (
@@ -1060,7 +1371,7 @@ CREATE TABLE kaldb_title (
 );
 
 
-ALTER TABLE public.kaldb_title OWNER TO kal;
+ALTER TABLE kaldb_title OWNER TO kal;
 
 --
 -- Name: kaldb_title_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1074,7 +1385,7 @@ CREATE SEQUENCE kaldb_title_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.kaldb_title_id_seq OWNER TO kal;
+ALTER TABLE kaldb_title_id_seq OWNER TO kal;
 
 --
 -- Name: kaldb_title_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1084,7 +1395,7 @@ ALTER SEQUENCE kaldb_title_id_seq OWNED BY kaldb_title.id;
 
 
 --
--- Name: taggit_tag; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: taggit_tag; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE taggit_tag (
@@ -1094,7 +1405,7 @@ CREATE TABLE taggit_tag (
 );
 
 
-ALTER TABLE public.taggit_tag OWNER TO kal;
+ALTER TABLE taggit_tag OWNER TO kal;
 
 --
 -- Name: taggit_tag_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1108,7 +1419,7 @@ CREATE SEQUENCE taggit_tag_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.taggit_tag_id_seq OWNER TO kal;
+ALTER TABLE taggit_tag_id_seq OWNER TO kal;
 
 --
 -- Name: taggit_tag_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1118,7 +1429,7 @@ ALTER SEQUENCE taggit_tag_id_seq OWNED BY taggit_tag.id;
 
 
 --
--- Name: taggit_taggeditem; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: taggit_taggeditem; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE taggit_taggeditem (
@@ -1129,7 +1440,7 @@ CREATE TABLE taggit_taggeditem (
 );
 
 
-ALTER TABLE public.taggit_taggeditem OWNER TO kal;
+ALTER TABLE taggit_taggeditem OWNER TO kal;
 
 --
 -- Name: taggit_taggeditem_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1143,7 +1454,7 @@ CREATE SEQUENCE taggit_taggeditem_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.taggit_taggeditem_id_seq OWNER TO kal;
+ALTER TABLE taggit_taggeditem_id_seq OWNER TO kal;
 
 --
 -- Name: taggit_taggeditem_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1153,7 +1464,7 @@ ALTER SEQUENCE taggit_taggeditem_id_seq OWNED BY taggit_taggeditem.id;
 
 
 --
--- Name: wagtailcore_collection; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_collection; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailcore_collection (
@@ -1167,7 +1478,7 @@ CREATE TABLE wagtailcore_collection (
 );
 
 
-ALTER TABLE public.wagtailcore_collection OWNER TO kal;
+ALTER TABLE wagtailcore_collection OWNER TO kal;
 
 --
 -- Name: wagtailcore_collection_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1181,7 +1492,7 @@ CREATE SEQUENCE wagtailcore_collection_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailcore_collection_id_seq OWNER TO kal;
+ALTER TABLE wagtailcore_collection_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailcore_collection_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1191,7 +1502,7 @@ ALTER SEQUENCE wagtailcore_collection_id_seq OWNED BY wagtailcore_collection.id;
 
 
 --
--- Name: wagtailcore_groupcollectionpermission; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_groupcollectionpermission; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailcore_groupcollectionpermission (
@@ -1202,7 +1513,7 @@ CREATE TABLE wagtailcore_groupcollectionpermission (
 );
 
 
-ALTER TABLE public.wagtailcore_groupcollectionpermission OWNER TO kal;
+ALTER TABLE wagtailcore_groupcollectionpermission OWNER TO kal;
 
 --
 -- Name: wagtailcore_groupcollectionpermission_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1216,7 +1527,7 @@ CREATE SEQUENCE wagtailcore_groupcollectionpermission_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailcore_groupcollectionpermission_id_seq OWNER TO kal;
+ALTER TABLE wagtailcore_groupcollectionpermission_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailcore_groupcollectionpermission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1226,7 +1537,7 @@ ALTER SEQUENCE wagtailcore_groupcollectionpermission_id_seq OWNED BY wagtailcore
 
 
 --
--- Name: wagtailcore_grouppagepermission; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_grouppagepermission; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailcore_grouppagepermission (
@@ -1237,7 +1548,7 @@ CREATE TABLE wagtailcore_grouppagepermission (
 );
 
 
-ALTER TABLE public.wagtailcore_grouppagepermission OWNER TO kal;
+ALTER TABLE wagtailcore_grouppagepermission OWNER TO kal;
 
 --
 -- Name: wagtailcore_grouppagepermission_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1251,7 +1562,7 @@ CREATE SEQUENCE wagtailcore_grouppagepermission_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailcore_grouppagepermission_id_seq OWNER TO kal;
+ALTER TABLE wagtailcore_grouppagepermission_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailcore_grouppagepermission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1261,7 +1572,7 @@ ALTER SEQUENCE wagtailcore_grouppagepermission_id_seq OWNED BY wagtailcore_group
 
 
 --
--- Name: wagtailcore_page; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_page; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailcore_page (
@@ -1290,7 +1601,7 @@ CREATE TABLE wagtailcore_page (
 );
 
 
-ALTER TABLE public.wagtailcore_page OWNER TO kal;
+ALTER TABLE wagtailcore_page OWNER TO kal;
 
 --
 -- Name: wagtailcore_page_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1304,7 +1615,7 @@ CREATE SEQUENCE wagtailcore_page_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailcore_page_id_seq OWNER TO kal;
+ALTER TABLE wagtailcore_page_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailcore_page_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1314,7 +1625,7 @@ ALTER SEQUENCE wagtailcore_page_id_seq OWNED BY wagtailcore_page.id;
 
 
 --
--- Name: wagtailcore_pagerevision; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_pagerevision; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailcore_pagerevision (
@@ -1328,7 +1639,7 @@ CREATE TABLE wagtailcore_pagerevision (
 );
 
 
-ALTER TABLE public.wagtailcore_pagerevision OWNER TO kal;
+ALTER TABLE wagtailcore_pagerevision OWNER TO kal;
 
 --
 -- Name: wagtailcore_pagerevision_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1342,7 +1653,7 @@ CREATE SEQUENCE wagtailcore_pagerevision_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailcore_pagerevision_id_seq OWNER TO kal;
+ALTER TABLE wagtailcore_pagerevision_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailcore_pagerevision_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1352,7 +1663,7 @@ ALTER SEQUENCE wagtailcore_pagerevision_id_seq OWNED BY wagtailcore_pagerevision
 
 
 --
--- Name: wagtailcore_pageviewrestriction; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_pageviewrestriction; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailcore_pageviewrestriction (
@@ -1363,10 +1674,10 @@ CREATE TABLE wagtailcore_pageviewrestriction (
 );
 
 
-ALTER TABLE public.wagtailcore_pageviewrestriction OWNER TO kal;
+ALTER TABLE wagtailcore_pageviewrestriction OWNER TO kal;
 
 --
--- Name: wagtailcore_pageviewrestriction_groups; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_pageviewrestriction_groups; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailcore_pageviewrestriction_groups (
@@ -1376,7 +1687,7 @@ CREATE TABLE wagtailcore_pageviewrestriction_groups (
 );
 
 
-ALTER TABLE public.wagtailcore_pageviewrestriction_groups OWNER TO kal;
+ALTER TABLE wagtailcore_pageviewrestriction_groups OWNER TO kal;
 
 --
 -- Name: wagtailcore_pageviewrestriction_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1390,7 +1701,7 @@ CREATE SEQUENCE wagtailcore_pageviewrestriction_groups_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailcore_pageviewrestriction_groups_id_seq OWNER TO kal;
+ALTER TABLE wagtailcore_pageviewrestriction_groups_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailcore_pageviewrestriction_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1411,7 +1722,7 @@ CREATE SEQUENCE wagtailcore_pageviewrestriction_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailcore_pageviewrestriction_id_seq OWNER TO kal;
+ALTER TABLE wagtailcore_pageviewrestriction_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailcore_pageviewrestriction_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1421,7 +1732,7 @@ ALTER SEQUENCE wagtailcore_pageviewrestriction_id_seq OWNED BY wagtailcore_pagev
 
 
 --
--- Name: wagtailcore_site; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_site; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailcore_site (
@@ -1434,7 +1745,7 @@ CREATE TABLE wagtailcore_site (
 );
 
 
-ALTER TABLE public.wagtailcore_site OWNER TO kal;
+ALTER TABLE wagtailcore_site OWNER TO kal;
 
 --
 -- Name: wagtailcore_site_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1448,7 +1759,7 @@ CREATE SEQUENCE wagtailcore_site_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailcore_site_id_seq OWNER TO kal;
+ALTER TABLE wagtailcore_site_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailcore_site_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1458,7 +1769,7 @@ ALTER SEQUENCE wagtailcore_site_id_seq OWNED BY wagtailcore_site.id;
 
 
 --
--- Name: wagtaildocs_document; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtaildocs_document; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtaildocs_document (
@@ -1471,7 +1782,7 @@ CREATE TABLE wagtaildocs_document (
 );
 
 
-ALTER TABLE public.wagtaildocs_document OWNER TO kal;
+ALTER TABLE wagtaildocs_document OWNER TO kal;
 
 --
 -- Name: wagtaildocs_document_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1485,7 +1796,7 @@ CREATE SEQUENCE wagtaildocs_document_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtaildocs_document_id_seq OWNER TO kal;
+ALTER TABLE wagtaildocs_document_id_seq OWNER TO kal;
 
 --
 -- Name: wagtaildocs_document_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1495,7 +1806,7 @@ ALTER SEQUENCE wagtaildocs_document_id_seq OWNED BY wagtaildocs_document.id;
 
 
 --
--- Name: wagtailembeds_embed; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailembeds_embed; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailembeds_embed (
@@ -1514,7 +1825,7 @@ CREATE TABLE wagtailembeds_embed (
 );
 
 
-ALTER TABLE public.wagtailembeds_embed OWNER TO kal;
+ALTER TABLE wagtailembeds_embed OWNER TO kal;
 
 --
 -- Name: wagtailembeds_embed_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1528,7 +1839,7 @@ CREATE SEQUENCE wagtailembeds_embed_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailembeds_embed_id_seq OWNER TO kal;
+ALTER TABLE wagtailembeds_embed_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailembeds_embed_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1538,7 +1849,7 @@ ALTER SEQUENCE wagtailembeds_embed_id_seq OWNED BY wagtailembeds_embed.id;
 
 
 --
--- Name: wagtailforms_formsubmission; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailforms_formsubmission; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailforms_formsubmission (
@@ -1549,7 +1860,7 @@ CREATE TABLE wagtailforms_formsubmission (
 );
 
 
-ALTER TABLE public.wagtailforms_formsubmission OWNER TO kal;
+ALTER TABLE wagtailforms_formsubmission OWNER TO kal;
 
 --
 -- Name: wagtailforms_formsubmission_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1563,7 +1874,7 @@ CREATE SEQUENCE wagtailforms_formsubmission_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailforms_formsubmission_id_seq OWNER TO kal;
+ALTER TABLE wagtailforms_formsubmission_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailforms_formsubmission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1573,7 +1884,7 @@ ALTER SEQUENCE wagtailforms_formsubmission_id_seq OWNED BY wagtailforms_formsubm
 
 
 --
--- Name: wagtailimages_filter; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailimages_filter; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailimages_filter (
@@ -1582,7 +1893,7 @@ CREATE TABLE wagtailimages_filter (
 );
 
 
-ALTER TABLE public.wagtailimages_filter OWNER TO kal;
+ALTER TABLE wagtailimages_filter OWNER TO kal;
 
 --
 -- Name: wagtailimages_filter_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1596,7 +1907,7 @@ CREATE SEQUENCE wagtailimages_filter_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailimages_filter_id_seq OWNER TO kal;
+ALTER TABLE wagtailimages_filter_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailimages_filter_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1606,7 +1917,7 @@ ALTER SEQUENCE wagtailimages_filter_id_seq OWNED BY wagtailimages_filter.id;
 
 
 --
--- Name: wagtailimages_image; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailimages_image; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailimages_image (
@@ -1631,7 +1942,7 @@ CREATE TABLE wagtailimages_image (
 );
 
 
-ALTER TABLE public.wagtailimages_image OWNER TO kal;
+ALTER TABLE wagtailimages_image OWNER TO kal;
 
 --
 -- Name: wagtailimages_image_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1645,7 +1956,7 @@ CREATE SEQUENCE wagtailimages_image_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailimages_image_id_seq OWNER TO kal;
+ALTER TABLE wagtailimages_image_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailimages_image_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1655,7 +1966,7 @@ ALTER SEQUENCE wagtailimages_image_id_seq OWNED BY wagtailimages_image.id;
 
 
 --
--- Name: wagtailimages_rendition; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailimages_rendition; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailimages_rendition (
@@ -1669,7 +1980,7 @@ CREATE TABLE wagtailimages_rendition (
 );
 
 
-ALTER TABLE public.wagtailimages_rendition OWNER TO kal;
+ALTER TABLE wagtailimages_rendition OWNER TO kal;
 
 --
 -- Name: wagtailimages_rendition_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1683,7 +1994,7 @@ CREATE SEQUENCE wagtailimages_rendition_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailimages_rendition_id_seq OWNER TO kal;
+ALTER TABLE wagtailimages_rendition_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailimages_rendition_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1693,7 +2004,7 @@ ALTER SEQUENCE wagtailimages_rendition_id_seq OWNED BY wagtailimages_rendition.i
 
 
 --
--- Name: wagtailredirects_redirect; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailredirects_redirect; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailredirects_redirect (
@@ -1706,7 +2017,7 @@ CREATE TABLE wagtailredirects_redirect (
 );
 
 
-ALTER TABLE public.wagtailredirects_redirect OWNER TO kal;
+ALTER TABLE wagtailredirects_redirect OWNER TO kal;
 
 --
 -- Name: wagtailredirects_redirect_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1720,7 +2031,7 @@ CREATE SEQUENCE wagtailredirects_redirect_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailredirects_redirect_id_seq OWNER TO kal;
+ALTER TABLE wagtailredirects_redirect_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailredirects_redirect_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1730,7 +2041,7 @@ ALTER SEQUENCE wagtailredirects_redirect_id_seq OWNED BY wagtailredirects_redire
 
 
 --
--- Name: wagtailsearch_editorspick; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailsearch_editorspick; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailsearch_editorspick (
@@ -1742,7 +2053,7 @@ CREATE TABLE wagtailsearch_editorspick (
 );
 
 
-ALTER TABLE public.wagtailsearch_editorspick OWNER TO kal;
+ALTER TABLE wagtailsearch_editorspick OWNER TO kal;
 
 --
 -- Name: wagtailsearch_editorspick_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1756,7 +2067,7 @@ CREATE SEQUENCE wagtailsearch_editorspick_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailsearch_editorspick_id_seq OWNER TO kal;
+ALTER TABLE wagtailsearch_editorspick_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailsearch_editorspick_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1766,7 +2077,7 @@ ALTER SEQUENCE wagtailsearch_editorspick_id_seq OWNED BY wagtailsearch_editorspi
 
 
 --
--- Name: wagtailsearch_query; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailsearch_query; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailsearch_query (
@@ -1775,7 +2086,7 @@ CREATE TABLE wagtailsearch_query (
 );
 
 
-ALTER TABLE public.wagtailsearch_query OWNER TO kal;
+ALTER TABLE wagtailsearch_query OWNER TO kal;
 
 --
 -- Name: wagtailsearch_query_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1789,7 +2100,7 @@ CREATE SEQUENCE wagtailsearch_query_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailsearch_query_id_seq OWNER TO kal;
+ALTER TABLE wagtailsearch_query_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailsearch_query_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1799,7 +2110,7 @@ ALTER SEQUENCE wagtailsearch_query_id_seq OWNED BY wagtailsearch_query.id;
 
 
 --
--- Name: wagtailsearch_querydailyhits; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailsearch_querydailyhits; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailsearch_querydailyhits (
@@ -1810,7 +2121,7 @@ CREATE TABLE wagtailsearch_querydailyhits (
 );
 
 
-ALTER TABLE public.wagtailsearch_querydailyhits OWNER TO kal;
+ALTER TABLE wagtailsearch_querydailyhits OWNER TO kal;
 
 --
 -- Name: wagtailsearch_querydailyhits_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1824,7 +2135,7 @@ CREATE SEQUENCE wagtailsearch_querydailyhits_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailsearch_querydailyhits_id_seq OWNER TO kal;
+ALTER TABLE wagtailsearch_querydailyhits_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailsearch_querydailyhits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1834,7 +2145,7 @@ ALTER SEQUENCE wagtailsearch_querydailyhits_id_seq OWNED BY wagtailsearch_queryd
 
 
 --
--- Name: wagtailusers_userprofile; Type: TABLE; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailusers_userprofile; Type: TABLE; Schema: public; Owner: kal
 --
 
 CREATE TABLE wagtailusers_userprofile (
@@ -1846,7 +2157,7 @@ CREATE TABLE wagtailusers_userprofile (
 );
 
 
-ALTER TABLE public.wagtailusers_userprofile OWNER TO kal;
+ALTER TABLE wagtailusers_userprofile OWNER TO kal;
 
 --
 -- Name: wagtailusers_userprofile_id_seq; Type: SEQUENCE; Schema: public; Owner: kal
@@ -1860,7 +2171,7 @@ CREATE SEQUENCE wagtailusers_userprofile_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.wagtailusers_userprofile_id_seq OWNER TO kal;
+ALTER TABLE wagtailusers_userprofile_id_seq OWNER TO kal;
 
 --
 -- Name: wagtailusers_userprofile_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kal
@@ -1985,6 +2296,34 @@ ALTER TABLE ONLY kaldb_jobrole ALTER COLUMN id SET DEFAULT nextval('kaldb_jobrol
 -- Name: id; Type: DEFAULT; Schema: public; Owner: kal
 --
 
+ALTER TABLE ONLY kaldb_module ALTER COLUMN id SET DEFAULT nextval('kaldb_module_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_module_convenors ALTER COLUMN id SET DEFAULT nextval('kaldb_module_convenors_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_module_level ALTER COLUMN id SET DEFAULT nextval('kaldb_module_level_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_modulelevel ALTER COLUMN id SET DEFAULT nextval('kaldb_modulelevel_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: kal
+--
+
 ALTER TABLE ONLY kaldb_outreachcity ALTER COLUMN id SET DEFAULT nextval('kaldb_outreachcity_id_seq'::regclass);
 
 
@@ -2056,6 +2395,27 @@ ALTER TABLE ONLY kaldb_researcher_teaching_interests ALTER COLUMN id SET DEFAULT
 --
 
 ALTER TABLE ONLY kaldb_specialism ALTER COLUMN id SET DEFAULT nextval('kaldb_specialism_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_theme ALTER COLUMN id SET DEFAULT nextval('kaldb_theme_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_theme_modules ALTER COLUMN id SET DEFAULT nextval('kaldb_theme_modules_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_theme_roles ALTER COLUMN id SET DEFAULT nextval('kaldb_theme_roles_id_seq'::regclass);
 
 
 --
@@ -2399,6 +2759,15 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 134	Can add out reach medium	46	add_outreachmedium
 135	Can change out reach medium	46	change_outreachmedium
 136	Can delete out reach medium	46	delete_outreachmedium
+137	Can add module	47	add_module
+138	Can change module	47	change_module
+139	Can delete module	47	delete_module
+140	Can add theme	48	add_theme
+141	Can change theme	48	change_theme
+142	Can delete theme	48	delete_theme
+143	Can add module level	49	add_modulelevel
+144	Can change module level	49	change_modulelevel
+145	Can delete module level	49	delete_modulelevel
 \.
 
 
@@ -2406,7 +2775,7 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kal
 --
 
-SELECT pg_catalog.setval('auth_permission_id_seq', 136, true);
+SELECT pg_catalog.setval('auth_permission_id_seq', 145, true);
 
 
 --
@@ -2839,6 +3208,9 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 44	kaldb	researcher
 45	kaldb	outreachlocation
 46	kaldb	outreachmedium
+47	kaldb	module
+48	kaldb	theme
+49	kaldb	modulelevel
 \.
 
 
@@ -2846,7 +3218,7 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kal
 --
 
-SELECT pg_catalog.setval('django_content_type_id_seq', 46, true);
+SELECT pg_catalog.setval('django_content_type_id_seq', 49, true);
 
 
 --
@@ -2969,6 +3341,9 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 113	wagtailusers	0005_make_related_name_wagtail_specific	2017-04-03 20:11:53.815354+00
 114	wagtailcore	0001_squashed_0016_change_page_url_path_to_text_field	2017-04-03 20:11:53.818633+00
 115	kaldb	0018_auto_20170403_2115	2017-04-03 20:15:27.227559+00
+116	kaldb	0019_auto_20170411_1051	2017-04-19 10:01:49.377052+00
+117	kaldb	0020_auto_20170411_1058	2017-04-19 10:01:49.397692+00
+118	kaldb	0021_auto_20170411_1509	2017-04-19 10:01:49.548501+00
 \.
 
 
@@ -2976,7 +3351,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kal
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 115, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 118, true);
 
 
 --
@@ -3191,6 +3566,7 @@ COPY kaldb_interest (id, name, description) FROM stdin;
 112	Formation and reproduction of national identity especially with regard to race and �identity�.	
 113	Literary and theoretical significance of port cities and pelagics.	
 114	Writing of Alain Locke.	
+419	Clinical audit.effectiveness.	
 115	Cultural significance of aerial bombardment.	
 116	Autobiographical writing generated by colonial wars.	
 117	Music, literature and religious dissent.	
@@ -3495,7 +3871,6 @@ COPY kaldb_interest (id, name, description) FROM stdin;
 415	Service policy and development in palliative care	
 416	Quality of life and outcome measurements.	
 417	Evaluation of palliative care especially of new services and interventions.	
-419	Clinical audit.effectiveness.	
 420	Psychosocial factors and care.	
 421	Symptom assessment.	
 422	Cachexia/anorexia.	
@@ -4043,6 +4418,66 @@ COPY kaldb_jobrole (id, name) FROM stdin;
 --
 
 SELECT pg_catalog.setval('kaldb_jobrole_id_seq', 103, true);
+
+
+--
+-- Data for Name: kaldb_module; Type: TABLE DATA; Schema: public; Owner: kal
+--
+
+COPY kaldb_module (id, name, description, assessment, teaching_pattern, url, department_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: kaldb_module_convenors; Type: TABLE DATA; Schema: public; Owner: kal
+--
+
+COPY kaldb_module_convenors (id, module_id, researcher_id) FROM stdin;
+\.
+
+
+--
+-- Name: kaldb_module_convenors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kal
+--
+
+SELECT pg_catalog.setval('kaldb_module_convenors_id_seq', 1, false);
+
+
+--
+-- Name: kaldb_module_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kal
+--
+
+SELECT pg_catalog.setval('kaldb_module_id_seq', 1, false);
+
+
+--
+-- Data for Name: kaldb_module_level; Type: TABLE DATA; Schema: public; Owner: kal
+--
+
+COPY kaldb_module_level (id, module_id, modulelevel_id) FROM stdin;
+\.
+
+
+--
+-- Name: kaldb_module_level_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kal
+--
+
+SELECT pg_catalog.setval('kaldb_module_level_id_seq', 1, false);
+
+
+--
+-- Data for Name: kaldb_modulelevel; Type: TABLE DATA; Schema: public; Owner: kal
+--
+
+COPY kaldb_modulelevel (id, name) FROM stdin;
+\.
+
+
+--
+-- Name: kaldb_modulelevel_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kal
+--
+
+SELECT pg_catalog.setval('kaldb_modulelevel_id_seq', 1, false);
 
 
 --
@@ -5905,6 +6340,51 @@ SELECT pg_catalog.setval('kaldb_specialism_id_seq', 575, true);
 
 
 --
+-- Data for Name: kaldb_theme; Type: TABLE DATA; Schema: public; Owner: kal
+--
+
+COPY kaldb_theme (id, name, description) FROM stdin;
+\.
+
+
+--
+-- Name: kaldb_theme_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kal
+--
+
+SELECT pg_catalog.setval('kaldb_theme_id_seq', 1, false);
+
+
+--
+-- Data for Name: kaldb_theme_modules; Type: TABLE DATA; Schema: public; Owner: kal
+--
+
+COPY kaldb_theme_modules (id, theme_id, module_id) FROM stdin;
+\.
+
+
+--
+-- Name: kaldb_theme_modules_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kal
+--
+
+SELECT pg_catalog.setval('kaldb_theme_modules_id_seq', 1, false);
+
+
+--
+-- Data for Name: kaldb_theme_roles; Type: TABLE DATA; Schema: public; Owner: kal
+--
+
+COPY kaldb_theme_roles (id, theme_id, jobrole_id) FROM stdin;
+\.
+
+
+--
+-- Name: kaldb_theme_roles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kal
+--
+
+SELECT pg_catalog.setval('kaldb_theme_roles_id_seq', 1, false);
+
+
+--
 -- Data for Name: kaldb_title; Type: TABLE DATA; Schema: public; Owner: kal
 --
 
@@ -5917,6 +6397,14 @@ COPY kaldb_title (id, name) FROM stdin;
 --
 
 SELECT pg_catalog.setval('kaldb_title_id_seq', 1, false);
+
+
+--
+-- Data for Name: spatial_ref_sys; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY spatial_ref_sys  FROM stdin;
+\.
 
 
 --
@@ -5947,6 +6435,30 @@ COPY taggit_taggeditem (id, object_id, content_type_id, tag_id) FROM stdin;
 --
 
 SELECT pg_catalog.setval('taggit_taggeditem_id_seq', 1, false);
+
+
+--
+-- Data for Name: us_gaz; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY us_gaz  FROM stdin;
+\.
+
+
+--
+-- Data for Name: us_lex; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY us_lex  FROM stdin;
+\.
+
+
+--
+-- Data for Name: us_rules; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY us_rules  FROM stdin;
+\.
 
 
 --
@@ -6253,8 +6765,28 @@ COPY wagtailusers_userprofile (id, submitted_notifications, approved_notificatio
 SELECT pg_catalog.setval('wagtailusers_userprofile_id_seq', 1, false);
 
 
+SET search_path = topology, pg_catalog;
+
 --
--- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Data for Name: topology; Type: TABLE DATA; Schema: topology; Owner: postgres
+--
+
+COPY topology  FROM stdin;
+\.
+
+
+--
+-- Data for Name: layer; Type: TABLE DATA; Schema: topology; Owner: postgres
+--
+
+COPY layer  FROM stdin;
+\.
+
+
+SET search_path = public, pg_catalog;
+
+--
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY auth_group
@@ -6262,7 +6794,7 @@ ALTER TABLE ONLY auth_group
 
 
 --
--- Name: auth_group_permissions_group_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_group_permissions_group_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY auth_group_permissions
@@ -6270,7 +6802,7 @@ ALTER TABLE ONLY auth_group_permissions
 
 
 --
--- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY auth_group_permissions
@@ -6278,7 +6810,7 @@ ALTER TABLE ONLY auth_group_permissions
 
 
 --
--- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY auth_group
@@ -6286,7 +6818,7 @@ ALTER TABLE ONLY auth_group
 
 
 --
--- Name: auth_permission_content_type_id_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_permission_content_type_id_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY auth_permission
@@ -6294,7 +6826,7 @@ ALTER TABLE ONLY auth_permission
 
 
 --
--- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY auth_permission
@@ -6302,7 +6834,7 @@ ALTER TABLE ONLY auth_permission
 
 
 --
--- Name: auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY auth_user_groups
@@ -6310,7 +6842,7 @@ ALTER TABLE ONLY auth_user_groups
 
 
 --
--- Name: auth_user_groups_user_id_94350c0c_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_user_groups_user_id_94350c0c_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY auth_user_groups
@@ -6318,7 +6850,7 @@ ALTER TABLE ONLY auth_user_groups
 
 
 --
--- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY auth_user
@@ -6326,7 +6858,7 @@ ALTER TABLE ONLY auth_user
 
 
 --
--- Name: auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY auth_user_user_permissions
@@ -6334,7 +6866,7 @@ ALTER TABLE ONLY auth_user_user_permissions
 
 
 --
--- Name: auth_user_user_permissions_user_id_14a6b632_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_user_user_permissions_user_id_14a6b632_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY auth_user_user_permissions
@@ -6342,7 +6874,7 @@ ALTER TABLE ONLY auth_user_user_permissions
 
 
 --
--- Name: auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY auth_user
@@ -6350,7 +6882,7 @@ ALTER TABLE ONLY auth_user
 
 
 --
--- Name: cms_blogindexpage_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: cms_blogindexpage_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY cms_blogindexpage
@@ -6358,7 +6890,7 @@ ALTER TABLE ONLY cms_blogindexpage
 
 
 --
--- Name: cms_blogpost_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: cms_blogpost_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY cms_blogpost
@@ -6366,7 +6898,7 @@ ALTER TABLE ONLY cms_blogpost
 
 
 --
--- Name: cms_blogposttag_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: cms_blogposttag_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY cms_blogposttag
@@ -6374,7 +6906,7 @@ ALTER TABLE ONLY cms_blogposttag
 
 
 --
--- Name: cms_homepage_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: cms_homepage_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY cms_homepage
@@ -6382,7 +6914,7 @@ ALTER TABLE ONLY cms_homepage
 
 
 --
--- Name: cms_indexpage_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: cms_indexpage_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY cms_indexpage
@@ -6390,7 +6922,7 @@ ALTER TABLE ONLY cms_indexpage
 
 
 --
--- Name: cms_richtextpage_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: cms_richtextpage_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY cms_richtextpage
@@ -6398,7 +6930,7 @@ ALTER TABLE ONLY cms_richtextpage
 
 
 --
--- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY django_admin_log
@@ -6406,7 +6938,7 @@ ALTER TABLE ONLY django_admin_log
 
 
 --
--- Name: django_content_type_app_label_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: django_content_type_app_label_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY django_content_type
@@ -6414,7 +6946,7 @@ ALTER TABLE ONLY django_content_type
 
 
 --
--- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY django_content_type
@@ -6422,7 +6954,7 @@ ALTER TABLE ONLY django_content_type
 
 
 --
--- Name: django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY django_migrations
@@ -6430,7 +6962,7 @@ ALTER TABLE ONLY django_migrations
 
 
 --
--- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY django_session
@@ -6438,7 +6970,7 @@ ALTER TABLE ONLY django_session
 
 
 --
--- Name: kaldb_department_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_department_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_department
@@ -6446,7 +6978,7 @@ ALTER TABLE ONLY kaldb_department
 
 
 --
--- Name: kaldb_faculty_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_faculty_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_faculty
@@ -6454,7 +6986,7 @@ ALTER TABLE ONLY kaldb_faculty
 
 
 --
--- Name: kaldb_interest_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_interest_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_interest
@@ -6462,7 +6994,7 @@ ALTER TABLE ONLY kaldb_interest
 
 
 --
--- Name: kaldb_interest_related_interests_from_interest_id_9e34b143_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_interest_related_interests_from_interest_id_9e34b143_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_interest_related_interests
@@ -6470,7 +7002,7 @@ ALTER TABLE ONLY kaldb_interest_related_interests
 
 
 --
--- Name: kaldb_interest_related_interests_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_interest_related_interests_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_interest_related_interests
@@ -6478,7 +7010,7 @@ ALTER TABLE ONLY kaldb_interest_related_interests
 
 
 --
--- Name: kaldb_jobposition_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_jobposition_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_jobposition
@@ -6486,7 +7018,7 @@ ALTER TABLE ONLY kaldb_jobposition
 
 
 --
--- Name: kaldb_jobrole_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_jobrole_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_jobrole
@@ -6494,7 +7026,55 @@ ALTER TABLE ONLY kaldb_jobrole
 
 
 --
--- Name: kaldb_outreachcity_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_module_convenors_module_id_e9ea7c0f_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_module_convenors
+    ADD CONSTRAINT kaldb_module_convenors_module_id_e9ea7c0f_uniq UNIQUE (module_id, researcher_id);
+
+
+--
+-- Name: kaldb_module_convenors_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_module_convenors
+    ADD CONSTRAINT kaldb_module_convenors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: kaldb_module_level_module_id_bbe391fc_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_module_level
+    ADD CONSTRAINT kaldb_module_level_module_id_bbe391fc_uniq UNIQUE (module_id, modulelevel_id);
+
+
+--
+-- Name: kaldb_module_level_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_module_level
+    ADD CONSTRAINT kaldb_module_level_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: kaldb_module_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_module
+    ADD CONSTRAINT kaldb_module_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: kaldb_modulelevel_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_modulelevel
+    ADD CONSTRAINT kaldb_modulelevel_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: kaldb_outreachcity_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_outreachcity
@@ -6502,7 +7082,7 @@ ALTER TABLE ONLY kaldb_outreachcity
 
 
 --
--- Name: kaldb_outreachcountry_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachcountry_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_outreachcountry
@@ -6510,7 +7090,7 @@ ALTER TABLE ONLY kaldb_outreachcountry
 
 
 --
--- Name: kaldb_outreachevent_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachevent_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_outreachevent
@@ -6518,7 +7098,7 @@ ALTER TABLE ONLY kaldb_outreachevent
 
 
 --
--- Name: kaldb_outreachfrequency_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachfrequency_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_outreachfrequency
@@ -6526,7 +7106,7 @@ ALTER TABLE ONLY kaldb_outreachfrequency
 
 
 --
--- Name: kaldb_outreachlocation_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachlocation_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_outreachlocation
@@ -6534,7 +7114,7 @@ ALTER TABLE ONLY kaldb_outreachlocation
 
 
 --
--- Name: kaldb_outreachmedium_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachmedium_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_outreachmedium
@@ -6542,7 +7122,7 @@ ALTER TABLE ONLY kaldb_outreachmedium
 
 
 --
--- Name: kaldb_researcher_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_researcher
@@ -6550,7 +7130,7 @@ ALTER TABLE ONLY kaldb_researcher
 
 
 --
--- Name: kaldb_researcher_research_interests_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_research_interests_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_researcher_research_interests
@@ -6558,7 +7138,7 @@ ALTER TABLE ONLY kaldb_researcher_research_interests
 
 
 --
--- Name: kaldb_researcher_research_interests_researcher_id_dfdce2f7_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_research_interests_researcher_id_dfdce2f7_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_researcher_research_interests
@@ -6566,7 +7146,7 @@ ALTER TABLE ONLY kaldb_researcher_research_interests
 
 
 --
--- Name: kaldb_researcher_specialism_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_specialism_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_researcher_specialisms
@@ -6574,7 +7154,7 @@ ALTER TABLE ONLY kaldb_researcher_specialisms
 
 
 --
--- Name: kaldb_researcher_specialism_researcher_id_127d5a66_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_specialism_researcher_id_127d5a66_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_researcher_specialisms
@@ -6582,7 +7162,7 @@ ALTER TABLE ONLY kaldb_researcher_specialisms
 
 
 --
--- Name: kaldb_researcher_teaching_interests_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_teaching_interests_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_researcher_teaching_interests
@@ -6590,7 +7170,7 @@ ALTER TABLE ONLY kaldb_researcher_teaching_interests
 
 
 --
--- Name: kaldb_researcher_teaching_interests_researcher_id_f8d00abe_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_teaching_interests_researcher_id_f8d00abe_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_researcher_teaching_interests
@@ -6598,7 +7178,7 @@ ALTER TABLE ONLY kaldb_researcher_teaching_interests
 
 
 --
--- Name: kaldb_specialism_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_specialism_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_specialism
@@ -6606,7 +7186,47 @@ ALTER TABLE ONLY kaldb_specialism
 
 
 --
--- Name: kaldb_title_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_theme_modules_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_theme_modules
+    ADD CONSTRAINT kaldb_theme_modules_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: kaldb_theme_modules_theme_id_1dac38a7_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_theme_modules
+    ADD CONSTRAINT kaldb_theme_modules_theme_id_1dac38a7_uniq UNIQUE (theme_id, module_id);
+
+
+--
+-- Name: kaldb_theme_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_theme
+    ADD CONSTRAINT kaldb_theme_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: kaldb_theme_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_theme_roles
+    ADD CONSTRAINT kaldb_theme_roles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: kaldb_theme_roles_theme_id_b87bc971_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_theme_roles
+    ADD CONSTRAINT kaldb_theme_roles_theme_id_b87bc971_uniq UNIQUE (theme_id, jobrole_id);
+
+
+--
+-- Name: kaldb_title_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY kaldb_title
@@ -6614,7 +7234,7 @@ ALTER TABLE ONLY kaldb_title
 
 
 --
--- Name: taggit_tag_name_key; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: taggit_tag_name_key; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY taggit_tag
@@ -6622,7 +7242,7 @@ ALTER TABLE ONLY taggit_tag
 
 
 --
--- Name: taggit_tag_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: taggit_tag_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY taggit_tag
@@ -6630,7 +7250,7 @@ ALTER TABLE ONLY taggit_tag
 
 
 --
--- Name: taggit_tag_slug_key; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: taggit_tag_slug_key; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY taggit_tag
@@ -6638,7 +7258,7 @@ ALTER TABLE ONLY taggit_tag
 
 
 --
--- Name: taggit_taggeditem_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: taggit_taggeditem_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY taggit_taggeditem
@@ -6646,7 +7266,7 @@ ALTER TABLE ONLY taggit_taggeditem
 
 
 --
--- Name: wagtailcore_collection_path_key; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_collection_path_key; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailcore_collection
@@ -6654,7 +7274,7 @@ ALTER TABLE ONLY wagtailcore_collection
 
 
 --
--- Name: wagtailcore_collection_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_collection_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailcore_collection
@@ -6662,7 +7282,7 @@ ALTER TABLE ONLY wagtailcore_collection
 
 
 --
--- Name: wagtailcore_groupcollectionpermission_group_id_a21cefe9_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_groupcollectionpermission_group_id_a21cefe9_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailcore_groupcollectionpermission
@@ -6670,7 +7290,7 @@ ALTER TABLE ONLY wagtailcore_groupcollectionpermission
 
 
 --
--- Name: wagtailcore_groupcollectionpermission_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_groupcollectionpermission_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailcore_groupcollectionpermission
@@ -6678,7 +7298,7 @@ ALTER TABLE ONLY wagtailcore_groupcollectionpermission
 
 
 --
--- Name: wagtailcore_grouppagepermission_group_id_0898bdf8_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_grouppagepermission_group_id_0898bdf8_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailcore_grouppagepermission
@@ -6686,7 +7306,7 @@ ALTER TABLE ONLY wagtailcore_grouppagepermission
 
 
 --
--- Name: wagtailcore_grouppagepermission_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_grouppagepermission_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailcore_grouppagepermission
@@ -6694,7 +7314,7 @@ ALTER TABLE ONLY wagtailcore_grouppagepermission
 
 
 --
--- Name: wagtailcore_page_path_key; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_page_path_key; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailcore_page
@@ -6702,7 +7322,7 @@ ALTER TABLE ONLY wagtailcore_page
 
 
 --
--- Name: wagtailcore_page_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_page_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailcore_page
@@ -6710,7 +7330,7 @@ ALTER TABLE ONLY wagtailcore_page
 
 
 --
--- Name: wagtailcore_pagerevision_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_pagerevision_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailcore_pagerevision
@@ -6718,7 +7338,7 @@ ALTER TABLE ONLY wagtailcore_pagerevision
 
 
 --
--- Name: wagtailcore_pageviewrestri_pageviewrestriction_id_d23f80bb_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_pageviewrestri_pageviewrestriction_id_d23f80bb_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailcore_pageviewrestriction_groups
@@ -6726,7 +7346,7 @@ ALTER TABLE ONLY wagtailcore_pageviewrestriction_groups
 
 
 --
--- Name: wagtailcore_pageviewrestriction_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_pageviewrestriction_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailcore_pageviewrestriction_groups
@@ -6734,7 +7354,7 @@ ALTER TABLE ONLY wagtailcore_pageviewrestriction_groups
 
 
 --
--- Name: wagtailcore_pageviewrestriction_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_pageviewrestriction_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailcore_pageviewrestriction
@@ -6742,7 +7362,7 @@ ALTER TABLE ONLY wagtailcore_pageviewrestriction
 
 
 --
--- Name: wagtailcore_site_hostname_2c626d70_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_site_hostname_2c626d70_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailcore_site
@@ -6750,7 +7370,7 @@ ALTER TABLE ONLY wagtailcore_site
 
 
 --
--- Name: wagtailcore_site_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_site_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailcore_site
@@ -6758,7 +7378,7 @@ ALTER TABLE ONLY wagtailcore_site
 
 
 --
--- Name: wagtaildocs_document_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtaildocs_document_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtaildocs_document
@@ -6766,7 +7386,7 @@ ALTER TABLE ONLY wagtaildocs_document
 
 
 --
--- Name: wagtailembeds_embed_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailembeds_embed_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailembeds_embed
@@ -6774,7 +7394,7 @@ ALTER TABLE ONLY wagtailembeds_embed
 
 
 --
--- Name: wagtailembeds_embed_url_8a2922d8_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailembeds_embed_url_8a2922d8_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailembeds_embed
@@ -6782,7 +7402,7 @@ ALTER TABLE ONLY wagtailembeds_embed
 
 
 --
--- Name: wagtailforms_formsubmission_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailforms_formsubmission_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailforms_formsubmission
@@ -6790,7 +7410,7 @@ ALTER TABLE ONLY wagtailforms_formsubmission
 
 
 --
--- Name: wagtailimages_filter_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailimages_filter_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailimages_filter
@@ -6798,7 +7418,7 @@ ALTER TABLE ONLY wagtailimages_filter
 
 
 --
--- Name: wagtailimages_filter_spec_42ad6e02_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailimages_filter_spec_42ad6e02_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailimages_filter
@@ -6806,7 +7426,7 @@ ALTER TABLE ONLY wagtailimages_filter
 
 
 --
--- Name: wagtailimages_image_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailimages_image_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailimages_image
@@ -6814,7 +7434,7 @@ ALTER TABLE ONLY wagtailimages_image
 
 
 --
--- Name: wagtailimages_rendition_image_id_323c8fe0_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailimages_rendition_image_id_323c8fe0_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailimages_rendition
@@ -6822,7 +7442,7 @@ ALTER TABLE ONLY wagtailimages_rendition
 
 
 --
--- Name: wagtailimages_rendition_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailimages_rendition_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailimages_rendition
@@ -6830,7 +7450,7 @@ ALTER TABLE ONLY wagtailimages_rendition
 
 
 --
--- Name: wagtailredirects_redirect_old_path_783622d7_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailredirects_redirect_old_path_783622d7_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailredirects_redirect
@@ -6838,7 +7458,7 @@ ALTER TABLE ONLY wagtailredirects_redirect
 
 
 --
--- Name: wagtailredirects_redirect_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailredirects_redirect_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailredirects_redirect
@@ -6846,7 +7466,7 @@ ALTER TABLE ONLY wagtailredirects_redirect
 
 
 --
--- Name: wagtailsearch_editorspick_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailsearch_editorspick_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailsearch_editorspick
@@ -6854,7 +7474,7 @@ ALTER TABLE ONLY wagtailsearch_editorspick
 
 
 --
--- Name: wagtailsearch_query_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailsearch_query_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailsearch_query
@@ -6862,7 +7482,7 @@ ALTER TABLE ONLY wagtailsearch_query
 
 
 --
--- Name: wagtailsearch_query_query_string_key; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailsearch_query_query_string_key; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailsearch_query
@@ -6870,7 +7490,7 @@ ALTER TABLE ONLY wagtailsearch_query
 
 
 --
--- Name: wagtailsearch_querydailyhits_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailsearch_querydailyhits_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailsearch_querydailyhits
@@ -6878,7 +7498,7 @@ ALTER TABLE ONLY wagtailsearch_querydailyhits
 
 
 --
--- Name: wagtailsearch_querydailyhits_query_id_1dd232e6_uniq; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailsearch_querydailyhits_query_id_1dd232e6_uniq; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailsearch_querydailyhits
@@ -6886,7 +7506,7 @@ ALTER TABLE ONLY wagtailsearch_querydailyhits
 
 
 --
--- Name: wagtailusers_userprofile_pkey; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailusers_userprofile_pkey; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailusers_userprofile
@@ -6894,7 +7514,7 @@ ALTER TABLE ONLY wagtailusers_userprofile
 
 
 --
--- Name: wagtailusers_userprofile_user_id_key; Type: CONSTRAINT; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailusers_userprofile_user_id_key; Type: CONSTRAINT; Schema: public; Owner: kal
 --
 
 ALTER TABLE ONLY wagtailusers_userprofile
@@ -6902,560 +7522,623 @@ ALTER TABLE ONLY wagtailusers_userprofile
 
 
 --
--- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX auth_group_name_a6ea08ec_like ON auth_group USING btree (name varchar_pattern_ops);
 
 
 --
--- Name: auth_group_permissions_0e939a4f; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_group_permissions_0e939a4f; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX auth_group_permissions_0e939a4f ON auth_group_permissions USING btree (group_id);
 
 
 --
--- Name: auth_group_permissions_8373b171; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_group_permissions_8373b171; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX auth_group_permissions_8373b171 ON auth_group_permissions USING btree (permission_id);
 
 
 --
--- Name: auth_permission_417f1b1c; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_permission_417f1b1c; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX auth_permission_417f1b1c ON auth_permission USING btree (content_type_id);
 
 
 --
--- Name: auth_user_groups_0e939a4f; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_user_groups_0e939a4f; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX auth_user_groups_0e939a4f ON auth_user_groups USING btree (group_id);
 
 
 --
--- Name: auth_user_groups_e8701ad4; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_user_groups_e8701ad4; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX auth_user_groups_e8701ad4 ON auth_user_groups USING btree (user_id);
 
 
 --
--- Name: auth_user_user_permissions_8373b171; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_user_user_permissions_8373b171; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX auth_user_user_permissions_8373b171 ON auth_user_user_permissions USING btree (permission_id);
 
 
 --
--- Name: auth_user_user_permissions_e8701ad4; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_user_user_permissions_e8701ad4; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX auth_user_user_permissions_e8701ad4 ON auth_user_user_permissions USING btree (user_id);
 
 
 --
--- Name: auth_user_username_6821ab7c_like; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: auth_user_username_6821ab7c_like; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX auth_user_username_6821ab7c_like ON auth_user USING btree (username varchar_pattern_ops);
 
 
 --
--- Name: cms_blogpost_92482941; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: cms_blogpost_92482941; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX cms_blogpost_92482941 ON cms_blogpost USING btree (feed_image_id);
 
 
 --
--- Name: cms_blogposttag_09a80f33; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: cms_blogposttag_09a80f33; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX cms_blogposttag_09a80f33 ON cms_blogposttag USING btree (content_object_id);
 
 
 --
--- Name: cms_blogposttag_76f094bc; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: cms_blogposttag_76f094bc; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX cms_blogposttag_76f094bc ON cms_blogposttag USING btree (tag_id);
 
 
 --
--- Name: django_admin_log_417f1b1c; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: django_admin_log_417f1b1c; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX django_admin_log_417f1b1c ON django_admin_log USING btree (content_type_id);
 
 
 --
--- Name: django_admin_log_e8701ad4; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: django_admin_log_e8701ad4; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX django_admin_log_e8701ad4 ON django_admin_log USING btree (user_id);
 
 
 --
--- Name: django_session_de54fa62; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: django_session_de54fa62; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX django_session_de54fa62 ON django_session USING btree (expire_date);
 
 
 --
--- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX django_session_session_key_c0390e0f_like ON django_session USING btree (session_key varchar_pattern_ops);
 
 
 --
--- Name: kaldb_department_5bb92a88; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_department_5bb92a88; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_department_5bb92a88 ON kaldb_department USING btree (faculty_id);
 
 
 --
--- Name: kaldb_interest_related_interests_8b18d397; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_interest_related_interests_8b18d397; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_interest_related_interests_8b18d397 ON kaldb_interest_related_interests USING btree (from_interest_id);
 
 
 --
--- Name: kaldb_interest_related_interests_9634654e; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_interest_related_interests_9634654e; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_interest_related_interests_9634654e ON kaldb_interest_related_interests USING btree (to_interest_id);
 
 
 --
--- Name: kaldb_outreachcity_93bfec8a; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_module_bf691be4; Type: INDEX; Schema: public; Owner: kal
+--
+
+CREATE INDEX kaldb_module_bf691be4 ON kaldb_module USING btree (department_id);
+
+
+--
+-- Name: kaldb_module_convenors_022da955; Type: INDEX; Schema: public; Owner: kal
+--
+
+CREATE INDEX kaldb_module_convenors_022da955 ON kaldb_module_convenors USING btree (researcher_id);
+
+
+--
+-- Name: kaldb_module_convenors_c9799665; Type: INDEX; Schema: public; Owner: kal
+--
+
+CREATE INDEX kaldb_module_convenors_c9799665 ON kaldb_module_convenors USING btree (module_id);
+
+
+--
+-- Name: kaldb_module_level_c03c6aaf; Type: INDEX; Schema: public; Owner: kal
+--
+
+CREATE INDEX kaldb_module_level_c03c6aaf ON kaldb_module_level USING btree (modulelevel_id);
+
+
+--
+-- Name: kaldb_module_level_c9799665; Type: INDEX; Schema: public; Owner: kal
+--
+
+CREATE INDEX kaldb_module_level_c9799665 ON kaldb_module_level USING btree (module_id);
+
+
+--
+-- Name: kaldb_outreachcity_93bfec8a; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_outreachcity_93bfec8a ON kaldb_outreachcity USING btree (country_id);
 
 
 --
--- Name: kaldb_outreachevent_022da955; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachevent_022da955; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_outreachevent_022da955 ON kaldb_outreachevent USING btree (researcher_id);
 
 
 --
--- Name: kaldb_outreachevent_9399d341; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachevent_9399d341; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_outreachevent_9399d341 ON kaldb_outreachevent USING btree (frequency_id);
 
 
 --
--- Name: kaldb_outreachevent_c20e5590; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachevent_c20e5590; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_outreachevent_c20e5590 ON kaldb_outreachevent USING btree (medium_id);
 
 
 --
--- Name: kaldb_outreachevent_e274a5da; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachevent_e274a5da; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_outreachevent_e274a5da ON kaldb_outreachevent USING btree (location_id);
 
 
 --
--- Name: kaldb_outreachlocation_93bfec8a; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachlocation_93bfec8a; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_outreachlocation_93bfec8a ON kaldb_outreachlocation USING btree (country_id);
 
 
 --
--- Name: kaldb_outreachlocation_c7141997; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_outreachlocation_c7141997; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_outreachlocation_c7141997 ON kaldb_outreachlocation USING btree (city_id);
 
 
 --
--- Name: kaldb_researcher_1f38f0e7; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_1f38f0e7; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_researcher_1f38f0e7 ON kaldb_researcher USING btree (title_id);
 
 
 --
--- Name: kaldb_researcher_bce5bd07; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_bce5bd07; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_researcher_bce5bd07 ON kaldb_researcher USING btree (position_id);
 
 
 --
--- Name: kaldb_researcher_bf691be4; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_bf691be4; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_researcher_bf691be4 ON kaldb_researcher USING btree (department_id);
 
 
 --
--- Name: kaldb_researcher_research_interests_022da955; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_research_interests_022da955; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_researcher_research_interests_022da955 ON kaldb_researcher_research_interests USING btree (researcher_id);
 
 
 --
--- Name: kaldb_researcher_research_interests_774f0487; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_research_interests_774f0487; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_researcher_research_interests_774f0487 ON kaldb_researcher_research_interests USING btree (interest_id);
 
 
 --
--- Name: kaldb_researcher_role_id_281dd5fb_uniq; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_role_id_281dd5fb_uniq; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_researcher_role_id_281dd5fb_uniq ON kaldb_researcher USING btree (role_id);
 
 
 --
--- Name: kaldb_researcher_specialism_022da955; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_specialism_022da955; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_researcher_specialism_022da955 ON kaldb_researcher_specialisms USING btree (researcher_id);
 
 
 --
--- Name: kaldb_researcher_specialism_a8156c1e; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_specialism_a8156c1e; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_researcher_specialism_a8156c1e ON kaldb_researcher_specialisms USING btree (specialism_id);
 
 
 --
--- Name: kaldb_researcher_teaching_interests_022da955; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_teaching_interests_022da955; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_researcher_teaching_interests_022da955 ON kaldb_researcher_teaching_interests USING btree (researcher_id);
 
 
 --
--- Name: kaldb_researcher_teaching_interests_774f0487; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_researcher_teaching_interests_774f0487; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX kaldb_researcher_teaching_interests_774f0487 ON kaldb_researcher_teaching_interests USING btree (interest_id);
 
 
 --
--- Name: taggit_tag_name_58eb2ed9_like; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: kaldb_theme_modules_a9fd70f9; Type: INDEX; Schema: public; Owner: kal
+--
+
+CREATE INDEX kaldb_theme_modules_a9fd70f9 ON kaldb_theme_modules USING btree (theme_id);
+
+
+--
+-- Name: kaldb_theme_modules_c9799665; Type: INDEX; Schema: public; Owner: kal
+--
+
+CREATE INDEX kaldb_theme_modules_c9799665 ON kaldb_theme_modules USING btree (module_id);
+
+
+--
+-- Name: kaldb_theme_roles_2d953b76; Type: INDEX; Schema: public; Owner: kal
+--
+
+CREATE INDEX kaldb_theme_roles_2d953b76 ON kaldb_theme_roles USING btree (jobrole_id);
+
+
+--
+-- Name: kaldb_theme_roles_a9fd70f9; Type: INDEX; Schema: public; Owner: kal
+--
+
+CREATE INDEX kaldb_theme_roles_a9fd70f9 ON kaldb_theme_roles USING btree (theme_id);
+
+
+--
+-- Name: taggit_tag_name_58eb2ed9_like; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX taggit_tag_name_58eb2ed9_like ON taggit_tag USING btree (name varchar_pattern_ops);
 
 
 --
--- Name: taggit_tag_slug_6be58b2c_like; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: taggit_tag_slug_6be58b2c_like; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX taggit_tag_slug_6be58b2c_like ON taggit_tag USING btree (slug varchar_pattern_ops);
 
 
 --
--- Name: taggit_taggeditem_417f1b1c; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: taggit_taggeditem_417f1b1c; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX taggit_taggeditem_417f1b1c ON taggit_taggeditem USING btree (content_type_id);
 
 
 --
--- Name: taggit_taggeditem_76f094bc; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: taggit_taggeditem_76f094bc; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX taggit_taggeditem_76f094bc ON taggit_taggeditem USING btree (tag_id);
 
 
 --
--- Name: taggit_taggeditem_af31437c; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: taggit_taggeditem_af31437c; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX taggit_taggeditem_af31437c ON taggit_taggeditem USING btree (object_id);
 
 
 --
--- Name: taggit_taggeditem_content_type_id_196cc965_idx; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: taggit_taggeditem_content_type_id_196cc965_idx; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX taggit_taggeditem_content_type_id_196cc965_idx ON taggit_taggeditem USING btree (content_type_id, object_id);
 
 
 --
--- Name: wagtailcore_collection_path_d848dc19_like; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_collection_path_d848dc19_like; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_collection_path_d848dc19_like ON wagtailcore_collection USING btree (path varchar_pattern_ops);
 
 
 --
--- Name: wagtailcore_groupcollectionpermission_0a1a4dd8; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_groupcollectionpermission_0a1a4dd8; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_groupcollectionpermission_0a1a4dd8 ON wagtailcore_groupcollectionpermission USING btree (collection_id);
 
 
 --
--- Name: wagtailcore_groupcollectionpermission_0e939a4f; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_groupcollectionpermission_0e939a4f; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_groupcollectionpermission_0e939a4f ON wagtailcore_groupcollectionpermission USING btree (group_id);
 
 
 --
--- Name: wagtailcore_groupcollectionpermission_8373b171; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_groupcollectionpermission_8373b171; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_groupcollectionpermission_8373b171 ON wagtailcore_groupcollectionpermission USING btree (permission_id);
 
 
 --
--- Name: wagtailcore_grouppagepermission_0e939a4f; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_grouppagepermission_0e939a4f; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_grouppagepermission_0e939a4f ON wagtailcore_grouppagepermission USING btree (group_id);
 
 
 --
--- Name: wagtailcore_grouppagepermission_1a63c800; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_grouppagepermission_1a63c800; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_grouppagepermission_1a63c800 ON wagtailcore_grouppagepermission USING btree (page_id);
 
 
 --
--- Name: wagtailcore_page_2dbcba41; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_page_2dbcba41; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_page_2dbcba41 ON wagtailcore_page USING btree (slug);
 
 
 --
--- Name: wagtailcore_page_417f1b1c; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_page_417f1b1c; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_page_417f1b1c ON wagtailcore_page USING btree (content_type_id);
 
 
 --
--- Name: wagtailcore_page_5e7b1936; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_page_5e7b1936; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_page_5e7b1936 ON wagtailcore_page USING btree (owner_id);
 
 
 --
--- Name: wagtailcore_page_first_published_at_2b5dd637_uniq; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_page_first_published_at_2b5dd637_uniq; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_page_first_published_at_2b5dd637_uniq ON wagtailcore_page USING btree (first_published_at);
 
 
 --
--- Name: wagtailcore_page_path_98eba2c8_like; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_page_path_98eba2c8_like; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_page_path_98eba2c8_like ON wagtailcore_page USING btree (path varchar_pattern_ops);
 
 
 --
--- Name: wagtailcore_page_slug_e7c11b8f_like; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_page_slug_e7c11b8f_like; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_page_slug_e7c11b8f_like ON wagtailcore_page USING btree (slug varchar_pattern_ops);
 
 
 --
--- Name: wagtailcore_pagerevision_1a63c800; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_pagerevision_1a63c800; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_pagerevision_1a63c800 ON wagtailcore_pagerevision USING btree (page_id);
 
 
 --
--- Name: wagtailcore_pagerevision_created_at_66954e3b_uniq; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_pagerevision_created_at_66954e3b_uniq; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_pagerevision_created_at_66954e3b_uniq ON wagtailcore_pagerevision USING btree (created_at);
 
 
 --
--- Name: wagtailcore_pagerevision_e8701ad4; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_pagerevision_e8701ad4; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_pagerevision_e8701ad4 ON wagtailcore_pagerevision USING btree (user_id);
 
 
 --
--- Name: wagtailcore_pagerevision_submitted_for_moderation_c682e44c_uniq; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_pagerevision_submitted_for_moderation_c682e44c_uniq; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_pagerevision_submitted_for_moderation_c682e44c_uniq ON wagtailcore_pagerevision USING btree (submitted_for_moderation);
 
 
 --
--- Name: wagtailcore_pageviewrestriction_1a63c800; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_pageviewrestriction_1a63c800; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_pageviewrestriction_1a63c800 ON wagtailcore_pageviewrestriction USING btree (page_id);
 
 
 --
--- Name: wagtailcore_pageviewrestriction_groups_0e939a4f; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_pageviewrestriction_groups_0e939a4f; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_pageviewrestriction_groups_0e939a4f ON wagtailcore_pageviewrestriction_groups USING btree (group_id);
 
 
 --
--- Name: wagtailcore_pageviewrestriction_groups_9bdbac54; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_pageviewrestriction_groups_9bdbac54; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_pageviewrestriction_groups_9bdbac54 ON wagtailcore_pageviewrestriction_groups USING btree (pageviewrestriction_id);
 
 
 --
--- Name: wagtailcore_site_0897acf4; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_site_0897acf4; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_site_0897acf4 ON wagtailcore_site USING btree (hostname);
 
 
 --
--- Name: wagtailcore_site_8372b497; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_site_8372b497; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_site_8372b497 ON wagtailcore_site USING btree (root_page_id);
 
 
 --
--- Name: wagtailcore_site_hostname_96b20b46_like; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailcore_site_hostname_96b20b46_like; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailcore_site_hostname_96b20b46_like ON wagtailcore_site USING btree (hostname varchar_pattern_ops);
 
 
 --
--- Name: wagtaildocs_document_0a1a4dd8; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtaildocs_document_0a1a4dd8; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtaildocs_document_0a1a4dd8 ON wagtaildocs_document USING btree (collection_id);
 
 
 --
--- Name: wagtaildocs_document_ef01e2b6; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtaildocs_document_ef01e2b6; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtaildocs_document_ef01e2b6 ON wagtaildocs_document USING btree (uploaded_by_user_id);
 
 
 --
--- Name: wagtailforms_formsubmission_1a63c800; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailforms_formsubmission_1a63c800; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailforms_formsubmission_1a63c800 ON wagtailforms_formsubmission USING btree (page_id);
 
 
 --
--- Name: wagtailimages_image_0a1a4dd8; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailimages_image_0a1a4dd8; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailimages_image_0a1a4dd8 ON wagtailimages_image USING btree (collection_id);
 
 
 --
--- Name: wagtailimages_image_created_at_86fa6cd4_uniq; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailimages_image_created_at_86fa6cd4_uniq; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailimages_image_created_at_86fa6cd4_uniq ON wagtailimages_image USING btree (created_at);
 
 
 --
--- Name: wagtailimages_image_ef01e2b6; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailimages_image_ef01e2b6; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailimages_image_ef01e2b6 ON wagtailimages_image USING btree (uploaded_by_user_id);
 
 
 --
--- Name: wagtailimages_rendition_58c64917; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailimages_rendition_58c64917; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailimages_rendition_58c64917 ON wagtailimages_rendition USING btree (filter_spec);
 
 
 --
--- Name: wagtailimages_rendition_f33175e6; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailimages_rendition_f33175e6; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailimages_rendition_f33175e6 ON wagtailimages_rendition USING btree (image_id);
 
 
 --
--- Name: wagtailimages_rendition_filter_spec_1cba3201_like; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailimages_rendition_filter_spec_1cba3201_like; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailimages_rendition_filter_spec_1cba3201_like ON wagtailimages_rendition USING btree (filter_spec varchar_pattern_ops);
 
 
 --
--- Name: wagtailredirects_redirect_2fd79f37; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailredirects_redirect_2fd79f37; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailredirects_redirect_2fd79f37 ON wagtailredirects_redirect USING btree (redirect_page_id);
 
 
 --
--- Name: wagtailredirects_redirect_9365d6e7; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailredirects_redirect_9365d6e7; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailredirects_redirect_9365d6e7 ON wagtailredirects_redirect USING btree (site_id);
 
 
 --
--- Name: wagtailredirects_redirect_old_path_bb35247b_like; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailredirects_redirect_old_path_bb35247b_like; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailredirects_redirect_old_path_bb35247b_like ON wagtailredirects_redirect USING btree (old_path varchar_pattern_ops);
 
 
 --
--- Name: wagtailsearch_editorspick_0bbeda9c; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailsearch_editorspick_0bbeda9c; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailsearch_editorspick_0bbeda9c ON wagtailsearch_editorspick USING btree (query_id);
 
 
 --
--- Name: wagtailsearch_editorspick_1a63c800; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailsearch_editorspick_1a63c800; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailsearch_editorspick_1a63c800 ON wagtailsearch_editorspick USING btree (page_id);
 
 
 --
--- Name: wagtailsearch_query_query_string_e785ea07_like; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailsearch_query_query_string_e785ea07_like; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailsearch_query_query_string_e785ea07_like ON wagtailsearch_query USING btree (query_string varchar_pattern_ops);
 
 
 --
--- Name: wagtailsearch_querydailyhits_0bbeda9c; Type: INDEX; Schema: public; Owner: kal; Tablespace: 
+-- Name: wagtailsearch_querydailyhits_0bbeda9c; Type: INDEX; Schema: public; Owner: kal
 --
 
 CREATE INDEX wagtailsearch_querydailyhits_0bbeda9c ON wagtailsearch_querydailyhits USING btree (query_id);
@@ -7630,6 +8313,46 @@ ALTER TABLE ONLY kaldb_interest_related_interests
 
 
 --
+-- Name: kaldb_module_conv_researcher_id_056762ab_fk_kaldb_researcher_id; Type: FK CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_module_convenors
+    ADD CONSTRAINT kaldb_module_conv_researcher_id_056762ab_fk_kaldb_researcher_id FOREIGN KEY (researcher_id) REFERENCES kaldb_researcher(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: kaldb_module_convenors_module_id_ed938da6_fk_kaldb_module_id; Type: FK CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_module_convenors
+    ADD CONSTRAINT kaldb_module_convenors_module_id_ed938da6_fk_kaldb_module_id FOREIGN KEY (module_id) REFERENCES kaldb_module(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: kaldb_module_department_id_2176874d_fk_kaldb_department_id; Type: FK CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_module
+    ADD CONSTRAINT kaldb_module_department_id_2176874d_fk_kaldb_department_id FOREIGN KEY (department_id) REFERENCES kaldb_department(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: kaldb_module_le_modulelevel_id_6e6d3f28_fk_kaldb_modulelevel_id; Type: FK CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_module_level
+    ADD CONSTRAINT kaldb_module_le_modulelevel_id_6e6d3f28_fk_kaldb_modulelevel_id FOREIGN KEY (modulelevel_id) REFERENCES kaldb_modulelevel(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: kaldb_module_level_module_id_5ebcd221_fk_kaldb_module_id; Type: FK CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_module_level
+    ADD CONSTRAINT kaldb_module_level_module_id_5ebcd221_fk_kaldb_module_id FOREIGN KEY (module_id) REFERENCES kaldb_module(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: kaldb_outre_frequency_id_17873a38_fk_kaldb_outreachfrequency_id; Type: FK CONSTRAINT; Schema: public; Owner: kal
 --
 
@@ -7763,6 +8486,38 @@ ALTER TABLE ONLY kaldb_researcher_teaching_interests
 
 ALTER TABLE ONLY kaldb_researcher
     ADD CONSTRAINT kaldb_researcher_title_id_e440e27c_fk_kaldb_title_id FOREIGN KEY (title_id) REFERENCES kaldb_title(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: kaldb_theme_modules_module_id_47b8192e_fk_kaldb_module_id; Type: FK CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_theme_modules
+    ADD CONSTRAINT kaldb_theme_modules_module_id_47b8192e_fk_kaldb_module_id FOREIGN KEY (module_id) REFERENCES kaldb_module(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: kaldb_theme_modules_theme_id_10c6095f_fk_kaldb_theme_id; Type: FK CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_theme_modules
+    ADD CONSTRAINT kaldb_theme_modules_theme_id_10c6095f_fk_kaldb_theme_id FOREIGN KEY (theme_id) REFERENCES kaldb_theme(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: kaldb_theme_roles_jobrole_id_02ba9299_fk_kaldb_jobrole_id; Type: FK CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_theme_roles
+    ADD CONSTRAINT kaldb_theme_roles_jobrole_id_02ba9299_fk_kaldb_jobrole_id FOREIGN KEY (jobrole_id) REFERENCES kaldb_jobrole(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: kaldb_theme_roles_theme_id_6ea8d6e2_fk_kaldb_theme_id; Type: FK CONSTRAINT; Schema: public; Owner: kal
+--
+
+ALTER TABLE ONLY kaldb_theme_roles
+    ADD CONSTRAINT kaldb_theme_roles_theme_id_6ea8d6e2_fk_kaldb_theme_id FOREIGN KEY (theme_id) REFERENCES kaldb_theme(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -7981,6 +8736,501 @@ REVOKE ALL ON SCHEMA public FROM PUBLIC;
 REVOKE ALL ON SCHEMA public FROM postgres;
 GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- Name: auth_group; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE auth_group FROM PUBLIC;
+REVOKE ALL ON TABLE auth_group FROM kal;
+GRANT ALL ON TABLE auth_group TO kal;
+
+
+--
+-- Name: auth_group_permissions; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE auth_group_permissions FROM PUBLIC;
+REVOKE ALL ON TABLE auth_group_permissions FROM kal;
+GRANT ALL ON TABLE auth_group_permissions TO kal;
+
+
+--
+-- Name: auth_permission; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE auth_permission FROM PUBLIC;
+REVOKE ALL ON TABLE auth_permission FROM kal;
+GRANT ALL ON TABLE auth_permission TO kal;
+
+
+--
+-- Name: auth_user; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE auth_user FROM PUBLIC;
+REVOKE ALL ON TABLE auth_user FROM kal;
+GRANT ALL ON TABLE auth_user TO kal;
+
+
+--
+-- Name: auth_user_groups; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE auth_user_groups FROM PUBLIC;
+REVOKE ALL ON TABLE auth_user_groups FROM kal;
+GRANT ALL ON TABLE auth_user_groups TO kal;
+
+
+--
+-- Name: auth_user_user_permissions; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE auth_user_user_permissions FROM PUBLIC;
+REVOKE ALL ON TABLE auth_user_user_permissions FROM kal;
+GRANT ALL ON TABLE auth_user_user_permissions TO kal;
+
+
+--
+-- Name: cms_blogindexpage; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE cms_blogindexpage FROM PUBLIC;
+REVOKE ALL ON TABLE cms_blogindexpage FROM kal;
+GRANT ALL ON TABLE cms_blogindexpage TO kal;
+
+
+--
+-- Name: cms_blogpost; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE cms_blogpost FROM PUBLIC;
+REVOKE ALL ON TABLE cms_blogpost FROM kal;
+GRANT ALL ON TABLE cms_blogpost TO kal;
+
+
+--
+-- Name: cms_blogposttag; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE cms_blogposttag FROM PUBLIC;
+REVOKE ALL ON TABLE cms_blogposttag FROM kal;
+GRANT ALL ON TABLE cms_blogposttag TO kal;
+
+
+--
+-- Name: cms_homepage; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE cms_homepage FROM PUBLIC;
+REVOKE ALL ON TABLE cms_homepage FROM kal;
+GRANT ALL ON TABLE cms_homepage TO kal;
+
+
+--
+-- Name: cms_indexpage; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE cms_indexpage FROM PUBLIC;
+REVOKE ALL ON TABLE cms_indexpage FROM kal;
+GRANT ALL ON TABLE cms_indexpage TO kal;
+
+
+--
+-- Name: cms_richtextpage; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE cms_richtextpage FROM PUBLIC;
+REVOKE ALL ON TABLE cms_richtextpage FROM kal;
+GRANT ALL ON TABLE cms_richtextpage TO kal;
+
+
+--
+-- Name: django_admin_log; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE django_admin_log FROM PUBLIC;
+REVOKE ALL ON TABLE django_admin_log FROM kal;
+GRANT ALL ON TABLE django_admin_log TO kal;
+
+
+--
+-- Name: django_content_type; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE django_content_type FROM PUBLIC;
+REVOKE ALL ON TABLE django_content_type FROM kal;
+GRANT ALL ON TABLE django_content_type TO kal;
+
+
+--
+-- Name: django_migrations; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE django_migrations FROM PUBLIC;
+REVOKE ALL ON TABLE django_migrations FROM kal;
+GRANT ALL ON TABLE django_migrations TO kal;
+
+
+--
+-- Name: django_session; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE django_session FROM PUBLIC;
+REVOKE ALL ON TABLE django_session FROM kal;
+GRANT ALL ON TABLE django_session TO kal;
+
+
+--
+-- Name: kaldb_department; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_department FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_department FROM kal;
+GRANT ALL ON TABLE kaldb_department TO kal;
+
+
+--
+-- Name: kaldb_faculty; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_faculty FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_faculty FROM kal;
+GRANT ALL ON TABLE kaldb_faculty TO kal;
+
+
+--
+-- Name: kaldb_interest; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_interest FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_interest FROM kal;
+GRANT ALL ON TABLE kaldb_interest TO kal;
+
+
+--
+-- Name: kaldb_interest_related_interests; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_interest_related_interests FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_interest_related_interests FROM kal;
+GRANT ALL ON TABLE kaldb_interest_related_interests TO kal;
+
+
+--
+-- Name: kaldb_jobposition; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_jobposition FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_jobposition FROM kal;
+GRANT ALL ON TABLE kaldb_jobposition TO kal;
+
+
+--
+-- Name: kaldb_jobrole; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_jobrole FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_jobrole FROM kal;
+GRANT ALL ON TABLE kaldb_jobrole TO kal;
+
+
+--
+-- Name: kaldb_outreachcity; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_outreachcity FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_outreachcity FROM kal;
+GRANT ALL ON TABLE kaldb_outreachcity TO kal;
+
+
+--
+-- Name: kaldb_outreachcountry; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_outreachcountry FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_outreachcountry FROM kal;
+GRANT ALL ON TABLE kaldb_outreachcountry TO kal;
+
+
+--
+-- Name: kaldb_outreachevent; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_outreachevent FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_outreachevent FROM kal;
+GRANT ALL ON TABLE kaldb_outreachevent TO kal;
+
+
+--
+-- Name: kaldb_outreachfrequency; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_outreachfrequency FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_outreachfrequency FROM kal;
+GRANT ALL ON TABLE kaldb_outreachfrequency TO kal;
+
+
+--
+-- Name: kaldb_outreachlocation; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_outreachlocation FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_outreachlocation FROM kal;
+GRANT ALL ON TABLE kaldb_outreachlocation TO kal;
+
+
+--
+-- Name: kaldb_outreachmedium; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_outreachmedium FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_outreachmedium FROM kal;
+GRANT ALL ON TABLE kaldb_outreachmedium TO kal;
+
+
+--
+-- Name: kaldb_researcher; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_researcher FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_researcher FROM kal;
+GRANT ALL ON TABLE kaldb_researcher TO kal;
+
+
+--
+-- Name: kaldb_researcher_research_interests; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_researcher_research_interests FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_researcher_research_interests FROM kal;
+GRANT ALL ON TABLE kaldb_researcher_research_interests TO kal;
+
+
+--
+-- Name: kaldb_researcher_specialisms; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_researcher_specialisms FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_researcher_specialisms FROM kal;
+GRANT ALL ON TABLE kaldb_researcher_specialisms TO kal;
+
+
+--
+-- Name: kaldb_researcher_teaching_interests; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_researcher_teaching_interests FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_researcher_teaching_interests FROM kal;
+GRANT ALL ON TABLE kaldb_researcher_teaching_interests TO kal;
+
+
+--
+-- Name: kaldb_specialism; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_specialism FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_specialism FROM kal;
+GRANT ALL ON TABLE kaldb_specialism TO kal;
+
+
+--
+-- Name: kaldb_title; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE kaldb_title FROM PUBLIC;
+REVOKE ALL ON TABLE kaldb_title FROM kal;
+GRANT ALL ON TABLE kaldb_title TO kal;
+
+
+--
+-- Name: taggit_tag; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE taggit_tag FROM PUBLIC;
+REVOKE ALL ON TABLE taggit_tag FROM kal;
+GRANT ALL ON TABLE taggit_tag TO kal;
+
+
+--
+-- Name: taggit_taggeditem; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE taggit_taggeditem FROM PUBLIC;
+REVOKE ALL ON TABLE taggit_taggeditem FROM kal;
+GRANT ALL ON TABLE taggit_taggeditem TO kal;
+
+
+--
+-- Name: wagtailcore_collection; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailcore_collection FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailcore_collection FROM kal;
+GRANT ALL ON TABLE wagtailcore_collection TO kal;
+
+
+--
+-- Name: wagtailcore_groupcollectionpermission; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailcore_groupcollectionpermission FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailcore_groupcollectionpermission FROM kal;
+GRANT ALL ON TABLE wagtailcore_groupcollectionpermission TO kal;
+
+
+--
+-- Name: wagtailcore_grouppagepermission; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailcore_grouppagepermission FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailcore_grouppagepermission FROM kal;
+GRANT ALL ON TABLE wagtailcore_grouppagepermission TO kal;
+
+
+--
+-- Name: wagtailcore_page; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailcore_page FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailcore_page FROM kal;
+GRANT ALL ON TABLE wagtailcore_page TO kal;
+
+
+--
+-- Name: wagtailcore_pagerevision; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailcore_pagerevision FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailcore_pagerevision FROM kal;
+GRANT ALL ON TABLE wagtailcore_pagerevision TO kal;
+
+
+--
+-- Name: wagtailcore_pageviewrestriction; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailcore_pageviewrestriction FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailcore_pageviewrestriction FROM kal;
+GRANT ALL ON TABLE wagtailcore_pageviewrestriction TO kal;
+
+
+--
+-- Name: wagtailcore_pageviewrestriction_groups; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailcore_pageviewrestriction_groups FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailcore_pageviewrestriction_groups FROM kal;
+GRANT ALL ON TABLE wagtailcore_pageviewrestriction_groups TO kal;
+
+
+--
+-- Name: wagtailcore_site; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailcore_site FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailcore_site FROM kal;
+GRANT ALL ON TABLE wagtailcore_site TO kal;
+
+
+--
+-- Name: wagtaildocs_document; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtaildocs_document FROM PUBLIC;
+REVOKE ALL ON TABLE wagtaildocs_document FROM kal;
+GRANT ALL ON TABLE wagtaildocs_document TO kal;
+
+
+--
+-- Name: wagtailembeds_embed; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailembeds_embed FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailembeds_embed FROM kal;
+GRANT ALL ON TABLE wagtailembeds_embed TO kal;
+
+
+--
+-- Name: wagtailforms_formsubmission; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailforms_formsubmission FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailforms_formsubmission FROM kal;
+GRANT ALL ON TABLE wagtailforms_formsubmission TO kal;
+
+
+--
+-- Name: wagtailimages_filter; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailimages_filter FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailimages_filter FROM kal;
+GRANT ALL ON TABLE wagtailimages_filter TO kal;
+
+
+--
+-- Name: wagtailimages_image; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailimages_image FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailimages_image FROM kal;
+GRANT ALL ON TABLE wagtailimages_image TO kal;
+
+
+--
+-- Name: wagtailimages_rendition; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailimages_rendition FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailimages_rendition FROM kal;
+GRANT ALL ON TABLE wagtailimages_rendition TO kal;
+
+
+--
+-- Name: wagtailredirects_redirect; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailredirects_redirect FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailredirects_redirect FROM kal;
+GRANT ALL ON TABLE wagtailredirects_redirect TO kal;
+
+
+--
+-- Name: wagtailsearch_editorspick; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailsearch_editorspick FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailsearch_editorspick FROM kal;
+GRANT ALL ON TABLE wagtailsearch_editorspick TO kal;
+
+
+--
+-- Name: wagtailsearch_query; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailsearch_query FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailsearch_query FROM kal;
+GRANT ALL ON TABLE wagtailsearch_query TO kal;
+
+
+--
+-- Name: wagtailsearch_querydailyhits; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailsearch_querydailyhits FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailsearch_querydailyhits FROM kal;
+GRANT ALL ON TABLE wagtailsearch_querydailyhits TO kal;
+
+
+--
+-- Name: wagtailusers_userprofile; Type: ACL; Schema: public; Owner: kal
+--
+
+REVOKE ALL ON TABLE wagtailusers_userprofile FROM PUBLIC;
+REVOKE ALL ON TABLE wagtailusers_userprofile FROM kal;
+GRANT ALL ON TABLE wagtailusers_userprofile TO kal;
 
 
 --
