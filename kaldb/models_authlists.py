@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from django.db import models
+from django.contrib.gis.db import models
 
 
 # Faculty/School
@@ -113,10 +113,7 @@ class OutReachFrequency(models.Model):
 class OutReachLocation(models.Model):
     city = models.ForeignKey(OutReachCity, verbose_name='City')
     country = models.ForeignKey(OutReachCountry, verbose_name='OR Country')
-    coord_lat = models.CharField(verbose_name='Lat.', max_length=120,
-                                 blank=True, help_text='If known')
-    coord_long = models.CharField(verbose_name='Long.', max_length=120,
-                                  blank=True, help_text='If known')
+    point = models.PointField(srid=32140)
 
 
 # Medium of outreach activity (e.g. Radio, TV, Talk)

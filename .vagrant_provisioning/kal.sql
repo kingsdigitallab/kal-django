@@ -1012,10 +1012,9 @@ ALTER SEQUENCE kaldb_outreachfrequency_id_seq OWNED BY kaldb_outreachfrequency.i
 
 CREATE TABLE kaldb_outreachlocation (
     id integer NOT NULL,
-    coord_lat character varying(120) NOT NULL,
-    coord_long character varying(120) NOT NULL,
     city_id integer NOT NULL,
-    country_id integer NOT NULL
+    country_id integer NOT NULL,
+    point geometry(Point,32140) NOT NULL
 );
 
 
@@ -3344,6 +3343,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 116	kaldb	0019_auto_20170411_1051	2017-04-19 10:01:49.377052+00
 117	kaldb	0020_auto_20170411_1058	2017-04-19 10:01:49.397692+00
 118	kaldb	0021_auto_20170411_1509	2017-04-19 10:01:49.548501+00
+119	kaldb	0022_auto_20170419_1113	2017-04-19 10:13:42.224783+00
 \.
 
 
@@ -3351,7 +3351,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kal
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 118, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 119, true);
 
 
 --
@@ -4606,7 +4606,7 @@ SELECT pg_catalog.setval('kaldb_outreachfrequency_id_seq', 1, false);
 -- Data for Name: kaldb_outreachlocation; Type: TABLE DATA; Schema: public; Owner: kal
 --
 
-COPY kaldb_outreachlocation (id, coord_lat, coord_long, city_id, country_id) FROM stdin;
+COPY kaldb_outreachlocation (id, city_id, country_id, point) FROM stdin;
 \.
 
 
@@ -7736,6 +7736,13 @@ CREATE INDEX kaldb_outreachlocation_93bfec8a ON kaldb_outreachlocation USING btr
 --
 
 CREATE INDEX kaldb_outreachlocation_c7141997 ON kaldb_outreachlocation USING btree (city_id);
+
+
+--
+-- Name: kaldb_outreachlocation_point_id; Type: INDEX; Schema: public; Owner: kal
+--
+
+CREATE INDEX kaldb_outreachlocation_point_id ON kaldb_outreachlocation USING gist (point);
 
 
 --
