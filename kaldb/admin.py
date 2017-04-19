@@ -27,7 +27,7 @@ class ResearcherAdmin(admin.ModelAdmin):
 
 # Module Admin Panel
 class ModuleAdmin(admin.ModelAdmin):
-    filter_horizontal = ('convenors', 'level',)
+    filter_horizontal = ('convenors', 'level', 'locations')
 
 
 # Theme Admin Panel
