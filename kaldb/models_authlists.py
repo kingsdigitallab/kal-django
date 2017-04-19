@@ -111,6 +111,7 @@ class OutReachFrequency(models.Model):
 # Location of outreach activity
 # Could be useful for geolocation
 class OutReachLocation(models.Model):
+    name = models.CharField(max_length=50, default='')
     city = models.ForeignKey(OutReachCity, verbose_name='City')
     country = models.ForeignKey(OutReachCountry, verbose_name='OR Country')
     point = models.PointField(srid=32140)
