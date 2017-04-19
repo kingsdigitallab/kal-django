@@ -116,6 +116,9 @@ class OutReachLocation(models.Model):
     country = models.ForeignKey(OutReachCountry, verbose_name='OR Country')
     point = models.PointField(srid=32140)
 
+    def __unicode__(self):
+        return self.name
+
 
 # Medium of outreach activity (e.g. Radio, TV, Talk)
 class OutReachMedium(models.Model):

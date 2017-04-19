@@ -164,6 +164,7 @@ class Module(models.Model):
                                         Pattern', blank=True)
     url = models.CharField(verbose_name='Module URL', max_length=512,
                            blank=True, null=True)
+    locations = models.ManyToManyField("OutReachLocation", null=True)
 
     def __unicode__(self):
         if self.department:
