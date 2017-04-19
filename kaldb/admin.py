@@ -1,10 +1,14 @@
-from django.contrib import admin
+from django.contrib.gis import admin
 from kaldb.models import (Interest, OutReachEvent, Researcher, Specialism,
                           Module, Theme)
 from kaldb.models_authlists import (Department, Faculty, JobPosition,
                                     JobRole, OutReachCity, OutReachCountry,
                                     OutReachFrequency, OutReachLocation,
                                     OutReachMedium, Title)
+
+
+class OutReachLocationAdmin(admin.OSMGeoAdmin):
+    openlayers_url = 'https://openlayers.org/api/2.13.1/OpenLayers.js'
 
 
 # Inline for OutReachEvent
@@ -47,7 +51,7 @@ admin.site.register(JobPosition)
 admin.site.register(JobRole)
 admin.site.register(OutReachCity)
 admin.site.register(OutReachCountry)
-admin.site.register(OutReachLocation)
+admin.site.register(OutReachLocation, OutReachLocationAdmin)
 admin.site.register(OutReachMedium)
 admin.site.register(OutReachFrequency)
 admin.site.register(Title)
