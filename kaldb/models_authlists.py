@@ -44,7 +44,6 @@ class JobPosition(models.Model):
 class JobRole(models.Model):
     name = models.CharField(verbose_name='Job Role', max_length=120,
                             help_text='e.g. \'in Roman Sculpture\'')
-    themes = models.ManyToManyField('kaldb.Theme', through='kaldb.theme_roles')
 
     def __unicode__(self):
         return self.name
