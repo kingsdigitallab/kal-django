@@ -193,6 +193,8 @@ class Theme(models.Model):
     modules = models.ManyToManyField(Module, verbose_name="Related\
                                    Modules", blank=True)
 
+    def __unicode__(self):
+        return self.name
 
 # A generic institution model
 class Institution(models.Model):
