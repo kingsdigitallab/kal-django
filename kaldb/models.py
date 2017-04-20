@@ -166,6 +166,7 @@ class Module(models.Model):
                            blank=True, null=True)
     locations = models.ManyToManyField("OutReachLocation", null=True)
     themes = models.ManyToManyField("Theme", null=True)
+    institutions = models.ManyToManyField("Institution", null=True)
 
     def __unicode__(self):
         if self.department:
