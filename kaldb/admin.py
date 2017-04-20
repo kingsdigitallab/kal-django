@@ -37,6 +37,11 @@ class ThemeAdmin(admin.ModelAdmin):
     filter_horizontal = ('roles', 'modules',)
 
 
+# Job Role Admin
+class JobRoleAdmin(admin.ModelAdmin):
+    filter_horizontal = ('themes', )
+
+
 # Models
 admin.site.register(Interest)
 admin.site.register(Module, ModuleAdmin)
@@ -50,7 +55,7 @@ admin.site.register(Institution)
 admin.site.register(Department)
 admin.site.register(Faculty)
 admin.site.register(JobPosition)
-admin.site.register(JobRole)
+admin.site.register(JobRole, JobRoleAdmin)
 admin.site.register(OutReachCity)
 admin.site.register(OutReachCountry)
 admin.site.register(OutReachLocation, OutReachLocationAdmin)

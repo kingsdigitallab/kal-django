@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from django.db import models
+from django.contrib.gis.db import models
 from models_authlists import (Department, JobPosition, JobRole, ModuleLevel,
                               OutReachFrequency, OutReachLocation,
                               OutReachMedium, Title, InstitutionCategory)
@@ -165,11 +165,11 @@ class Module(models.Model):
     url = models.CharField(verbose_name='Module URL', max_length=512,
                            blank=True, null=True)
     locations = models.ManyToManyField("OutReachLocation", null=True,
-                                        blank=True)
+                                       blank=True)
     themes = models.ManyToManyField("Theme", null=True,
-                                     blank=True) 
+                                    blank=True)
     institutions = models.ManyToManyField("Institution", null=True,
-                                     blank=True)
+                                          blank=True)
 
     def __unicode__(self):
         if self.department:
@@ -190,7 +190,7 @@ class Theme(models.Model):
                                    Job Roles", blank=True)
     modules = models.ManyToManyField(Module, verbose_name="Related\
                                    Modules", blank=True)
-    
+
     def __unicode__(self):
         return self.name
 
