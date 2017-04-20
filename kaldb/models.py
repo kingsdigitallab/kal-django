@@ -111,9 +111,9 @@ class Researcher(models.Model):
                                          blank=True)
 
     # Search fields
-    locations = models.ManyToManyField(OutReachLocation, blank=True)
-    themes = models.ManyToManyField('Theme', blank=True)
-    institution = models.ManyToManyField('Institution', blank=True)
+    #locations = models.ManyToManyField(OutReachLocation, blank=True)
+    #themes = models.ManyToManyField('Theme', blank=True)
+    #institution = models.ManyToManyField('Institution', blank=True)
 
     def __unicode__(self):
         if self.middle_name:
