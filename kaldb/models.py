@@ -110,6 +110,11 @@ class Researcher(models.Model):
                                          verbose_name='Specialisms',
                                          blank=True)
 
+    # Search fields
+    locations = models.ManyToManyField(OutReachLocation, blank=True)
+    themes = models.ManyToManyField('Theme', blank=True)
+    institution = models.ManyToManyField('Institution', blank=True)
+
     def __unicode__(self):
         if self.middle_name:
             return "{} {} {}".format(self.first_name, self.middle_name,
