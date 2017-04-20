@@ -164,9 +164,12 @@ class Module(models.Model):
                                         Pattern', blank=True)
     url = models.CharField(verbose_name='Module URL', max_length=512,
                            blank=True, null=True)
-    locations = models.ManyToManyField("OutReachLocation", null=True)
-    themes = models.ManyToManyField("Theme", null=True)
-    institutions = models.ManyToManyField("Institution", null=True)
+    locations = models.ManyToManyField("OutReachLocation", null=True,
+                                        blank=True)
+    themes = models.ManyToManyField("Theme", null=True,
+                                     blank=True) 
+    institutions = models.ManyToManyField("Institution", null=True,
+                                     blank=True)
 
     def __unicode__(self):
         if self.department:
@@ -187,6 +190,9 @@ class Theme(models.Model):
                                    Job Roles", blank=True)
     modules = models.ManyToManyField(Module, verbose_name="Related\
                                    Modules", blank=True)
+    
+    def __unicode__(self):
+        return self.name
 
 
 # A generic institution model
