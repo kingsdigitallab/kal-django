@@ -165,6 +165,7 @@ class Module(models.Model):
     url = models.CharField(verbose_name='Module URL', max_length=512,
                            blank=True, null=True)
     locations = models.ManyToManyField("OutReachLocation", null=True)
+    themes = models.ManyToManyField("Theme", null=True)
 
     def __unicode__(self):
         if self.department:
