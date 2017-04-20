@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from models_authlists import (Department, JobPosition, JobRole, ModuleLevel,
                               OutReachFrequency, OutReachLocation,
-                              OutReachMedium, Title)
+                              OutReachMedium, Title, InstitutionCategory)
 
 
 # An interest. This can be teaching/research
@@ -186,3 +186,17 @@ class Theme(models.Model):
                                    Job Roles", blank=True)
     modules = models.ManyToManyField(Module, verbose_name="Related\
                                    Modules", blank=True)
+
+
+# A generic institution model
+class Institution(models.Model):
+    name = models.CharField(max_length=1024)
+    description = models.TextField(null=True, blank=True)
+    category = models.ForeignKey(InstitutionCategory, null=True)
+    location = models.ManyToManyField("OutReachLocation", blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']

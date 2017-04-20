@@ -1,10 +1,11 @@
 from django.contrib.gis import admin
 from kaldb.models import (Interest, OutReachEvent, Researcher, Specialism,
-                          Module, Theme)
+                          Module, Theme, Institution)
 from kaldb.models_authlists import (Department, Faculty, JobPosition,
                                     JobRole, OutReachCity, OutReachCountry,
                                     OutReachFrequency, OutReachLocation,
-                                    OutReachMedium, Title)
+                                    OutReachMedium, Title,
+                                    InstitutionCategory)
 
 
 class OutReachLocationAdmin(admin.OSMGeoAdmin):
@@ -42,7 +43,7 @@ admin.site.register(OutReachEvent)
 admin.site.register(Researcher, ResearcherAdmin)
 admin.site.register(Specialism)
 admin.site.register(Theme, ThemeAdmin)
-
+admin.site.register(Institution)
 
 # Authlists
 admin.site.register(Department)
@@ -55,3 +56,4 @@ admin.site.register(OutReachLocation, OutReachLocationAdmin)
 admin.site.register(OutReachMedium)
 admin.site.register(OutReachFrequency)
 admin.site.register(Title)
+admin.site.register(InstitutionCategory)

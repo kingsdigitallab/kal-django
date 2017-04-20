@@ -142,3 +142,12 @@ class Title(models.Model):
 
     class Meta:
         ordering = ['name']
+
+
+# Institutional category
+class InstitutionCategory(models.Model):
+    description = models.CharField(max_length=50,
+                                   help_text='e.g. Religious..')
+
+    def __unicode__(self):
+        return self.description
