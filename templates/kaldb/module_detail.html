@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block meta_title %}{{ module.name }}{% endblock %}
+
+{% block main %}
+    <h2>{{ module.name }}</h2>
+
+    <dl>
+    {% if module.department.faculty %}
+    <dt>Faculty:</dt>
+    <dd><a href="{% url 'faculty_detail' module.department.faculty.id %}">{{ module.department.faculty.name }}</a></dd>
+    {% endif %}
+
+    {% if module.department %}
+    <dt>Faculty:</dt>
+    <dd><a href="{% url 'department_detail' module.department.id %}">{{ module.department.name }}</a></dd>
+    {% endif %}
+
+    {% if module.level.all %}
+    <dt>Level(s):</dt>
+    <dd>{% for level in module.level.all %}{{level}}{% if not forloop.last %},{%endif %}{% endfor %}</dd>
+    {% endif %}
+
+
+    {% if module.teaching_pattern %}
+    <dt>Teaching Pattern:</dt>
+    <dd>{{ module.teaching_pattern }}</dd>
+    {% endif %}
+
+    {% if module.assessment %}
+    <dt>Assessment:</dt>
+    <dd>{{ module.assessment }}</dd>
+    {% endif %}
+
+    </dl>
+
+
+    {% if module.description %}
+    <p>{{module.description}}</p>
+    {% endif %}
+
+
+    {% if module.convenors.all %}
+    <h3>Convenors</h3>
+    <ul>
+        {% for convenor in module.convenors.all %}
+        <li>
+            <a href="{% url 'researcher_detail' convenor.id %}">{{ convenor.get_name }}</a>{% if convenor.role %} - {{convenor.role}}{% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+
+
+{% endblock %}

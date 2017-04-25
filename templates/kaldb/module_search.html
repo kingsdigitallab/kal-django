@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block meta_title %}Modules{% endblock %}
+
+{% block main %}
+    <h2>Modules</h2>
+
+    <h4>Filter:</h4>
+        <dl>
+            {% if facets.fields.themes %}
+                <dt>Theme</dt>
+                {% for theme in facets.fields.themes %}
+                    <dd><a href="{{ full_path }}&amp;selected_facets=themes_exact:{{ theme.0|urlencode }}">{{ theme.0 }}</a> ({{ theme.1 }})</dd>
+                {% endfor %}
+            {% else %}
+                <p>No theme facets.</p>
+            {% endif %}
+        </dl>
+    <ul>
+        {% for res in search_results.all %}
+        <li>
+            <a href="{% url 'module_detail' res.object.id %}">{{ res.object.name }}</a> -
+            {% for level in res.object.level.all %}{{level}}{% if not forloop.last %},{%endif %}{% endfor %}
+        </li>
+        {% endfor %}
+    </ul>
+ 
+
+
+
+
+
+
+{% endblock %}

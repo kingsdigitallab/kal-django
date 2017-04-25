@@ -1,11 +1,13 @@
--r ddhldap/requirements.txt
 django==1.10
+elasticsearch
 django-compressor
 django-grappelli
 django-libsass
 django-model-utils
+django-haystack
 django-redis
 django-require
 psycopg2
 redis
 wagtail==1.9
+-r ddhldap/requirements.txt

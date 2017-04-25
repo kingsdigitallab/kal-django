@@ -10,12 +10,16 @@ from wagtail.wagtailcore import urls as wagtail_urls
 from wagtail.wagtaildocs import urls as wagtaildocs_urls
 from wagtail.wagtailsearch.urls import frontend as wagtailsearch_frontend_urls
 
+
+from kaldb import urls as kaldb_urls
+
 admin.autodiscover()
 # ddhldap_register_signal_handlers()
 
 urlpatterns = [
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^search/', include('haystack.urls')),
 ]
 
 # -----------------------------------------------------------------------------
@@ -41,7 +45,7 @@ urlpatterns += [
     url(r'^wagtail/', include(wagtailadmin_urls)),
     url(r'^documents/', include(wagtaildocs_urls)),
     url(r'^search/', include(wagtailsearch_frontend_urls)),
-
+    url(r'', include(kaldb_urls)),
     url(r'', include(wagtail_urls)),
 ]
 

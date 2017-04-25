@@ -74,6 +74,8 @@ INSTALLED_APPS = (
     'taggit',
     'compressor',
 
+    'haystack',
+
 
     'wagtail.wagtailcore',
     'wagtail.wagtailadmin',
@@ -140,6 +142,7 @@ LOGGING = {
             'level': LOGGING_LEVEL,
             'propagate': True
         },
+
         'django_auth_ldap': {
             'handlers': ['file'],
             'level': LOGGING_LEVEL,

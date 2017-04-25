@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block meta_title %}{{ researcher.get_name }}{% endblock %}
+
+{% block main %}
+    <h2>{{ researcher.get_name }}</h2>
+
+	<dl>
+    {% if researcher.department.faculty %}
+    <dt>Faculty:</dt>
+    <dd><a href="{% url 'faculty_detail' researcher.department.faculty.id %}">{{ researcher.department.faculty.name }}</a></dd>
+    {% endif %}
+
+    {% if researcher.department %}
+    <dt>Department:</dt>
+    <dd><a href="{% url 'department_detail' researcher.department.id %}">{{ researcher.department.name }}</a></dd>
+    {% endif %}   
+
+    {% if researcher.position %}
+    <dt>Position:</dt>
+    <dd>{{ researcher.position }}</dd>
+    {% endif %}
+
+    {% if researcher.role %}
+    <dt>Role:</dt>
+    <dd>{{ researcher.role }}</dd>
+    {% endif %}
+
+    {% if researcher.module_set.all %}
+    <h3>Modules</h3>
+    <ul>
+    	{% for module in researcher.module_set.all %}
+	    <li>
+	    	<a href="{% url 'module_detail' module.id %}">{{ module.name }}</a> -
+	    	{% for level in module.level.all %}{{level}}{% if not forloop.last %},{%endif %}{% endfor %}
+	    </li>
+	    {% endfor %}
+	</ul>
+	{% endif %}
+   
+{% endblock %}

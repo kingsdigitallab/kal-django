@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.core.urlresolvers import reverse
+
 from models_authlists import (Department, JobPosition, JobRole, ModuleLevel,
                               OutReachFrequency, OutReachLocation,
                               OutReachMedium, Title, InstitutionCategory)
@@ -111,9 +113,19 @@ class Researcher(models.Model):
                                          blank=True)
 
     # Search fields
-    #locations = models.ManyToManyField(OutReachLocation, blank=True)
-    #themes = models.ManyToManyField('Theme', blank=True)
-    #institution = models.ManyToManyField('Institution', blank=True)
+    # locations = models.ManyToManyField(OutReachLocation, blank=True)
+    # themes = models.ManyToManyField('Theme', blank=True)
+    # institution = models.ManyToManyField('Institution', blank=True)
+
+    def get_name(self):
+        if self.middle_name:
+            return "{} {} {}".format(self.first_name, self.middle_name,
+                                     self.last_name)
+        else:
+            return "{} {}".format(self.first_name, self.last_name)
+
+    def get_absolute_url(self):
+        return reverse('researcher_detail', None, [str(self.id)])
 
     def __unicode__(self):
         if self.middle_name:
@@ -169,12 +181,13 @@ class Module(models.Model):
                                         Pattern', blank=True)
     url = models.CharField(verbose_name='Module URL', max_length=512,
                            blank=True, null=True)
-    locations = models.ManyToManyField("OutReachLocation", null=True,
-                                        blank=True)
-    themes = models.ManyToManyField("Theme", null=True,
-                                     blank=True)
-    institutions = models.ManyToManyField("Institution", null=True,
-                                           blank=True)
+    locations = models.ManyToManyField("OutReachLocation",
+                                       blank=True)
+    institutions = models.ManyToManyField("Institution",
+                                          blank=True)
+
+    def get_absolute_url(self):
+        return reverse('module_detail', None, [str(self.id)])
 
     def __unicode__(self):
         if self.department:
@@ -196,8 +209,12 @@ class Theme(models.Model):
     modules = models.ManyToManyField(Module, verbose_name="Related\
                                    Modules", blank=True)
 
+    def get_absolute_url(self):
+        return reverse('theme_detail', None, [str(self.id)])
+
     def __unicode__(self):
         return self.name
+
 
 # A generic institution model
 class Institution(models.Model):

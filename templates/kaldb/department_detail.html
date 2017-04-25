@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block meta_title %}{{ department.name }}{% endblock %}
+
+{% block main %}
+    <h2>{{ department.name }}</h2>
+
+    <dl>
+    {% if department.faculty %}
+    <dt>Faculty:</dt>
+    <dd><a href="{% url 'faculty_detail' department.faculty.id %}">{{ department.faculty.name }}</a></dd>
+    {% endif %}
+    </dl>
+
+    {% if department.module_set.all %}
+    <h3>Modules</h3>
+    <ul>
+    	{% for module in department.module_set.all %}
+	    <li>
+	    	<a href="{% url 'module_detail' module.id %}">{{ module.name }}</a> -
+	    	{% for level in module.level.all %}{{level}}{% if not forloop.last %},{%endif %}{% endfor %}
+	    </li>
+	    {% endfor %}
+	</ul>
+    {% endif %}
+
+    {% if department.researcher_set.all %}
+    <h3>Researchers</h3>
+    <ul>
+    	{% for researcher in department.researcher_set.all %}
+	    <li>
+	    	<a href="{% url 'researcher_detail' researcher.id %}">{{ researcher.get_name }}</a>{% if researcher.role %} - {{researcher.role}}{% endif %}
+	    </li>
+	    {% endfor %}
+	</ul>
+    {% endif %}
+
+    
+
+{% endblock %}

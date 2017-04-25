@@ -8,7 +8,7 @@ from kaldb.models_authlists import (Department, Faculty, ModuleLevel)
 
 class Command(BaseCommand):
     help = 'Imports a module into the database from CSV.\
-            \n \n Usage: import_faculty /path/to/file.csv'
+            \n \n Usage: import_modules /path/to/file.csv'
 
     def add_arguments(self, parser):
         parser.add_argument('csv_path')

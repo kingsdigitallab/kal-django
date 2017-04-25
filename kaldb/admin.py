@@ -26,19 +26,29 @@ class ResearcherAdmin(admin.ModelAdmin):
     ]
 
 
+class RoleThemeInline(admin.TabularInline):
+    model = Theme.roles.through
+
+
+class ModuleThemeInline(admin.TabularInline):
+    model = Theme.modules.through
+
+
 # Module Admin Panel
 class ModuleAdmin(admin.ModelAdmin):
-    filter_horizontal = ('convenors', 'level', 'locations', 'themes',
+    filter_horizontal = ('convenors', 'level', 'locations',
                          'institutions')
 
+    inlines = [
+        ModuleThemeInline,
+    ]
 
-# Theme Admin Panel
-class ThemeAdmin(admin.ModelAdmin):
-    filter_horizontal = ('roles', 'modules',)
 
-#Job Role Admin
+# Job Role Admin
 class JobRoleAdmin(admin.ModelAdmin):
-    filter_horizontal = ('themes', )
+    inlines = [
+        RoleThemeInline,
+    ]
 
 
 # Models
@@ -47,7 +57,7 @@ admin.site.register(Module, ModuleAdmin)
 admin.site.register(OutReachEvent)
 admin.site.register(Researcher, ResearcherAdmin)
 admin.site.register(Specialism)
-admin.site.register(Theme, ThemeAdmin)
+admin.site.register(Theme)
 admin.site.register(Institution)
 
 # Authlists
