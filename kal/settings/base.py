@@ -216,7 +216,7 @@ WSGI_APPLICATION = PROJECT_NAME + '.wsgi.application'
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth
 # https://scm.cch.kcl.ac.uk/hg/ddhldap-django
 # -----------------------------------------------------------------------------
-AUTH_LDAP_REQUIRE_GROUP = 'cn=kal,' + LDAP_BASE_OU
+AUTH_LDAP_REQUIRE_GROUP = 'cn=kingsatlondon,' + LDAP_BASE_OU
 
 AUTH_LDAP_ALWAYS_UPDATE_USER = False
 
