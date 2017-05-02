@@ -59,7 +59,7 @@ class ModuleIndex(indexes.SearchIndex, indexes.Indexable):
             [o.name for o in object.level.all()]
 
         self.prepared_data['themes'] =\
-            [o.name for o in object.themes.all()]
+            [o.name for o in object.theme_set.all()]
         self.prepared_data['institutions'] =\
             [o.name for o in object.institutions.all()]
         self.prepared_data['outreachlocations'] =\
