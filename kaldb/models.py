@@ -3,9 +3,12 @@ from __future__ import unicode_literals
 from django.db import models
 from django.core.urlresolvers import reverse
 
-from models_authlists import (Department, JobPosition, JobRole, ModuleLevel,
-                              OutReachFrequency, OutReachLocation,
-                              OutReachMedium, Title, InstitutionCategory)
+from models_authlists import (Department, JobPosition,
+                              JobRole, ModuleLevel, OutReachFrequency,
+                              OutReachLocation, OutReachMedium, Title,
+                              InstitutionCategory)
+
+from tinymce import models as tinymce_models
 
 
 # An interest. This can be teaching/research
@@ -28,9 +31,23 @@ class Interest(models.Model):
         ordering = ['name']
 
 
+# A generic institution model
+class Institution(models.Model):
+    name = models.CharField(max_length=1024)
+    description = models.TextField(null=True, blank=True)
+    category = models.ForeignKey(InstitutionCategory, null=True)
+    location = models.ManyToManyField("OutReachLocation", blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
+
 # Specialisms
 class Specialism(models.Model):
-    name = models.CharField(verbose_name='Specialism Name', max_length=1024,
+    name = models.CharField(verbose_name='London Specialism', max_length=1024,
                             blank=False, help_text='Brief name given to the\
                             specialism')
     description = models.TextField(verbose_name='Description', blank=True,
@@ -111,6 +128,14 @@ class Researcher(models.Model):
     specialisms = models.ManyToManyField(Specialism,
                                          verbose_name='Specialisms',
                                          blank=True)
+
+    institutions = models.ManyToManyField(Institution,
+                                          verbose_name='Institutions',
+                                          blank=True)
+
+    locations = models.ManyToManyField(OutReachLocation,
+                                       verbose_name='Locations',
+                                       blank=True)
 
     # Search fields
     # locations = models.ManyToManyField(OutReachLocation, blank=True)
@@ -203,28 +228,18 @@ class Module(models.Model):
 class Theme(models.Model):
     name = models.CharField(verbose_name="Theme Name", max_length=1024,
                             blank=False, null=False)
-    description = models.TextField(verbose_name="Description", blank=True)
+    description = tinymce_models.HTMLField(verbose_name="Description",
+                                           blank=True)
     roles = models.ManyToManyField(JobRole, verbose_name="Related\
                                    Job Roles", blank=True)
     modules = models.ManyToManyField(Module, verbose_name="Related\
                                    Modules", blank=True)
+
+    specialisms = models.ManyToManyField(Specialism, verbose_name="Related\
+                                   London Specialisms", blank=True)
 
     def get_absolute_url(self):
         return reverse('theme_detail', None, [str(self.id)])
 
     def __unicode__(self):
         return self.name
-
-
-# A generic institution model
-class Institution(models.Model):
-    name = models.CharField(max_length=1024)
-    description = models.TextField(null=True, blank=True)
-    category = models.ForeignKey(InstitutionCategory, null=True)
-    location = models.ManyToManyField("OutReachLocation", blank=True)
-
-    def __unicode__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']

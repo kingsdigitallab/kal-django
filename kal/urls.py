@@ -20,6 +20,8 @@ urlpatterns = [
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^search/', include('haystack.urls')),
+    url(r'^tinymce/', include('tinymce.urls')),
+
 ]
 
 # -----------------------------------------------------------------------------

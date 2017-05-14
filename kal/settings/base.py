@@ -76,6 +76,7 @@ INSTALLED_APPS = (
 
     'haystack',
 
+    'tinymce',
 
     'wagtail.wagtailcore',
     'wagtail.wagtailadmin',

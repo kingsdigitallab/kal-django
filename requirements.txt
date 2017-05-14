@@ -10,4 +10,5 @@ django-require
 psycopg2
 redis
 wagtail==1.9
+django-tinymce
 -r ddhldap/requirements.txt
