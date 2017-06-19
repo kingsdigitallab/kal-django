@@ -3,13 +3,13 @@ from __future__ import unicode_literals
 from django.db import models
 from django.core.urlresolvers import reverse
 
-from models_authlists import (Department, JobPosition,
+from models_authlists import (Department, JobPosition, Faculty,
                               JobRole, ModuleLevel, OutReachFrequency,
-                              OutReachLocation, OutReachMedium, Title,
-                              InstitutionCategory)
+                              OutReachLocation, OutReachMedium, StageType,
+                              Title, InstitutionCategory, AwardType,
+                              InstitutionSector)
 
 from tinymce import models as tinymce_models
-
 
 # An interest. This can be teaching/research
 # This has been left open to allow future links between interests...
@@ -36,6 +36,7 @@ class Institution(models.Model):
     name = models.CharField(max_length=1024)
     description = models.TextField(null=True, blank=True)
     category = models.ForeignKey(InstitutionCategory, null=True)
+    sector = models.ForeignKey(InstitutionSector, null=True)
     location = models.ManyToManyField("OutReachLocation", blank=True)
 
     def __unicode__(self):
@@ -80,7 +81,7 @@ class Researcher(models.Model):
                                  blank=False)
 
     # Department
-    department = models.ForeignKey(Department, null=True)
+    department = models.ForeignKey(Department, null=True, blank=True)
 
     # Job
     position = models.ForeignKey(JobPosition, verbose_name='Job Position',
@@ -137,28 +138,45 @@ class Researcher(models.Model):
                                        verbose_name='Locations',
                                        blank=True)
 
+    external = models.BooleanField(verbose_name="External To Kings", 
+                                   default=False)
+
     # Search fields
     # locations = models.ManyToManyField(OutReachLocation, blank=True)
     # themes = models.ManyToManyField('Theme', blank=True)
     # institution = models.ManyToManyField('Institution', blank=True)
 
+  
+
     def get_name(self):
-        if self.middle_name:
-            return "{} {} {}".format(self.first_name, self.middle_name,
-                                     self.last_name)
-        else:
-            return "{} {}".format(self.first_name, self.last_name)
+      name = None
+      if self.middle_name:
+        name =  "{} {} {}".format(self.first_name, self.middle_name,
+                                   self.last_name)
+      else:
+        name = "{} {}".format(self.first_name, self.last_name)
+
+      if self.title:
+        return "{} {}".format(self.title.name, name)
+      else:
+        return name
 
     def get_absolute_url(self):
         return reverse('researcher_detail', None, [str(self.id)])
 
     def __unicode__(self):
-        if self.middle_name:
-            return "{} {} {}".format(self.first_name, self.middle_name,
-                                     self.last_name)
-        else:
-            return "{} {}".format(self.first_name, self.last_name)
+      name = None
+      if self.middle_name:
+        name =  "{} {} {}".format(self.first_name, self.middle_name,
+                                   self.last_name)
+      else:
+        name = "{} {}".format(self.first_name, self.last_name)
 
+      if self.title:
+        return "{} {}".format(self.title.name, name)
+      else:
+        return name
+       
     class Meta:
         ordering = ['last_name', 'first_name', 'middle_name']
 
@@ -243,3 +261,35 @@ class Theme(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+# A collaboration:
+class Collaboration(models.Model):
+  name = models.TextField(blank=True, verbose_name='Project Title')
+
+  award_type = models.ForeignKey(AwardType, verbose_name='Award Type',
+                                 blank=True)
+  date_d = models.IntegerField(blank=True, verbose_name='Day')
+  date_m = models.IntegerField(blank=True, verbose_name='Month')
+  date_y = models.IntegerField(blank=False, verbose_name='Year')
+  stage_type = models.ForeignKey(StageType, verbose_name='Stage Type',
+                                 blank=True)
+  value = models.DecimalField(max_digits=20, decimal_places=2, blank=True,
+                              verbose_name='Value of Collaboration')
+
+  # Investigator Info.
+  pi = models.ManyToManyField(Researcher, related_name='pi')
+  coinv = models.ManyToManyField(Researcher, related_name='coinv')
+  extcoapp = models.ManyToManyField(Researcher, related_name='extcoapp')
+  accholder = models.ManyToManyField(Researcher, related_name='accholder')
+
+  faculty = models.ForeignKey(Faculty, verbose_name="Faculty/School",
+                              blank=True, null=True)
+
+  # Partner:
+  partner = models.ForeignKey(Institution, blank=False)
+  partner_is_lead = models.BooleanField(default=False,
+                                        verbose_name="Was the partner lead?")
+
+  def __unicode__(self):
+    return self.name

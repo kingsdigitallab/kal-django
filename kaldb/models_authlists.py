@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 
 # Faculty/School
 class Faculty(models.Model):
-    name = models.CharField(verbose_name='Faculty Name', max_length=120)
+    name = models.CharField(verbose_name='Faculty Name', max_length=256)
 
     def __unicode__(self):
         return self.name
@@ -91,7 +91,7 @@ class OutReachCountry(models.Model):
 class OutReachCity(models.Model):
     name = models.CharField(verbose_name='City Name', max_length=120,
                             blank=True)
-    country = models.ForeignKey(OutReachCountry)
+    country = models.ForeignKey(OutReachCountry, blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -118,10 +118,10 @@ class OutReachFrequency(models.Model):
 # Location of outreach activity
 # Could be useful for geolocation
 class OutReachLocation(models.Model):
-    name = models.CharField(max_length=50, default='')
-    city = models.ForeignKey(OutReachCity, verbose_name='City')
-    country = models.ForeignKey(OutReachCountry, verbose_name='OR Country')
-    point = models.PointField(srid=32140)
+    name = models.CharField(max_length=256, default='')
+    city = models.ForeignKey(OutReachCity, verbose_name='City', null=True, blank=True)
+    country = models.ForeignKey(OutReachCountry, verbose_name='OR Country', blank=True, null=True)
+    point = models.PointField(srid=3214, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -153,8 +153,33 @@ class Title(models.Model):
 
 # Institutional category
 class InstitutionCategory(models.Model):
-    description = models.CharField(max_length=50,
+    description = models.CharField(max_length=128,
                                    help_text='e.g. Religious..')
 
     def __unicode__(self):
         return self.description
+
+
+# Institutional Sector
+class InstitutionSector(models.Model):
+    description = models.CharField(max_length=128,
+                            help_text='e.g. Higher Education..')
+
+    def __unicode__(self):
+        return self.description
+
+# Award Type
+class AwardType(models.Model):
+    name = models.CharField(max_length=128,
+                            help_text='e.g. Research Grant')
+
+    def __unicode__(self):
+        return self.name
+
+# Stage Type
+class StageType(models.Model):
+    name = models.CharField(max_length=128,
+                            help_text='E.g. award')
+
+    def __unicode__(self):
+        return self.name

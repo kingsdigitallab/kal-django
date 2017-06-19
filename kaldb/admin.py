@@ -1,11 +1,11 @@
 from django.contrib.gis import admin
 from kaldb.models import (Interest, OutReachEvent, Researcher, Specialism,
-                          Module, Theme, Institution)
+                          Module, Theme, Institution, Collaboration)
 from kaldb.models_authlists import (Department, Faculty, JobPosition,
                                     JobRole, OutReachCity, OutReachCountry,
                                     OutReachFrequency, OutReachLocation,
-                                    OutReachMedium, Title,
-                                    InstitutionCategory)
+                                    OutReachMedium, Title, AwardType,
+                                    InstitutionCategory, StageType)
 
 
 class OutReachLocationAdmin(admin.OSMGeoAdmin):
@@ -17,17 +17,32 @@ class OutReachEventInline(admin.TabularInline):
     model = OutReachEvent
 
 
+class PIInline(admin.TabularInline):
+    model = Collaboration.pi.through
+    verbose_name = 'Collaboration as PI'
+    verbose_name_plural = 'Collaborations as PI'
+
+
+class CIInline(admin.TabularInline):
+    model = Collaboration.coinv.through
+    verbose_name = 'Collaboration as CI'
+    verbose_name_plural = 'Collaborations as CI'
+
+
 # Researcher Admin Panel
 class ResearcherAdmin(admin.ModelAdmin):
     filter_horizontal = ('research_interests', 'teaching_interests',
-                         'specialisms',)
+                         'specialisms', 'institutions', 'locations')
     inlines = [
         OutReachEventInline,
+        PIInline,
+        CIInline,
     ]
 
 
 class RoleThemeInline(admin.TabularInline):
     model = Theme.roles.through
+
 
 
 class ModuleThemeInline(admin.TabularInline):
@@ -50,6 +65,10 @@ class JobRoleAdmin(admin.ModelAdmin):
         RoleThemeInline,
     ]
 
+class CollaborationAdmin(admin.ModelAdmin):
+    filter_horizontal = ('pi', 'coinv', 'extcoapp', 'accholder')
+
+
 
 # Models
 admin.site.register(Interest)
@@ -59,6 +78,7 @@ admin.site.register(Researcher, ResearcherAdmin)
 admin.site.register(Specialism)
 admin.site.register(Theme)
 admin.site.register(Institution)
+admin.site.register(Collaboration, CollaborationAdmin)
 
 # Authlists
 admin.site.register(Department)
@@ -72,3 +92,6 @@ admin.site.register(OutReachMedium)
 admin.site.register(OutReachFrequency)
 admin.site.register(Title)
 admin.site.register(InstitutionCategory)
+admin.site.register(AwardType)
+admin.site.register(StageType)
+
