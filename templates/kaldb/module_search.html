@@ -10,7 +10,7 @@
             {% if facets.fields.themes %}
                 <dt>Theme</dt>
                 {% for theme in facets.fields.themes %}
-                    <dd><a href="{{ full_path }}&amp;selected_facets=themes_exact:{{ theme.0|urlencode }}">{{ theme.0 }}</a> ({{ theme.1 }})</dd>
+                    <dd><a href='{{ full_path }}&amp;selected_facets=themes_exact:"{{ theme.0|urlencode }}"'>{{ theme.0 }}</a> ({{ theme.1 }})</dd>
                 {% endfor %}
             {% else %}
                 <p>No theme facets.</p>
