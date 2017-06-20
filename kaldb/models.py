@@ -248,6 +248,8 @@ class Theme(models.Model):
                             blank=False, null=False)
     description = tinymce_models.HTMLField(verbose_name="Description",
                                            blank=True)
+    short_desc = models.TextField(verbose_name="Short description",
+                                  blank=True)
     roles = models.ManyToManyField(JobRole, verbose_name="Related\
                                    Job Roles", blank=True)
     modules = models.ManyToManyField(Module, verbose_name="Related\
