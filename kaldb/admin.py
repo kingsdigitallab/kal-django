@@ -8,6 +8,10 @@ from kaldb.models_authlists import (Department, Faculty, JobPosition,
                                     InstitutionCategory, StageType)
 
 
+class ThemeAdmin(admin.ModelAdmin):
+    filter_horizontal = ('modules', 'specialisms')
+
+
 class OutReachLocationAdmin(admin.OSMGeoAdmin):
     openlayers_url = 'https://openlayers.org/api/2.13.1/OpenLayers.js'
 
@@ -76,11 +80,11 @@ admin.site.register(Module, ModuleAdmin)
 admin.site.register(OutReachEvent)
 admin.site.register(Researcher, ResearcherAdmin)
 admin.site.register(Specialism)
-admin.site.register(Theme)
 admin.site.register(Institution)
 admin.site.register(Collaboration, CollaborationAdmin)
 
 # Authlists
+admin.site.register(Theme, ThemeAdmin)
 admin.site.register(Department)
 admin.site.register(Faculty)
 admin.site.register(JobPosition)
