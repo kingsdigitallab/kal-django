@@ -11,8 +11,13 @@
   {% compress css %}
   <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
   <link rel="stylesheet" href="{% static 'css/app.css' %}">
-
   {% endcompress %}
+  <link rel="stylesheet" href="{% static 'css/leaflet.css' %}">
+
+   {% compress js %}
+  <script src="{% static 'js/leaflet.js' %}">
+  {% endcompress %}
+
 </head>
 <body>
 <section class="main">
@@ -25,11 +30,36 @@
 		{{ theme.description|safe }}
             </p>
             </div>
+            <div id="map">
+            </div>
         </div> <!-- end cols -->
     </div><!-- end row -->
 </section>
 
 
-  {% block footer_scripts %}{% endblock %}
+{% block footer_scripts %}
+<script>
+
+var londonMap = L.map("map").setView([51.505, -0.09], 12)
+
+var layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(londonMap);
+
+{% for m in theme.modules.all %}
+    {% for l in m.locations.all %}
+	L.marker( {{ l.transform }} ).addTo(londonMap)
+    {% endfor %}
+{% endfor %}
+
+
+
+</script>
+
+{% endblock %}
+
+</script>
+
 </body>
 </html>

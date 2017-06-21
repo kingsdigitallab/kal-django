@@ -205,3 +205,8 @@ header h2
     font-weight: normal;
     line-height: 29px;
 }
+
+
+#map {
+    height: 600px;
+}

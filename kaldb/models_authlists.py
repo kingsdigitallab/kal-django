@@ -123,6 +123,11 @@ class OutReachLocation(models.Model):
     country = models.ForeignKey(OutReachCountry, verbose_name='OR Country', blank=True, null=True)
     point = models.PointField(srid=3214, null=True, blank=True)
 
+    def transform(self):
+        self.point.transform(4326)
+        latLng = [self.point.y , self.point.x]
+        return latLng
+
     def __unicode__(self):
         return self.name
 
