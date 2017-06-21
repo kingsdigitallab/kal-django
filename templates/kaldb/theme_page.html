@@ -11,18 +11,21 @@
   {% compress css %}
   <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
   <link rel="stylesheet" href="{% static 'css/app.css' %}">
-  {% endcompress %}
   <link rel="stylesheet" href="{% static 'css/leaflet.css' %}">
+  <link rel="stylesheet" href="{% static 'css/MarkerCluster.css' %}">
+  <link rel="stylesheet" href="{% static 'css/MarkerCluster.Default.css' %}">
+  {% endcompress %}
 
-   {% compress js %}
-  <script src="{% static 'js/leaflet.js' %}">
+  {% compress js %}
+  <script src="{% static 'js/leaflet.js' %}"></script>
+  <script src="{% static 'js/leaflet.markercluster.js' %}"></script>
   {% endcompress %}
 
 </head>
 <body>
 <section class="main">
     <div class="row">
-        <div class="large 12-columns">
+        <div class="large-12 columns">
             <h3 class="kings-header" >{{ theme.name }}</h3>
             <p><img alt="{{ theme.name }}" height="200" width="100%" src="{{ theme.image.url }}"></p>
             <div class="rich-text">
@@ -30,9 +33,19 @@
 		{{ theme.description|safe }}
             </p>
             </div>
-            <div id="map">
-            </div>
-        </div> <!-- end cols -->
+         </div> <!-- end head -->
+     </div>
+     <div class="row">
+         <div id="map" class="large-8 columns">
+         </div>
+         <div class="large-4 columns">
+             <h3 class="kings-header" >{{ theme.name }} modules</h3>
+             <ul>
+             {% for m in theme.modules.all %}
+                 <li>{{ m.name }} {% if m.locations.all.count > 0 %}<img style="height:15px;" src="/static/css/images/marker-icon.png"/>{% endif %}</li>
+             {% endfor %}
+             </ul>
+         </div>
     </div><!-- end row -->
 </section>
 
@@ -47,6 +60,9 @@ var layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(londonMap);
 
+
+var locGroup =  L.markerClusterGroup()
+
 {% for m in theme.modules.all %}
     {% for l in m.locations.all %}
 	L.marker( {{ l.transform }} )
@@ -54,8 +70,9 @@ var layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
          "<h4 class='kings-subheader'>{{ l.name }}</h4>" +
          "<p>Convened by {% for c in m.convenors.all %}{{ c }}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</p>"
          )
-        .addTo(londonMap)
+        .addTo(locGroup)
     {% endfor %}
+    locGroup.addTo(londonMap)
 {% endfor %}
 
 
