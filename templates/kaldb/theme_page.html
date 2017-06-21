@@ -1,0 +1,45 @@
+{% load staticfiles compress require %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% block meta_title %}{% endblock %} | King's @ London</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {% compress css %}
+  <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+
+  {% endcompress %}
+</head>
+<body>
+<section class="main">
+    <div class="row">
+        <div class="large 12-columns">
+            <h3 class="kings-header" >{{ theme.name }}</h3>
+            <div class="rich-text">
+            <p>
+		{{ theme.description }}
+            </p>
+            </div>
+            <h3 class="kings-header">Cabinet of Curiosities</h3>
+            <div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu molestie risus. Nullam quis nunc tincidunt, laoreet ipsum non, laoreet lorem.
+            </p>
+            {% for t in themes %}
+            <p>
+                <a href="/themes/{{ t.short_name }}" title="{{ t.name }}">
+                    <img src="{{ t.image.url }}" height="100" width="100%"/>
+                </a>
+            </p>
+            {% endfor %}
+        </div> <!-- end cols -->
+    </div><!-- end row -->
+</section>
+
+
+  {% block footer_scripts %}{% endblock %}
+</body>
+</html>

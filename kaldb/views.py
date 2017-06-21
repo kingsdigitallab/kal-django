@@ -5,6 +5,21 @@ from kaldb.models import Module, Researcher, Theme
 from haystack.query import SearchQuerySet
 from haystack.inputs import AutoQuery
 
+# Iframe landing page
+def iframe_lander(request):
+
+    context = {
+	'themes': Theme.objects.all()
+    }
+    return render(request, 'kaldb/landing_page.html', context)
+
+def iframe_theme(request, name):
+   
+   theme = get_object_or_404(Theme, short_name=name)
+   context = {
+       'theme': theme,
+   }
+   return render(request, 'kaldb/theme_page.html', context)
 
 # Department view
 def department_detail(request, pk):

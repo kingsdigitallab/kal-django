@@ -2,7 +2,8 @@ from django.conf.urls import url
 
 from kaldb.views import (department_detail, faculty_detail,
                          module_detail, researcher_detail,
-                         theme_detail, module_search)
+                         theme_detail, module_search,
+                         iframe_lander, iframe_theme)
 
 urlpatterns = [
     url(r'^faculty/(?P<pk>\d+)/$', faculty_detail, name='faculty_detail'),
@@ -13,4 +14,6 @@ urlpatterns = [
     url(r'^researcher/(?P<pk>\d+)/$', researcher_detail,
         name='researcher_detail'),
     url(r'^theme/(?P<pk>\d+)/$', theme_detail, name='theme_detail'),
+    url(r'^landing/$', iframe_lander, name='landing_page'),
+    url(r'^landing/themes/(?P<name>\w+)/$', iframe_theme, name='theme_page'),
 ]
