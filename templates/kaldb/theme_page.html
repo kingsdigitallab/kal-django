@@ -49,7 +49,12 @@ var layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 {% for m in theme.modules.all %}
     {% for l in m.locations.all %}
-	L.marker( {{ l.transform }} ).addTo(londonMap)
+	L.marker( {{ l.transform }} )
+        .bindPopup("<h3 class='kings-header'>{{ m.name }}</h3>" +
+         "<h4 class='kings-subheader'>{{ l.name }}</h4>" +
+         "<p>Convened by {% for c in m.convenors.all %}{{ c }}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</p>"
+         )
+        .addTo(londonMap)
     {% endfor %}
 {% endfor %}
 
