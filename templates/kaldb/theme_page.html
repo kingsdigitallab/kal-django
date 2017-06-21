@@ -19,22 +19,12 @@
     <div class="row">
         <div class="large 12-columns">
             <h3 class="kings-header" >{{ theme.name }}</h3>
+            <p><img alt="{{ theme.name }}" height="200" width="100%" src="{{ theme.image.url }}"></p>
             <div class="rich-text">
             <p>
 		{{ theme.description|safe }}
             </p>
             </div>
-            <h3 class="kings-header">Cabinet of Curiosities</h3>
-            <div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eu molestie risus. Nullam quis nunc tincidunt, laoreet ipsum non, laoreet lorem.
-            </p>
-            {% for t in themes %}
-            <p>
-                <a href="/themes/{{ t.short_name }}" title="{{ t.name }}">
-                    <img src="{{ t.image.url }}" height="100" width="100%"/>
-                </a>
-            </p>
-            {% endfor %}
         </div> <!-- end cols -->
     </div><!-- end row -->
 </section>
