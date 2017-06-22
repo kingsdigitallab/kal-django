@@ -95,7 +95,7 @@ var locGroup =  L.markerClusterGroup()
 {% for m in theme.modules.all %}
     {% for l in m.locations.all %}
 	L.marker( {{ l.transform }} )
-        .bindPopup("<h3 class='kings-header'>{{ m.name }}</h3>" +
+        .bindPopup("<h3 class='kings-header'><a href='/module/{{ m.id }}'>{{ m.name }}</a></h3>" +
          "<h4 class='kings-subheader'>{{ l.name }}</h4>" +
          "<p>Convened by {% for c in m.convenors.all %}{{ c }}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</p>"
          )
@@ -112,7 +112,7 @@ var locGroup =  L.markerClusterGroup()
         L.marker( {{ l.transform }}, {icon:greenIcon} )
         .bindPopup("<h3 class='kings-header'>{{ i.name }}</h3>" +
          "<h4 class='kings-subheader'>{{ l.name }}</h4>" +
-         "<p>Module: {{ m.name }}</p>" 
+         "<p>Module:<a href='/module/{{ m.id }}'> {{ m.name }} </a></p>" 
          )
          {% endfor %}
         .addTo(locGroup)
