@@ -45,6 +45,15 @@
                  <li>{{ m.name }} {% if m.locations.all.count > 0 %}<img style="height:15px;" src="/static/css/images/marker-icon.png"/>{% endif %}</li>
              {% endfor %}
              </ul>
+
+             <h3 class="kings-header" >{{ theme.name }} institutions</h3>
+             <ul>
+             {% for m in theme.modules.all %}
+                 {% for i in m.institutions.all %}
+                     <li>{{ i.name }} {% if i.location.all.count > 0 %}<img style="height:15px;" src="/static/css/images/marker-icon-green.png"/>{% endif %}</li>
+                 {% endfor %}
+             {% endfor %}
+             </ul>
          </div>
     </div><!-- end row -->
 </section>
@@ -61,6 +70,17 @@ var layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(londonMap);
 
 
+var greenIcon = L.icon({
+    iconUrl: '/static/css/images/marker-icon-green.png',
+    shadowUrl: '/static/css/images/marker-shadow.png',
+
+    //iconSize:     [38, 95], // size of the icon
+    //shadowSize:   [50, 64], // size of the shadow
+    //iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    //shadowAnchor: [4, 62],  // the same for the shadow
+    //popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+
 var locGroup =  L.markerClusterGroup()
 
 {% for m in theme.modules.all %}
@@ -72,8 +92,25 @@ var locGroup =  L.markerClusterGroup()
          )
         .addTo(locGroup)
     {% endfor %}
+    // locGroup.addTo(londonMap)
+{% endfor %}
+
+{% for m in theme.modules.all %}
+    {% for i in m.institutions.all %}
+        // {{ i }}
+        {% for l in i.location.all %} 
+        // {{ l }}
+        L.marker( {{ l.transform }}, {icon:greenIcon} )
+        .bindPopup("<h3 class='kings-header'>{{ i.name }}</h3>" +
+         "<h4 class='kings-subheader'>{{ l.name }}</h4>" +
+         "<p>Module: {{ m.name }}</p>" 
+         )
+         {% endfor %}
+        .addTo(locGroup)
+    {% endfor %}
     locGroup.addTo(londonMap)
 {% endfor %}
+
 
 
 
