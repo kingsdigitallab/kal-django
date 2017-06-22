@@ -21,7 +21,7 @@
             <h3 class="kings-header" >{{ module.name }}</h3>
             <div class="rich-text">
             <h3 class="kings-subheader">{{ module.department }}, {% for l in module.level.all %}{{ l }}{% endfor %}</h3>
-            <p><strong>Convened by: {% for c in module.convenors.all %}{{ c }}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</strong></p>
+            <p><strong>Convened by: {% for c in module.convenors.all %}<a href="/researchers/{{ c.id }}">{{ c }}</a>{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</strong></p>
             <p>
             {{ module.description }}
             </p>
