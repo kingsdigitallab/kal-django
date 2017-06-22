@@ -4,7 +4,7 @@ from kaldb.views import (department_detail, faculty_detail,
                          module_detail, researcher_detail,
                          theme_detail, module_search,
                          iframe_lander, iframe_theme,
-                         iframe_module)
+                         iframe_module, iframe_researcher)
 
 urlpatterns = [
     url(r'^faculty/(?P<pk>\d+)/$', faculty_detail, name='faculty_detail'),
@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^landing/$', iframe_lander, name='landing_page'),
     url(r'^landing/themes/(?P<name>\w+)/$', iframe_theme, name='theme_page'),
     url(r'^module/(?P<pk>\d+)/$', iframe_module, name='module_page'),
+    url(r'^researchers/(?P<pk>\d+)/$', iframe_researcher, name='researcher_page'),
 ]

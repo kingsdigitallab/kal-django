@@ -29,6 +29,14 @@ def iframe_module(request, pk):
     }
     return render(request, 'kaldb/module_page.html', context)
 
+def iframe_researcher(request, pk):
+
+    researcher = get_object_or_404(Researcher, pk=pk)
+    context = {
+        'researcher': researcher,
+    }
+    return render(request, 'kaldb/researcher_page.html', context)
+
 # Department view
 def department_detail(request, pk):
 

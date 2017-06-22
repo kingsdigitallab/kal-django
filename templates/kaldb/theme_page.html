@@ -53,16 +53,16 @@
              {% endfor %}
              </ul>
 
-<!--
-             <h3 class="kings-header" >{{ theme.name }} institutions</h3>
+             <h3 class="kings-header" >King's Researchers in this field</h3>
              <ul>
-             {% for m in theme.modules.all %}
-                 {% for i in m.institutions.all %}
-                     <li>{{ i.name }} {% if i.location.all.count > 0 %}<img style="height:15px;" src="/static/css/images/marker-icon-green.png"/>{% endif %}</li>
+             {% for s in theme.specialisms.all %}
+                 {% for r in s.researcher_set.all %}
+                     <li>{% if r.department %}<a href="/researchers/{{ r.id }}">{% endif %}{{ r.first_name }} {{ r.last_name }}{% if r.department %}</a>, {{ r.department }}{% endif %}
+                     </li>
                  {% endfor %}
              {% endfor %}
              </ul>
--->
+
          </div>
     </div><!-- end row -->
 </section>
