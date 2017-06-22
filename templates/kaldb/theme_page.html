@@ -55,11 +55,11 @@
 
              <h3 class="kings-header" >King's Researchers in this field</h3>
              <ul>
-             {% for s in theme.specialisms.all %}
-                 {% for r in s.researcher_set.all %}
+             {% for r in theme.get_researchers %}
+                 {# for r in s.researcher_set.all #}
                      <li>{% if r.department %}<a href="/researchers/{{ r.id }}">{% endif %}{{ r.first_name }} {{ r.last_name }}{% if r.department %}</a>, {{ r.department }}{% endif %}
                      </li>
-                 {% endfor %}
+                 {# endfor #}
              {% endfor %}
              </ul>
 

@@ -146,7 +146,13 @@ class Researcher(models.Model):
     # themes = models.ManyToManyField('Theme', blank=True)
     # institution = models.ManyToManyField('Institution', blank=True)
 
-  
+    def get_themes(self):
+      ret = []
+      for s in self.specialisms.all():
+         for t in s.theme_set.all():
+            if t not in ret:
+               ret.append(t)
+      return ret
 
     def get_name(self):
       name = None
@@ -264,6 +270,14 @@ class Theme(models.Model):
 
     def get_absolute_url(self):
         return reverse('theme_detail', None, [str(self.id)])
+
+    def get_researchers(self):
+        ret = []
+        for s in self.specialisms.all():
+            for r in s.researcher_set.all():
+                if r not in ret:
+                    ret.append(r)
+        return ret
 
     def __unicode__(self):
         return self.name

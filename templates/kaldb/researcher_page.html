@@ -38,9 +38,9 @@
             {% endif %}
             </div>
             <h3 class="kings-header">Working Themes</h3>
-            <p>{% for s in researcher.specialisms.all %} {% for t in s.theme_set.all %}
-                   {% ifchanged t.name %}<a href="/landing/themes/{{ t.short_name}}"><span class="kings-header">{{ t.name }} &rsaquo;</span></a></br>
-                   {% endifchanged %}{% endfor %}{% endfor %}</p>
+            <p>{% for s in researcher.get_themes %}
+                   {% ifchanged s.name %}<a href="/landing/themes/{{ s.short_name}}"><span class="kings-header">{{ s.name }} &rsaquo;</span></a></br>
+                   {% endifchanged %}{% endfor %}</p>
             <div>
             <p>
             </p>
