@@ -15,11 +15,19 @@ def iframe_lander(request):
 
 def iframe_theme(request, name):
    
-   theme = get_object_or_404(Theme, short_name=name)
-   context = {
-       'theme': theme,
-   }
-   return render(request, 'kaldb/theme_page.html', context)
+    theme = get_object_or_404(Theme, short_name=name)
+    context = {
+        'theme': theme,
+    }
+    return render(request, 'kaldb/theme_page.html', context)
+
+def iframe_module(request, pk):
+  
+    module = get_object_or_404(Module, pk=pk)
+    context = {
+        'module': module,
+    }
+    return render(request, 'kaldb/module_page.html', context)
 
 # Department view
 def department_detail(request, pk):

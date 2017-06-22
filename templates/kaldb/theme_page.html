@@ -42,7 +42,7 @@
              <h3 class="kings-header" >{{ theme.name }} modules</h3>
              <ul>
              {% for m in theme.modules.all %}
-                 <li>{{ m.name }} {% if m.locations.all.count > 0 %}<img style="height:15px;" src="/static/css/images/marker-icon.png"/>{% endif %}</li>
+                 <li><a href="/module/{{ m.id}}">{{ m.name }} &rsaquo;</a> {% if m.locations.all.count > 0 %}<img style="height:15px;" src="/static/css/images/marker-icon.png"/>{% endif %}</li>
                  {% if m.institutions.all.count > 0 %}
                     <ul><span style="font-weight:bold;">Institutions</span>
                     {% for i in m.institutions.all %}
