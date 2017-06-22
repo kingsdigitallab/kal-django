@@ -246,12 +246,14 @@ class Module(models.Model):
 class Theme(models.Model):
     name = models.CharField(verbose_name="Theme Name", max_length=1024,
                             blank=False, null=False)
+    active = models.BooleanField(default=True)
     short_name = models.CharField(blank=True, null=True, max_length=50)
     description = tinymce_models.HTMLField(verbose_name="Description",
                                            blank=True)
     short_desc = models.TextField(verbose_name="Short description",
                                   blank=True)
     image = models.ImageField(blank=True)
+    main_image = models.ImageField(blank=True)
     roles = models.ManyToManyField(JobRole, verbose_name="Related\
                                    Job Roles", blank=True)
     modules = models.ManyToManyField(Module, verbose_name="Related\
