@@ -20,7 +20,7 @@
         <div class="large 12-columns">
             <h3 class="kings-header" >{{ researcher.first_name }} {{ researcher.last_name }}</h3>
             <div class="rich-text">
-            <h3 class="kings-subheader">{{ researcher.department }}, {% for l in module.level.all %}{{ l }}{% endfor %}</h3>
+            <h3 class="kings-subheader">{{ researcher.department }}</h3>
             <h3 class="kings-header" >Research Interests</h3>
             {% if researcher.research_interests.all.count > 0 %}
             <ul>{% for r in researcher.research_interests.all %}<li>{{ r }}</li>{% endfor %}</ul>
