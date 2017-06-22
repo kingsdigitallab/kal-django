@@ -43,9 +43,17 @@
              <ul>
              {% for m in theme.modules.all %}
                  <li>{{ m.name }} {% if m.locations.all.count > 0 %}<img style="height:15px;" src="/static/css/images/marker-icon.png"/>{% endif %}</li>
+                 {% if m.institutions.all.count > 0 %}
+                    <ul><span style="font-weight:bold;">Institutions</span>
+                    {% for i in m.institutions.all %}
+                       <li>{{ i.name }} {% if i.location.all.count > 0 %}<img style="height:15px;" src="/static/css/images/marker-icon-green.png"/>{% endif %}</li>
+                    {% endfor %}
+                    </ul>
+                 {% endif %}
              {% endfor %}
              </ul>
 
+<!--
              <h3 class="kings-header" >{{ theme.name }} institutions</h3>
              <ul>
              {% for m in theme.modules.all %}
@@ -54,6 +62,7 @@
                  {% endfor %}
              {% endfor %}
              </ul>
+-->
          </div>
     </div><!-- end row -->
 </section>
@@ -111,7 +120,9 @@ var locGroup =  L.markerClusterGroup()
     locGroup.addTo(londonMap)
 {% endfor %}
 
+bounds =  locGroup.getBounds()
 
+londonMap.fitBounds(bounds)
 
 
 </script>
