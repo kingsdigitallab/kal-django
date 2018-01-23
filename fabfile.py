@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os.path
+import sys
+from functools import wraps
+
 from django.conf import settings
 from fabric.api import cd, env, prefix, quiet, require, run, sudo, task
 from fabric.colors import green, yellow
 from fabric.contrib import django
-from functools import wraps
-import sys
-import os.path
-
 
 # put project directory in path
 project_root = os.path.abspath(os.path.dirname(__file__))
@@ -178,6 +178,7 @@ def deploy(version=None):
     # update_index()
     # clear_cache()
     touch_wsgi()
+    check_deploy()
 
 
 @task
@@ -296,3 +297,12 @@ def touch_wsgi():
     with cd(os.path.join(env.path, PROJECT_NAME)), \
             prefix(env.within_virtualenv):
         run('touch wsgi.py')
+
+
+@task
+def check_deploy():
+    require('srvr', 'path', 'within_virtualenv', provided_by=env.servers)
+
+    if env.srvr in ['stg', 'liv']:
+        with cd(env.path), prefix(env.within_virtualenv):
+            run('./manage.py check --deploy')
