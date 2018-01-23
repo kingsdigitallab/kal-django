@@ -90,19 +90,6 @@ class Researcher(models.Model):
     role = models.ForeignKey(JobRole, help_text='e.g. \'in Roman Sculpture\'',
                              blank=True, null=True)
 
-    # Contact Details
-    email = models.CharField(verbose_name='E-Mail Address', max_length=120,
-                             blank=True)
-    phone = models.CharField(verbose_name='Telephone Number', max_length=120,
-                             blank=True, help_text="For KCL staff a 4 digit\
-                             extension is sufficient")
-    can_email = models.BooleanField(verbose_name='Can E-mail?', default=True,
-                                    help_text='Is this person willing to be\
-                                    contacted by e-mail?')
-    can_phone = models.BooleanField(verbose_name='Can Phone?', default=True,
-                                    help_text='Is this person willing to be\
-                                    contacted by phone?')
-
     # URLS
     pure_url = models.CharField(verbose_name='Pure URL', max_length=512,
                                 blank=True, help_text='Link to pure profile')

@@ -83,7 +83,6 @@ class ModuleIndex(indexes.SearchIndex, indexes.Indexable):
 
 class ResearcherIndex(indexes.SearchIndex, indexes.Indexable):
     name = indexes.CharField()
-    email = indexes.CharField()
     role = indexes.CharField()
     position = indexes.CharField(faceted=True)
     department = indexes.CharField(faceted=True)
@@ -109,9 +108,6 @@ class ResearcherIndex(indexes.SearchIndex, indexes.Indexable):
 
         if object.position:
             self.prepared_data['position'] = object.position.name
-
-        if object.email:
-            self.prepared_data['email'] = object.email
 
         self.prepared_data['name'] = object.get_name()
 

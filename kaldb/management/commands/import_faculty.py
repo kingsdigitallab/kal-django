@@ -129,10 +129,6 @@ class Command(BaseCommand):
                     # Pure URL - col. 9
                     researcher.pure_url = row[9]
 
-                    # E-Mail Address + can email? - col. 10
-                    researcher.email = row[10]
-                    researcher.can_email = True
-
                     # And save...
                     researcher.save()
 
