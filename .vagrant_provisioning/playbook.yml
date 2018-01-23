@@ -90,39 +90,54 @@
     - vars.yml
   gather_facts: false
   tasks:
-  - name: pip | setup virtualenv
+  - name: python | easy install pip
+    become: yes
+    command: "easy_install -f https://pypi.python.org/simple/pip pip"
+    tags:
+      - python
+
+  - name: python | install setuptools
+    become: yes
+    pip: name=setuptools state=latest
+    tags:
+      - python
+
+  - name: python | install virtualenv
+    become: yes
+    pip: name=virtualenv state=latest
+    tags:
+      - python
+
+  - name: python | install psycopg2
+    become: yes
+    pip: name=psycopg2 state=latest
+    tags:
+      - python
+
+  - name: python | install urllib3
+    become: yes
+    pip: name=urllib3[secure] state=latest
+    tags:
+      - python
+
+  - name: python | setup virtualenv
     file: path={{ python.virtualenv_location }} state=directory
   - command: virtualenv {{ python.virtualenv_location }}
     tags:
       - python
 
-  - name: pip | Installing fix for setuptools (requirements-setuptools-fix.txt)
-    pip:
-      requirements: "{{ project_root }}/requirements-setuptools-fix.txt"
-      virtualenv: "{{ python.virtualenv_location }}"
-    tags:
-      - python
-
-  - name: pip | update setuptools
-    pip:
-      name: setuptools
-      virtualenv: "{{ python.virtualenv_location }}"
-      state: latest
-    tags:
-      - python
-
-  - name: pip | update pip
+  - name: python | update pip
     pip:
       name: pip
-      virtualenv: "{{ python.virtualenv_location }}"
+      virtualenv: '{{ python.virtualenv_location }}'
       state: latest
     tags:
       - python
 
-  - name: pip | ensure python requirements are installed to latest version
+  - name: python | ensure python requirements are installed to latest version
     pip:
-      requirements: "{{ project_root }}/{{ python.requirements }}"
-      virtualenv: "{{ python.virtualenv_location }}"
+      requirements: '{{ project_root }}/{{ python.requirements }}'
+      virtualenv: '{{ python.virtualenv_location }}'
     tags:
       - python
 
@@ -203,6 +218,8 @@
       state: present
       owner: "{{ postgresql.user }}"
     notify:
+      - postgis | convert database to postgis
+      - postgis | convert database to postgis topology
       - postgresql | apply privileges
     tags:
       - db
@@ -226,6 +243,22 @@
       - data
 
   handlers:
+  - name: postgis | convert database to postgis
+    become: yes
+    become_user: "{{ postgresql.admin_user }}"
+    command: plsql -d {{ app.name }} -c "CREATE EXTENSION postgis;"
+    tags:
+      - db
+      - postgis
+
+  - name: postgis | convert database to postgis topology
+    become: yes
+    become_user: "{{ postgresql.admin_user }}"
+    command: psql -d {{ app.name }} -c "CREATE EXTENSION postgis_topology;"
+    tags:
+      - db
+      - postgis
+
   - name: postgresql | apply privileges
     become_user: "{{ postgresql.admin_user }}"
     postgresql_privs:
