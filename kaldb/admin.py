@@ -1,11 +1,11 @@
 from django.contrib.gis import admin
-from kaldb.models import (Interest, OutReachEvent, Researcher, Specialism,
-                          Module, Theme, Institution, Collaboration)
-from kaldb.models_authlists import (Department, Faculty, JobPosition,
-                                    JobRole, OutReachCity, OutReachCountry,
+from kaldb.models import (Collaboration, Institution, Interest, Module,
+                          OutReachEvent, Researcher, Specialism, Theme)
+from kaldb.models_authlists import (AwardType, Department, Faculty,
+                                    InstitutionCategory, JobPosition, JobRole,
+                                    OutReachCity, OutReachCountry,
                                     OutReachFrequency, OutReachLocation,
-                                    OutReachMedium, Title, AwardType,
-                                    InstitutionCategory, StageType)
+                                    OutReachMedium, StageType, Title)
 
 
 class ThemeAdmin(admin.ModelAdmin):
@@ -48,7 +48,6 @@ class RoleThemeInline(admin.TabularInline):
     model = Theme.roles.through
 
 
-
 class ModuleThemeInline(admin.TabularInline):
     model = Theme.modules.through
 
@@ -69,9 +68,9 @@ class JobRoleAdmin(admin.ModelAdmin):
         RoleThemeInline,
     ]
 
+
 class CollaborationAdmin(admin.ModelAdmin):
     filter_horizontal = ('pi', 'coinv', 'extcoapp', 'accholder')
-
 
 
 # Models
@@ -98,4 +97,3 @@ admin.site.register(Title)
 admin.site.register(InstitutionCategory)
 admin.site.register(AwardType)
 admin.site.register(StageType)
-

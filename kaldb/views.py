@@ -1,33 +1,36 @@
 from django.shortcuts import get_object_or_404, render
-
-from kaldb.models_authlists import Department, Faculty
-from kaldb.models import Module, Researcher, Theme
-from haystack.query import SearchQuerySet
 from haystack.inputs import AutoQuery
+from haystack.query import SearchQuerySet
+from kaldb.models import Module, Researcher, Theme
+from kaldb.models_authlists import Department, Faculty
+
 
 # Iframe landing page
 def iframe_lander(request):
 
     context = {
-	'themes': Theme.objects.all()
+        'themes': Theme.objects.all()
     }
     return render(request, 'kaldb/landing_page.html', context)
 
+
 def iframe_theme(request, name):
-   
+
     theme = get_object_or_404(Theme, short_name=name)
     context = {
         'theme': theme,
     }
     return render(request, 'kaldb/theme_page.html', context)
 
+
 def iframe_module(request, pk):
-  
+
     module = get_object_or_404(Module, pk=pk)
     context = {
         'module': module,
     }
     return render(request, 'kaldb/module_page.html', context)
+
 
 def iframe_researcher(request, pk):
 
@@ -38,6 +41,8 @@ def iframe_researcher(request, pk):
     return render(request, 'kaldb/researcher_page.html', context)
 
 # Department view
+
+
 def department_detail(request, pk):
 
     department = get_object_or_404(Department, pk=pk)
@@ -114,7 +119,6 @@ def module_search(request):
     full_path = request.get_full_path()
     if '?' not in full_path:
         full_path = "{}?q=".format(full_path)
-
     context = {
         'search_results': sqs,
         'search_query': search_query,

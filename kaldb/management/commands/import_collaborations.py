@@ -1,12 +1,12 @@
 # -*- coding: latin-1 -*-
-from django.core.management import BaseCommand
 import csv
 import traceback
 
-from kaldb.models import (Researcher, Collaboration, Institution)
-from kaldb.models_authlists import (AwardType, StageType, InstitutionCategory,
-                                    InstitutionSector, OutReachLocation, OutReachCity,
-                                    Faculty, Title)
+from django.core.management import BaseCommand
+from kaldb.models import Collaboration, Institution, Researcher
+from kaldb.models_authlists import (AwardType, Faculty, InstitutionCategory,
+                                    InstitutionSector, OutReachCity,
+                                    OutReachLocation, StageType, Title)
 
 date_map = {
     'Jan': 1,
@@ -22,6 +22,7 @@ date_map = {
     'Nov': 11,
     'Dec': 12
 }
+
 
 class Command(BaseCommand):
     help = 'Imports collaboration data from CSV.\
@@ -58,11 +59,9 @@ class Command(BaseCommand):
 
                         collab.stage_type = s
 
-
                     # Col 2: Value
-                    collab.value = float(row[2].replace('£','')\
-                        .replace(',',''))
-
+                    collab.value = float(row[2].replace('£', '')
+                                         .replace(',', ''))
 
                     # Col 3: Title
                     collab.name = row[3]
@@ -125,7 +124,6 @@ class Command(BaseCommand):
                         i = Institution()
                         i.name = partner_name
 
-
                         type_obj = InstitutionCategory.objects.all()\
                             .filter(description=company_type)
 
@@ -152,7 +150,6 @@ class Command(BaseCommand):
                         i.save()
                         collab.partner = i
 
-
                         # This bit needs to be done after that's saved
                         location_obj = OutReachLocation.objects.all()\
                             .filter(name=partner_name)
@@ -172,10 +169,9 @@ class Command(BaseCommand):
                                 city_obj.name = city_name
                                 city_obj.save()
                                 location_obj.city = city_obj
-                            
+
                             location_obj.save()
                             i.location.add(location_obj)
-
 
                     # Save!
                     collab.save()
@@ -209,7 +205,7 @@ class Command(BaseCommand):
                                 if len(names) > 4:
                                     middle_name = ' '.join(names[2:-1])
 
-                                researcher_obj = None # scoping
+                                researcher_obj = None  # scoping
 
                                 if middle_name:
                                     researcher_obj = Researcher.objects.all()\
@@ -244,7 +240,8 @@ class Command(BaseCommand):
 
                                         researcher.title = title_obj
 
-                                    if attr == "pi" and not collab.partner_is_lead:
+                                    if attr == "pi" and \
+                                            not collab.partner_is_lead:
                                         researcher.external = True
                                     elif attr == "pi":
                                         researcher.external = False
@@ -256,8 +253,6 @@ class Command(BaseCommand):
                                     researchers.append(researcher)
 
                         setattr(collab, attr, researchers)
-
-
 
         except Exception, e:
             print "An error occured - caught Exception"

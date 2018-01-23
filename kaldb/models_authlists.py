@@ -119,13 +119,15 @@ class OutReachFrequency(models.Model):
 # Could be useful for geolocation
 class OutReachLocation(models.Model):
     name = models.CharField(max_length=256, default='')
-    city = models.ForeignKey(OutReachCity, verbose_name='City', null=True, blank=True)
-    country = models.ForeignKey(OutReachCountry, verbose_name='OR Country', blank=True, null=True)
+    city = models.ForeignKey(
+        OutReachCity, verbose_name='City', null=True, blank=True)
+    country = models.ForeignKey(
+        OutReachCountry, verbose_name='OR Country', blank=True, null=True)
     point = models.PointField(srid=3214, null=True, blank=True)
 
     def transform(self):
         self.point.transform(4326)
-        latLng = [self.point.y , self.point.x]
+        latLng = [self.point.y, self.point.x]
         return latLng
 
     def __unicode__(self):
@@ -168,12 +170,12 @@ class InstitutionCategory(models.Model):
 # Institutional Sector
 class InstitutionSector(models.Model):
     description = models.CharField(max_length=128,
-                            help_text='e.g. Higher Education..')
+                                   help_text='e.g. Higher Education..')
 
     def __unicode__(self):
         return self.description
 
-# Award Type
+
 class AwardType(models.Model):
     name = models.CharField(max_length=128,
                             help_text='e.g. Research Grant')
@@ -181,7 +183,7 @@ class AwardType(models.Model):
     def __unicode__(self):
         return self.name
 
-# Stage Type
+
 class StageType(models.Model):
     name = models.CharField(max_length=128,
                             help_text='E.g. award')
