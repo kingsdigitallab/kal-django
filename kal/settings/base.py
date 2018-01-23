@@ -173,7 +173,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-
     'wagtail.wagtailcore.middleware.SiteMiddleware',
     'wagtail.wagtailredirects.middleware.RedirectMiddleware',
 )
@@ -347,6 +346,17 @@ REQUIRE_ENVIRONMENT = 'node'
 
 FABRIC_USER = getpass.getuser()
 
+# -----------------------------------------------------------------------------
+# Haystack
+# -----------------------------------------------------------------------------
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine', # noqa
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'kal',
+    },
+}
 
 # -----------------------------------------------------------------------------
 # Wagtail

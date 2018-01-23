@@ -32,14 +32,6 @@ try:
 except ImportError:
     pass
 
-# Default haystack connection
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine', # noqa
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'kal',
-    },
-}
 # -----------------------------------------------------------------------------
 # Django Debug Toolbar
 # http://django-debug-toolbar.readthedocs.org/en/latest/
