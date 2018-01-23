@@ -16,6 +16,7 @@ python:
   virtualenv_location: /home/vagrant/venv
 system_packages:
   - ack-grep
+  - acl
   - adminer
   - binutils
   - elasticsearch
