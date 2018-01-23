@@ -31,6 +31,7 @@ system_packages:
   - libproj-dev
   - libsasl2-dev
   - libsensors4
+  - libsqlite3-dev
   - libxml2-dev
   - libxslt-dev
   - nfs-common
@@ -44,6 +45,8 @@ system_packages:
   - python-dev
   - python-setuptools
   - sysstat
+  - sqlite3
+  - spatialite-bin
   - vim-nox
   - zsh
 user_home: /home/vagrant
