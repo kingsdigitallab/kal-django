@@ -303,6 +303,5 @@ def touch_wsgi():
 def check_deploy():
     require('srvr', 'path', 'within_virtualenv', provided_by=env.servers)
 
-    if env.srvr in ['stg', 'liv']:
-        with cd(env.path), prefix(env.within_virtualenv):
-            run('./manage.py check --deploy')
+    with cd(env.path), prefix(env.within_virtualenv):
+        run('./manage.py check --deploy')
