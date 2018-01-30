@@ -73,7 +73,7 @@
 {% block footer_scripts %}
 <script>
 
-var londonMap = L.map("map").setView([51.505, -0.09], 12)
+var londonMap = L.map("map",{scrollWheelZoom :false}).setView([51.505, -0.09], 12)
 
 var layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,

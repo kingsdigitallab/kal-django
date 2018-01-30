@@ -34,7 +34,7 @@
             <ul>{% for r in researcher.specialisms.all %}<li>{{ r }}</li>{% endfor %}</ul>
             {% endif %}
             {% if researcher.pure_url %}
-            <p class="kings-header"><a href="{{ researcher.pure_url }}">King's Research Portal &rsaquo;</a></p>
+            <p class="kings-header"><a href="{{ researcher.pure_url }}" target="_blank">King's Research Portal &rsaquo;</a></p>
             {% endif %}
             </div>
             <h3 class="kings-header">Working Themes</h3>
