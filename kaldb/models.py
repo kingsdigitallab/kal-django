@@ -1,5 +1,9 @@
 from __future__ import unicode_literals
 
+import os
+import urllib
+
+from django.core.files import File
 from django.core.urlresolvers import reverse
 from django.db import models
 from models_authlists import (AwardType, Department, Faculty,
@@ -9,6 +13,7 @@ from models_authlists import (AwardType, Department, Faculty,
                               OutReachMedium, StageType, Title)
 from tinymce import models as tinymce_models
 
+
 # An interest. This can be teaching/research
 # This has been left open to allow future links between interests...
 # Perhaps this could be auto-complete free text in the admin?
@@ -17,6 +22,7 @@ from tinymce import models as tinymce_models
 class Interest(models.Model):
     name = models.CharField(verbose_name='Interest Name', max_length=1024,
                             blank=False)
+
     description = models.TextField(verbose_name='Description', blank=True,
                                    help_text='An optional description of the\
                                    interest, to aid in matching/searching')
@@ -80,6 +86,10 @@ class Researcher(models.Model):
     last_name = models.CharField(verbose_name='Last Name', max_length=120,
                                  blank=False)
 
+    image_file = models.ImageField(
+        upload_to='researchers', blank=True, null=True)
+    image_url = models.URLField(blank=True, null=True)
+
     # Department
     department = models.ForeignKey(Department, null=True, blank=True)
 
@@ -112,26 +122,39 @@ class Researcher(models.Model):
                                                 Interests',
                                                 related_name='teaching_int',
                                                 blank=True)
-
     specialisms = models.ManyToManyField(Specialism,
                                          verbose_name='Specialisms',
                                          blank=True)
-
     institutions = models.ManyToManyField(Institution,
                                           verbose_name='Institutions',
                                           blank=True)
-
     locations = models.ManyToManyField(OutReachLocation,
                                        verbose_name='Locations',
                                        blank=True)
-
     external = models.BooleanField(verbose_name="External To Kings",
                                    default=False)
+
+    notes = tinymce_models.HTMLField(blank=True, null=True)
 
     # Search fields
     # locations = models.ManyToManyField(OutReachLocation, blank=True)
     # themes = models.ManyToManyField('Theme', blank=True)
     # institution = models.ManyToManyField('Institution', blank=True)
+
+    class Meta:
+        ordering = ['last_name', 'first_name', 'middle_name']
+
+    def save(self, *args, **kwargs):
+        self._get_remote_image()
+        super(Researcher, self).save(*args, **kwargs)
+
+    def _get_remote_image(self):
+        if self.image_url:
+            name = os.path.basename(self.image_url).lower()
+            result = urllib.urlretrieve(self.image_url)
+            self.image_url = None
+
+            self.image_file.save(name, File(open(result[0])))
 
     def get_themes(self):
         ret = []
@@ -169,9 +192,6 @@ class Researcher(models.Model):
             return "{} {}".format(self.title.name, name)
         else:
             return name
-
-    class Meta:
-        ordering = ['last_name', 'first_name', 'middle_name']
 
 
 # OutReach Event

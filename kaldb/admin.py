@@ -19,37 +19,77 @@ class OutReachLocationAdmin(admin.OSMGeoAdmin):
 # Inline for OutReachEvent
 class OutReachEventInline(admin.TabularInline):
     model = OutReachEvent
+    classes = ['grp-collapse grp-closed']
 
 
 class PIInline(admin.TabularInline):
     model = Collaboration.pi.through
+    classes = ['grp-collapse grp-closed']
     verbose_name = 'Collaboration as PI'
     verbose_name_plural = 'Collaborations as PI'
 
 
 class CIInline(admin.TabularInline):
     model = Collaboration.coinv.through
+    classes = ['grp-collapse grp-closed']
     verbose_name = 'Collaboration as CI'
     verbose_name_plural = 'Collaborations as CI'
 
 
 # Researcher Admin Panel
 class ResearcherAdmin(admin.ModelAdmin):
-    filter_horizontal = ('research_interests', 'teaching_interests',
-                         'specialisms', 'institutions', 'locations')
+    fieldsets = (
+        ('Personal Information', {
+            'fields': ('title', ('first_name', 'middle_name', 'last_name'),
+                       'image_file', 'image_url')
+        }),
+        ('Job', {
+            'fields': ('external', 'department', 'position', 'role')
+        }),
+        ('Links', {
+            'classes': ('grp-collapse grp-closed',),
+            'fields': ('pure_url', 'profile_url', 'other_url')
+        }),
+        ('Interests', {
+            'classes': ('grp-collapse grp-closed',),
+            'fields': ('research_interests', 'teaching_interests',
+                       'specialisms')
+        }),
+        ('Connections', {
+            'classes': ('grp-collapse grp-closed',),
+            'fields': ('institutions', 'locations')
+        }),
+        ('Notes', {
+            'classes': ('grp-collapse grp-closed',),
+            'fields': ('notes',)
+        })
+    )
+    filter_horizontal = ['research_interests', 'teaching_interests',
+                         'specialisms', 'institutions', 'locations']
+
+    list_display = ['__unicode__', 'department', 'position', 'role']
+    list_filter = ['department', 'position', 'role']
+
     inlines = [
         OutReachEventInline,
         PIInline,
         CIInline,
     ]
 
+    raw_id_fields = filter_horizontal
+    related_lookup_fields = {
+        'm2m': raw_id_fields
+    }
+
 
 class RoleThemeInline(admin.TabularInline):
     model = Theme.roles.through
+    classes = ['grp-collapse grp-closed']
 
 
 class ModuleThemeInline(admin.TabularInline):
     model = Theme.modules.through
+    classes = ['grp-collapse grp-closed']
 
 
 # Module Admin Panel
@@ -61,8 +101,14 @@ class ModuleAdmin(admin.ModelAdmin):
         ModuleThemeInline,
     ]
 
+    raw_id_fields = filter_horizontal
+    related_lookup_fields = {
+        'm2m': raw_id_fields
+    }
 
 # Job Role Admin
+
+
 class JobRoleAdmin(admin.ModelAdmin):
     inlines = [
         RoleThemeInline,
@@ -71,6 +117,11 @@ class JobRoleAdmin(admin.ModelAdmin):
 
 class CollaborationAdmin(admin.ModelAdmin):
     filter_horizontal = ('pi', 'coinv', 'extcoapp', 'accholder')
+
+    raw_id_fields = filter_horizontal
+    related_lookup_fields = {
+        'm2m': raw_id_fields
+    }
 
 
 # Models
