@@ -1,14 +1,9 @@
-django==1.10
-elasticsearch
+-r ddhldap/requirements.txt
+django<2
 django-compressor
-django-grappelli
+django-grappelli<2.11
 django-libsass
 django-model-utils
-django-haystack
 django-redis
-django-require
-psycopg2
-redis
-wagtail==1.9
 django-tinymce
--r ddhldap/requirements.txt
+psycopg2-binary

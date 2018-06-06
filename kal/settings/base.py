@@ -69,38 +69,17 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.gis',
 
-    'require',
-    'rest_framework',
-    'taggit',
     'compressor',
 
-    'haystack',
-
     'tinymce',
-
-    'wagtail.wagtailcore',
-    'wagtail.wagtailadmin',
-    'wagtail.wagtaildocs',
-    'wagtail.wagtailsnippets',
-    'wagtail.wagtailusers',
-    'wagtail.wagtailimages',
-    'wagtail.wagtailembeds',
-    'wagtail.wagtailsearch',
-    'wagtail.wagtailredirects',
-    'wagtail.wagtailforms',
-    'wagtail.wagtailsites',
-    'wagtail.contrib.wagtailapi',
-    'wagtail.contrib.wagtailroutablepage',
 )
 
 INSTALLED_APPS += (
     # your project apps here
-    'cms',
     'kaldb',
 )
 
 INTERNAL_IPS = ('127.0.0.1', )
-
 
 LOGGING_ROOT = os.path.join(BASE_DIR, 'logs')
 LOGGING_LEVEL = logging.WARN
@@ -171,9 +150,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.security.SecurityMiddleware',
-
-    'wagtail.wagtailcore.middleware.SiteMiddleware',
-    'wagtail.wagtailredirects.middleware.RedirectMiddleware',
 )
 
 ROOT_URLCONF = PROJECT_NAME + '.urls'
@@ -241,8 +217,6 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
-STATICFILES_STORAGE = 'require.storage.OptimizedStaticFilesStorage'
-
 MEDIA_URL = STATIC_URL + 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL.strip('/'))
 
@@ -298,82 +272,10 @@ COMPRESS_PRECOMPILERS = (
 GRAPPELLI_ADMIN_TITLE = PROJECT_TITLE
 
 # -----------------------------------------------------------------------------
-# Django-Require
-# https://github.com/etianen/django-require
-# -----------------------------------------------------------------------------
-
-# The baseUrl to pass to the r.js optimizer, relative to STATIC_ROOT.
-REQUIRE_BASE_URL = 'js'
-
-# The name of a build profile to use for your project, relative to
-# REQUIRE_BASE_URL. A sensible value would be 'app.build.js'.
-# Leave blank to use the built-in default build profile. Set to False to
-# disable running the default profile (e.g. if only using it to build
-# Standalone Modules)
-REQUIRE_BUILD_PROFILE = False
-
-# The name of the require.js script used by your project, relative to
-# REQUIRE_BASE_URL.
-REQUIRE_JS = '../vendor/requirejs/require.js'
-
-# A dictionary of standalone modules to build with almond.js.
-# See the section on Standalone Modules, below.
-REQUIRE_STANDALONE_MODULES = {
-    'config': {
-        # Where to output the built module, relative to REQUIRE_BASE_URL.
-        'out': 'config-built.js',
-
-        # Optional: A build profile used to build this standalone module.
-        'build_profile': 'config.build.js',
-    }
-}
-
-# Whether to run django-require in debug mode.
-REQUIRE_DEBUG = DEBUG
-
-# A tuple of files to exclude from the compilation result of r.js.
-REQUIRE_EXCLUDE = ('build.txt', )
-
-# The execution environment in which to run r.js: auto, node or rhino.
-# auto will autodetect the environment and make use of node if available and
-# rhino if not.
-REQUIRE_ENVIRONMENT = 'node'
-
-# -----------------------------------------------------------------------------
 # FABRIC
 # -----------------------------------------------------------------------------
 
 FABRIC_USER = getpass.getuser()
-
-# -----------------------------------------------------------------------------
-# Haystack
-# -----------------------------------------------------------------------------
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',  # noqa
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'kal',
-    },
-}
-
-# -----------------------------------------------------------------------------
-# Wagtail
-# -----------------------------------------------------------------------------
-
-WAGTAIL_SITE_NAME = PROJECT_TITLE
-
-ITEMS_PER_PAGE = 10
-
-WAGTAILSEARCH_BACKENDS = {
-    'default': {
-        'BACKEND': 'wagtail.wagtailsearch.backends.elasticsearch2',
-        'AUTO_UPDATE': False,
-        'URLS': ['http://127.0.0.1:9200'],
-        'INDEX': 'scw_wagtail',
-        'TIMEOUT': 5,
-    }
-}
 
 # -----------------------------------------------------------------------------
 # GLOBALS FOR JS

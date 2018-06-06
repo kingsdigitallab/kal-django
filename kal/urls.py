@@ -4,10 +4,6 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from kaldb import urls as kaldb_urls
-from wagtail.wagtailadmin import urls as wagtailadmin_urls
-from wagtail.wagtailcore import urls as wagtail_urls
-from wagtail.wagtaildocs import urls as wagtaildocs_urls
-from wagtail.wagtailsearch.urls import frontend as wagtailsearch_frontend_urls
 
 admin.autodiscover()
 ddhldap_register_signal_handlers()
@@ -15,7 +11,6 @@ ddhldap_register_signal_handlers()
 urlpatterns = [
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^search/', include('haystack.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
 
 ]
@@ -30,21 +25,11 @@ try:
             url(r'^__debug__/',
                 include(debug_toolbar.urls)),
         ]
-
 except ImportError:
     pass
 
-
-# -----------------------------------------------------------------------------
-# Wagtail CMS
-# -----------------------------------------------------------------------------
-
 urlpatterns += [
-    url(r'^wagtail/', include(wagtailadmin_urls)),
-    url(r'^documents/', include(wagtaildocs_urls)),
-    url(r'^search/', include(wagtailsearch_frontend_urls)),
     url(r'', include(kaldb_urls)),
-    url(r'', include(wagtail_urls)),
 ]
 
 # -----------------------------------------------------------------------------

@@ -13,7 +13,6 @@ from models_authlists import (AwardType, Department, Faculty,
                               OutReachMedium, StageType, Title)
 from tinymce import models as tinymce_models
 
-
 # An interest. This can be teaching/research
 # This has been left open to allow future links between interests...
 # Perhaps this could be auto-complete free text in the admin?
@@ -135,11 +134,6 @@ class Researcher(models.Model):
                                    default=False)
 
     notes = tinymce_models.HTMLField(blank=True, null=True)
-
-    # Search fields
-    # locations = models.ManyToManyField(OutReachLocation, blank=True)
-    # themes = models.ManyToManyField('Theme', blank=True)
-    # institution = models.ManyToManyField('Institution', blank=True)
 
     class Meta:
         ordering = ['last_name', 'first_name', 'middle_name']
