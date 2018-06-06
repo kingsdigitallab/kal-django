@@ -3,22 +3,22 @@
 {% block meta_title %}Theme: {{ theme.name }}{% endblock %}
 
 {% block main %}
-    <h2>Theme: {{ theme.name }}</h2>
+<h2>Theme: {{ theme.name }}</h2>
 
-    {% if theme.description %}
-		<p>{{ theme.description }}</p>
-	{% endif %}
+{% if theme.description %}
+<p>{{ theme.description }}</p>
+{% endif %}
 
-    {% if theme.modules.all %}
-    <h3>Modules</h3>
-    <ul>
-    	{% for module in theme.modules.all %}
-	    <li>
-	    	<a href="{% url 'module_detail' module.id %}">{{ module.name }}</a> -
-	    	{% for level in module.level.all %}{{level}}{% if not forloop.last %},{%endif %}{% endfor %}
-	    </li>
-	    {% endfor %}
-	</ul>
-	{% endif %}
+{% if theme.modules.all %}
+<h3>Modules</h3>
+<ul>
+   {% for module in theme.modules.all %}
+   <li>
+      <a href="{% url 'module_detail' module.id %}">{{ module.name }}</a> -
+      {% for level in module.level.all %}{{level}}{% if not forloop.last %},{%endif %}{% endfor %}
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
 
 {% endblock %}

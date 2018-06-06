@@ -1,137 +1,101 @@
-{% load staticfiles compress require %}
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>{% block meta_title %}{% endblock %} | King's @ London</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
+{% load staticfiles compress %}
 
-  {% compress css %}
-  <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
-  <link rel="stylesheet" href="{% static 'css/app.css' %}">
-  <link rel="stylesheet" href="{% static 'css/leaflet.css' %}">
-  <link rel="stylesheet" href="{% static 'css/MarkerCluster.css' %}">
-  <link rel="stylesheet" href="{% static 'css/MarkerCluster.Default.css' %}">
-  {% endcompress %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/leaflet.css' %}">
+<link rel="stylesheet" href="{% static 'css/MarkerCluster.css' %}">
+<link rel="stylesheet" href="{% static 'css/MarkerCluster.Default.css' %}">
+{% endblock %}
 
-  {% compress js %}
-  <script src="{% static 'js/leaflet.js' %}"></script>
-  <script src="{% static 'js/leaflet.markercluster.js' %}"></script>
-  {% endcompress %}
-
-</head>
-<body>
+{% block body %}
 <section class="main">
-    <div class="row">
-        <div class="large-12 small-11  columns">
-            <!--<h3 class="kings-header" >{{ theme.name }}</h3>-->
-            <p><img alt="{{ theme.name }}" height="200" width="100%" src="{{ theme.image.url }}"></p>
-            <div class="rich-text">
-            <p>
-		{{ theme.description|safe }}
-            </p>
-            </div>
-         </div> <!-- end head -->
-     </div>
-     <div class="row">
-         <div id="map" class="large-7 small-11 columns" style="margin-left:15px;">
-         </div>
-         <div class="large-1 small-1 columns">
-         </div>
-         <div class="large-4 small-12 columns">
-             <h3 class="kings-header" >{{ theme.name }} modules</h3>
-             <ul>
-             {% for m in theme.modules.all %}
-                 <li><a href="/module/{{ m.id}}">{{ m.name }} &rsaquo;</a> {% if m.locations.all.count > 0 %}<img style="height:15px;" src="/static/css/images/marker-icon.png"/>{% endif %}</li>
-                 {% if m.institutions.all.count > 0 %}
-                    <ul><span style="font-weight:bold;">Institutions</span>
-                    {% for i in m.institutions.all %}
-                       <li>{{ i.name }} {% if i.location.all.count > 0 %}<img style="height:15px;" src="/static/css/images/marker-icon-green.png"/>{% endif %}</li>
-                    {% endfor %}
-                    </ul>
-                 {% endif %}
-             {% endfor %}
-             </ul>
+  <div class="row">
+    <div class="large-12 small-11  columns">
+      <!--<h3 class="kings-header" >{{ theme.name }}</h3>-->
+      <p><img alt="{{ theme.name }}" height="200" width="100%" src="{{ theme.image.url }}"></p>
+      <div class="rich-text">
+        <p>
+          {{ theme.description|safe }}
+        </p>
+      </div>
+    </div> <!-- end head -->
+  </div>
 
-             <h3 class="kings-header" >King's Researchers in this field</h3>
-             <ul>
-             {% for r in theme.get_researchers %}
-                 {# for r in s.researcher_set.all #}
-                     <li>{% if r.department %}<a href="/researchers/{{ r.id }}">{% endif %}{{ r.first_name }} {{ r.last_name }}{% if r.department %}</a>, {{ r.department }}{% endif %}
-                     </li>
-                 {# endfor #}
-             {% endfor %}
-             </ul>
+  <div class="row">
+   <div id="map" class="large-7 small-11 columns" style="margin-left:15px;"></div>
+   <div class="large-1 small-1 columns"></div>
+   <div class="large-4 small-12 columns">
+     <h3 class="kings-header" >{{ theme.name }} modules</h3>
+     <ul>
+       {% for m in theme.modules.all %}
+       <li><a href="/module/{{ m.id}}">{{ m.name }} &rsaquo;</a> {% if m.locations.all.count > 0 %}<img style="height:15px;" src="/static/css/images/marker-icon.png"/>{% endif %}</li>
+       {% if m.institutions.all.count > 0 %}
+       <ul><span style="font-weight:bold;">Institutions</span>
+        {% for i in m.institutions.all %}
+        <li>{{ i.name }} {% if i.location.all.count > 0 %}<img style="height:15px;" src="/static/css/images/marker-icon-green.png"/>{% endif %}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endfor %}
+    </ul>
 
-         </div>
-    </div><!-- end row -->
+    <h3 class="kings-header" >King's Researchers in this field</h3>
+    <ul>
+     {% for r in theme.get_researchers %}
+     <li>{% if r.department %}<a href="/researchers/{{ r.id }}">{% endif %}{{ r.first_name }} {{ r.last_name }}{% if r.department %}</a>, {{ r.department }}{% endif %}
+     </li>
+     {% endfor %}
+   </ul>
+ </div>
+</div><!-- end row -->
 </section>
-
+{% endblock %}
 
 {% block footer_scripts %}
-<script>
-
+{% compress js %}
+<script src="{% static 'js/leaflet.js' %}"></script>
+<script src="{% static 'js/leaflet.markercluster.js' %}"></script>
+<script type="text/javascript">
 var londonMap = L.map("map",{scrollWheelZoom :false}).setView([51.505, -0.09], 12)
-
 var layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  maxZoom: 19,
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(londonMap);
 
-
 var greenIcon = L.icon({
-    iconUrl: '/static/css/images/marker-icon-green.png',
-    shadowUrl: '/static/css/images/marker-shadow.png',
-
-    //iconSize:     [38, 95], // size of the icon
-    //shadowSize:   [50, 64], // size of the shadow
-    //iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    //shadowAnchor: [4, 62],  // the same for the shadow
-    //popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+  iconUrl: '/static/css/images/marker-icon-green.png',
+  shadowUrl: '/static/css/images/marker-shadow.png',
 });
 
 var locGroup =  L.markerClusterGroup()
 
 {% for m in theme.modules.all %}
-    {% for l in m.locations.all %}
-	L.marker( {{ l.transform }} )
-        .bindPopup("<h3 class='kings-header'><a href='/module/{{ m.id }}'>{{ m.name }}</a></h3>" +
-         "<h4 class='kings-subheader'>{{ l.name }}</h4>" +
-         "<p>Convened by {% for c in m.convenors.all %}{{ c }}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</p>"
-         )
-        .addTo(locGroup)
-    {% endfor %}
-    // locGroup.addTo(londonMap)
+{% for l in m.locations.all %}
+L.marker( {{ l.transform }} )
+.bindPopup("<h3 class='kings-header'><a href='/module/{{ m.id }}'>{{ m.name }}</a></h3>" +
+           "<h4 class='kings-subheader'>{{ l.name }}</h4>" +
+           "<p>Convened by {% for c in m.convenors.all %}{{ c }}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</p>"
+           )
+.addTo(locGroup)
+{% endfor %}
 {% endfor %}
 
 {% for m in theme.modules.all %}
-    {% for i in m.institutions.all %}
-        // {{ i }}
-        {% for l in i.location.all %} 
-        // {{ l }}
-        L.marker( {{ l.transform }}, {icon:greenIcon} )
-        .bindPopup("<h3 class='kings-header'>{{ i.name }}</h3>" +
-         "<h4 class='kings-subheader'>{{ l.name }}</h4>" +
-         "<p>Module:<a href='/module/{{ m.id }}'> {{ m.name }} </a></p>" 
-         )
-         {% endfor %}
-        .addTo(locGroup)
-    {% endfor %}
-    locGroup.addTo(londonMap)
+{% for i in m.institutions.all %}
+{% for l in i.location.all %}
+L.marker( {{ l.transform }}, {icon:greenIcon} )
+.bindPopup("<h3 class='kings-header'>{{ i.name }}</h3>" +
+           "<h4 class='kings-subheader'>{{ l.name }}</h4>" +
+           "<p>Module:<a href='/module/{{ m.id }}'> {{ m.name }} </a></p>"
+           )
+{% endfor %}
+.addTo(locGroup)
+{% endfor %}
+locGroup.addTo(londonMap)
 {% endfor %}
 
 bounds =  locGroup.getBounds()
-
 londonMap.fitBounds(bounds)
-
-
 </script>
-
+{% endcompress %}
 {% endblock %}
-
-</script>
-
-</body>
-</html>

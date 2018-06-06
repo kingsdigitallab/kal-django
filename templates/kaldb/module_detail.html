@@ -3,9 +3,9 @@
 {% block meta_title %}{{ module.name }}{% endblock %}
 
 {% block main %}
-    <h2>{{ module.name }}</h2>
+<h2>{{ module.name }}</h2>
 
-    <dl>
+<dl>
     {% if module.department.faculty %}
     <dt>Faculty:</dt>
     <dd><a href="{% url 'faculty_detail' module.department.faculty.id %}">{{ module.department.faculty.name }}</a></dd>
@@ -31,26 +31,21 @@
     <dt>Assessment:</dt>
     <dd>{{ module.assessment }}</dd>
     {% endif %}
+</dl>
 
-    </dl>
+{% if module.description %}
+<p>{{module.description}}</p>
+{% endif %}
 
-
-    {% if module.description %}
-    <p>{{module.description}}</p>
-    {% endif %}
-
-
-    {% if module.convenors.all %}
-    <h3>Convenors</h3>
-    <ul>
-        {% for convenor in module.convenors.all %}
-        <li>
-            <a href="{% url 'researcher_detail' convenor.id %}">{{ convenor.get_name }}</a>{% if convenor.role %} - {{convenor.role}}{% endif %}
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-
+{% if module.convenors.all %}
+<h3>Convenors</h3>
+<ul>
+    {% for convenor in module.convenors.all %}
+    <li>
+        <a href="{% url 'researcher_detail' convenor.id %}">{{ convenor.get_name }}</a>{% if convenor.role %} - {{convenor.role}}{% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 {% endblock %}

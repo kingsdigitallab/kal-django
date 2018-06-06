@@ -3,16 +3,16 @@
 {% block meta_title %}{{ faculty.name }}{% endblock %}
 
 {% block main %}
-    <h2>{{ faculty.name }}</h2>
+<h2>{{ faculty.name }}</h2>
 
-    {% if faculty.department_set.all %}
-    <h3>Departments</h3>
+{% if faculty.department_set.all %}
+<h3>Departments</h3>
 
-    <ul>
-        {% for department in faculty.department_set.all %}
-        <li><a href="{% url 'department_detail' department.id %}">{{ department.name }}</a></li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+<ul>
+    {% for department in faculty.department_set.all %}
+    <li><a href="{% url 'department_detail' department.id %}">{{ department.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 {% endblock %}
