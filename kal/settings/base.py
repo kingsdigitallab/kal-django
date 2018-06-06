@@ -7,7 +7,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 For production settings see
 https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 """
-from ddhldap.settings import * # noqa
+from ddhldap.settings import *  # noqa
 
 import os
 import getpass
@@ -351,7 +351,7 @@ FABRIC_USER = getpass.getuser()
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine', # noqa
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',  # noqa
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': 'kal',
     },
