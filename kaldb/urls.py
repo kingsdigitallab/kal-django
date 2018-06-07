@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^researcher/(?P<pk>\d+)/$', researcher_detail,
         name='researcher_detail'),
     url(r'^theme/(?P<pk>\d+)/$', theme_detail, name='theme_detail'),
+    url(r'^faculty/(?P<pk>\d+)/$', faculty_detail, name='faculty_detail'),
 ]
