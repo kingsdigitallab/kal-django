@@ -3,13 +3,26 @@
 {% block body %}
 <section class="main">
   <div class="row">
-    <div class="large 12-columns">
+    <div class="large-9 columns">
       <h3 class="kings-header" >{{ researcher.first_name }} {{ researcher.last_name }}</h3>
 
       <div class="rich-text">
-        <h3 class="kings-subheader">{{ researcher.department }}</h3>
-        <h3 class="kings-header" >Research Interests</h3>
+        <p><strong>{{ researcher.department }}</strong></p>
+
+        {% if researcher.notes %}
+        <p>
+          {{ researcher.notes|safe }}
+        </p>
+        {% endif %}
+
+        {% if researcher.pure_url %}
+        <p>Find out more on
+          <a href="{{ researcher.pure_url }}" target="pure">King's Research Portal &rsaquo;</a>
+        </p>
+        {% endif %}
+
         {% if researcher.research_interests.all.count > 0 %}
+        <p><strong>Research Interests</strong></p>
         <ul>
           {% for r in researcher.research_interests.all %}
           <li>{{ r }}</li>
@@ -18,7 +31,7 @@
         {% endif %}
 
         {% if researcher.teaching_interests.all.count > 0 %}
-        <h3 class="kings-header" >Teaching Interests</h3>
+        <p><strong>Teaching Interests</strong></p>
         <ul>
           {% for r in researcher.teaching_interests.all %}
           <li>{{ r }}</li>
@@ -27,7 +40,7 @@
         {% endif %}
 
         {% if researcher.specialisms.all.count > 0 %}
-        <h3 class="kings-header" >Specialisms</h3>
+        <p><strong>Specialisms</strong></p>
         <ul>
           {% for r in researcher.specialisms.all %}
           <li>{{ r }}</li>
@@ -35,22 +48,22 @@
         </ul>
         {% endif %}
 
-        {% if researcher.pure_url %}
-        <p class="kings-header"><a href="{{ researcher.pure_url }}" target="_blank">King's Research Portal &rsaquo;</a></p>
-        {% endif %}
+        <p><strong>Working Themes</strong></p>
+        <p>
+          {% for s in researcher.get_themes %}
+          {% ifchanged s.name %}
+          <a href="/landing/themes/{{ s.short_name}}">{{ s.name }} &rsaquo;</a>
+          {% if not forloop.last %}<br>{% endif %}
+          {% endifchanged %}
+          {% endfor %}
+        </p>
       </div>
+    </div>
 
-      <h3 class="kings-header">Working Themes</h3>
-      <p>
-        {% for s in researcher.get_themes %}
-        {% ifchanged s.name %}
-        <a href="/landing/themes/{{ s.short_name}}">
-          <span class="kings-header">{{ s.name }} &rsaquo;</span>
-        </a>
-        <br>
-        {% endifchanged %}
-        {% endfor %}
-      </p>
+    <div class="large-3 columns">
+      {% if researcher.image_file %}
+      <img class="researcher" src="{{ researcher.image_file.url }}" width="100%">
+      {% endif %}
     </div>
   </div>
 </section>

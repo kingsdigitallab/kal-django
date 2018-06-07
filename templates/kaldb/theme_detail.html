@@ -6,7 +6,7 @@
 <h2>Theme: {{ theme.name }}</h2>
 
 {% if theme.description %}
-<p>{{ theme.description }}</p>
+<p>{{ theme.description|safe }}</p>
 {% endif %}
 
 {% if theme.modules.all %}

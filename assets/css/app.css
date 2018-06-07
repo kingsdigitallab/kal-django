@@ -22,83 +22,33 @@
 }
 
 /*
- * Body:
+ * Body
  */
 body {
+  background-color: #e5e2dd;
   color: #000000;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
-  background-color: #e5e2dd;
-}
-
-p {
-  font-size: 12px;
 }
 
 /*
- * Links
+ * Headers
  */
-a {
-  border-bottom: 1px dotted #0a2d50;
-  color: #0a2d50;
+h1 {
+  font-family: BureauGrotesqueThreeSeven;
+  font-size: 28px;
 }
 
-a:hover {
-  border-bottom: 1px solid #0a2d50;
-  color: #0a2d50;
-}
-/*
- * Footer
- */
-footer {
-  font-size: 12pt;
-  margin: 30px 0 0 0;
+h2 {
+  font-family: BureauGrotesqueThreeSeven;
+  font-size: 24px;
 }
 
-footer a {
-  border: none;
+h3 {
+  font-family: BureauGrotesqueThreeSeven;
+  font-size: 18px;
 }
 
-footer .top-footer {
-  background: #5a6469;
-  color: #999;
-  height: 230px;
-  margin: 0;
-  padding: 30px 0;
-  max-width: 100%;
-}
-
-footer .top-footer .footer-crest {
-  text-align: right;
-}
-
-footer .bottom-footer {
-  background: #454d51;
-  color: #999;
-  height: 80px;
-  line-height: 80px;
-  margin: 0;
-  padding: 0;
-  max-width: 100%;
-}
-
-footer .bottom-footer span {
-  display: block;
-  text-align: right;
-}
-
-footer .bottom-footer a {
-  color: #999;
-}
-
-footer .bottom-footer a:hover {
-  border-bottom: 1px solid #999;
-  color: #999;
-}
-
-/*
- * Header
- */
 .header {
   background: #ffffff;
   height: 180px;
@@ -127,8 +77,8 @@ footer .bottom-footer a:hover {
   border: none;
   bottom: 0;
   color: #bfc1c9;
-  font-size: 20pt;
   font-family: KingsBureauThreeSeven;
+  font-size: 20pt;
   position: absolute;
 }
 
@@ -142,17 +92,16 @@ footer .bottom-footer a:hover {
   color: #0a2d50;
 }
 
-/*
- * h1/h2 etc
- */
-header h2 {
-  color: #0a2d50;
-  font-family: KingsCaslon;
+.kings-header {
+  margin-top: 15px;
+  padding: 0px;
 }
 
-/*
- * Seperator
- */
+.kings-subheader {
+  margin-top: 10px;
+  padding: 0px;
+}
+
 .title {
   background-color: #e9e9e9;
   height: 60px;
@@ -163,36 +112,84 @@ header h2 {
 .title span {
   color: #0a2d50;
   display: block;
-  font-size: 14pt;
   font-family: KingsCaslon;
+  font-size: 14pt;
   line-height: 60px;
   text-align: right;
 }
 
-.kings-header {
-  font-size: 25px;
-  font-family: 'BureauGrotesqueThreeSeven', Arial, Helvetica, sans-serif;
-  padding: 0px;
-  margin-top: 0px;
-  margin-right: 0px;
-  margin-bottom: 13px;
-  margin-left: 0px;
-  font-weight: normal;
-  line-height: 29px;
+/*
+ * Links
+ */
+a {
+  border-bottom: 1px dotted #0a2d50;
+  color: #0a2d50;
 }
 
-.kings-subheader {
-  font-size: 25px;
-  font-family: 'KingsCaslon', serif;
-  padding: 0px;
-  margin-top: 0px;
-  margin-right: 0px;
-  margin-bottom: 13px;
-  margin-left: 0px;
-  font-weight: normal;
-  line-height: 29px;
+a:hover {
+  border-bottom: 1px solid #0a2d50;
+  color: #0a2d50;
 }
 
+/*
+ * Footer
+ */
+footer {
+  margin: 30px 0 0 0;
+}
+
+footer a {
+  border: none;
+}
+
+footer .top-footer {
+  background: #5a6469;
+  color: #999;
+  height: 230px;
+  margin: 0;
+  max-width: 100%;
+  padding: 30px 0;
+}
+
+footer .top-footer .footer-crest {
+  text-align: right;
+}
+
+footer .bottom-footer {
+  background: #454d51;
+  color: #999;
+  height: 80px;
+  line-height: 80px;
+  margin: 0;
+  max-width: 100%;
+  padding: 0;
+}
+
+footer .bottom-footer span {
+  display: block;
+  text-align: right;
+}
+
+footer .bottom-footer a {
+  color: #999;
+}
+
+footer .bottom-footer a:hover {
+  border-bottom: 1px solid #999;
+  color: #999;
+}
+
+/*
+ * Map
+ */
 #map {
   height: 600px;
+  margin-left: 15px;
+}
+
+/*
+ *
+ */
+img.researcher {
+  margin-top: 15px;
 }

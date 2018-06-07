@@ -3,26 +3,45 @@
 {% block body %}
 <section class="main">
   <div class="row">
-    <div class="large 12-columns">
-      <h3 class="kings-header" >{{ module.name }}</h3>
+    <div class="large-12 columns">
+      <h2 class="kings-header" >{{ module.name }}</h2>
+
       <div class="rich-text">
-        <h3 class="kings-subheader">{{ module.department }}, {% for l in module.level.all %}{{ l }}{% endfor %}</h3>
-        <p><strong>Convened by: {% for c in module.convenors.all %}<a href="/researchers/{{ c.id }}">{{ c }}</a>{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</strong></p>
+        <h3 class="kings-subheader">
+          {{ module.department }},
+          {% for l in module.level.all %}{{ l }}{% endfor %}
+        </h3>
         <p>
-          {{ module.description }}
+          <strong>Convened by:
+            {% for c in module.convenors.all %}
+            <a href="/researchers/{{ c.id }}">{{ c }}</a>
+            {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          </strong>
         </p>
-        <p class="kings-header"><a href="{{ module.url }}" target="_blank">Read more &rsaquo;</a></p>
+        <p>
+          {{ module.description|safe }}
+        </p>
+        <p class="kings-header">
+          <a href="{{ module.url }}" target="_blank">Read more &rsaquo;</a>
+        </p>
       </div>
       <h3 class="kings-header">Assessments</h3>
       <p>{{ module.assessment }}</p>
+
       <h3 class="kings-header">Teaching Pattern</h3>
       <p>{{ module.teaching_pattern }}</p>
+
       <h3 class="kings-header">Related Themes</h3>
-      <p>{% for t in module.theme_set.all %}<a href="/landing/themes/{{ t.short_name}}"><span class="kings-header">{{ t.name }} &rsaquo;</span></a></br>{% endfor %}</p>
-      <div>
-        <p>
-        </p>
-      </div> <!-- end cols -->
-    </div><!-- end row -->
-  </section>
-  {% endblock %}
+      <p>
+        {% for t in module.theme_set.all %}
+        <a href="/landing/themes/{{ t.short_name}}">
+          <span class="kings-header">{{ t.name }} &rsaquo;</span>
+        </a>
+        {% if not foorlop.last %}<br>{% endif %}
+        {% endfor %}
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}
