@@ -19,7 +19,11 @@
         <div class="large-4 small-4 columns">
           <p>
             <a href="/landing/themes/{{ t.short_name }}" title="{{ t.name }}">
+              {% if t.main_image %}
               <img src="{{ t.main_image.url }}" height="100" width="100%"/>
+              {% else %}
+              {{ t.name }}
+              {% endif %}
             </a>
           </p>
         </div>
