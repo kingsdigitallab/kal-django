@@ -194,3 +194,20 @@ footer .bottom-footer a:hover {
 img.researcher {
   margin-top: 15px;
 }
+
+.inline-list {
+  list-style: none;
+  margin-bottom: 0;
+  margin-left: -1.22222rem;
+  margin-right: 0;
+  margin-top: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.inline-list > li {
+  display: block;
+  float: left;
+  list-style: none;
+  margin-left: 1.22222rem;
+}

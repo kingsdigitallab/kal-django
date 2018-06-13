@@ -44,8 +44,8 @@
       {% endif %}
 
       {% if m.institutions.all.count > 0 %}
-      <ul>
-        <span style="font-weight:bold;">Institutions</span>
+      <ul class="inline-list">
+        <li><strong>Institutions:</strong></li>
         {% for i in m.institutions.all %}
         <li>
           {{ i.name }}
