@@ -67,8 +67,9 @@ class ResearcherAdmin(admin.ModelAdmin):
     filter_horizontal = ['research_interests', 'teaching_interests',
                          'specialisms', 'institutions', 'locations']
 
-    list_display = ['__unicode__', 'department', 'position', 'role']
-    list_filter = ['department', 'position', 'role']
+    list_display = [
+        '__unicode__', 'external', 'department', 'position', 'role']
+    list_filter = ['department', 'external', 'position', 'role']
 
     inlines = [
         OutReachEventInline,
