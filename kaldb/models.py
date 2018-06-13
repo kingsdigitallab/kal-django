@@ -273,12 +273,15 @@ class Theme(models.Model):
         return reverse('theme_detail', None, [str(self.id)])
 
     def get_researchers(self):
-        ret = []
+        res = []
+
         for s in self.specialisms.all():
             for r in s.researcher_set.all():
-                if r not in ret:
-                    ret.append(r)
-        return ret
+                if r not in res:
+                    res.append(r)
+        res.sort(key=lambda x: x.last_name + '::' + x.first_name)
+
+        return res
 
     def __unicode__(self):
         return self.name
