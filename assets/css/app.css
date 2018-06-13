@@ -184,7 +184,8 @@ footer .bottom-footer a:hover {
  */
 #map {
   height: 600px;
-  margin-left: 15px;
+  margin-bottom: 15px;
+  margin-top: 15px;
 }
 
 /*

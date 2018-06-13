@@ -11,61 +11,62 @@
 <section class="main">
   <div class="row">
     <div class="large-12 small-12 columns">
-      <h1 class="kings-header" >{{ theme.name }}</h1>
-      <div class="rich-text">
-        <p>
-          {{ theme.description|safe }}
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div id="map" class="large-12 small-12 columns">&#160;</div>
-  </div>
-
-  <div class="row">
-    <div class="large-12 small-12 columns">
       <h2 class="kings-header">King's Researchers in this field</h2>
-      <ul>
-        {% for r in theme.get_researchers %}
-        {% spaceless %}
-        <li>
-          <a href="/researchers/{{ r.id }}">{{ r }}</a>{% if r.department %}, {{ r.department }}{% endif %}
-        </li>
-        {% endspaceless %}
-        {% endfor %}
-      </ul>
     </div>
+  </div>
+
+  <div class="row">
+    {% for r in theme.get_researchers %}
+    <div class="large-6 small-6 columns">
+      {% spaceless %}
+      <a href="/researchers/{{ r.id }}">{{ r }}</a>{% if r.department %}, {{ r.department }}{% endif %}
+      {% endspaceless %}
+    </div>
+
+    {% if forloop.counter|divisibleby:"4" and not forloop.last %}
+  </div><div class="row">
+    {% endif %}
+    {% endfor %}
   </div>
 
   <div class="row">
     <div class="large-12 small-12 columns">
       <h2 class="kings-header">{{ theme.name }} modules</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    {% for m in theme.modules.all %}
+    <div class="large-6 small-6 columns">
+      <a href="/module/{{ m.id}}">{{ m.name }} &rsaquo;</a>
+      {% if m.locations.all.count > 0 %}
+      <img style="height:15px;" src="/static/css/images/marker-icon.png"/>
+      {% endif %}
+
+      {% if m.institutions.all.count > 0 %}
       <ul>
-        {% for m in theme.modules.all %}
+        <span style="font-weight:bold;">Institutions</span>
+        {% for i in m.institutions.all %}
         <li>
-          <a href="/module/{{ m.id}}">{{ m.name }} &rsaquo;</a>
-          {% if m.locations.all.count > 0 %}
-          <img style="height:15px;" src="/static/css/images/marker-icon.png"/>
+          {{ i.name }}
+          {% if i.location.all.count > 0 %}
+          <img style="height:15px;" src="/static/css/images/marker-icon-green.png"/>
           {% endif %}
         </li>
-
-        {% if m.institutions.all.count > 0 %}
-        <ul>
-          <span style="font-weight:bold;">Institutions</span>
-          {% for i in m.institutions.all %}
-          <li>
-            {{ i.name }}
-            {% if i.location.all.count > 0 %}
-            <img style="height:15px;" src="/static/css/images/marker-icon-green.png"/>
-            {% endif %}
-          </li>
-          {% endfor %}
-        </ul>
-        {% endif %}
         {% endfor %}
       </ul>
+      {% endif %}
+    </div>
+
+    {% if forloop.counter|divisibleby:"4" and not forloop.last %}
+  </div><div class="row">
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="row">
+    <div class="large-12 small-12 columns">
+      <div id="map" class="large-12 small-12 columns">&#160;</div>
     </div>
   </div>
 </section>
