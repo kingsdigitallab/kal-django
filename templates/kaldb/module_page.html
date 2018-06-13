@@ -4,8 +4,6 @@
 <section class="main">
   <div class="row">
     <div class="large-12 columns">
-      <h2 class="kings-header" >{{ module.name }}</h2>
-
       <div class="rich-text">
         <h3 class="kings-subheader">
           {{ module.department }},
@@ -18,12 +16,6 @@
             {% if not forloop.last %}, {% endif %}
             {% endfor %}
           </strong>
-        </p>
-        <p>
-          {{ module.description|safe }}
-        </p>
-        <p class="kings-header">
-          <a href="{{ module.url }}" target="_blank">Read more &rsaquo;</a>
         </p>
       </div>
       <h3 class="kings-header">Assessments</h3>
