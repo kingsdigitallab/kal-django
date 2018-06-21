@@ -255,6 +255,7 @@ class Theme(models.Model):
                             blank=False, null=False)
     active = models.BooleanField(default=True)
     short_name = models.CharField(blank=True, null=True, max_length=50)
+    url = models.URLField(max_length=512, blank=True, null=True)
     description = tinymce_models.HTMLField(verbose_name="Description",
                                            blank=True)
     short_desc = models.TextField(verbose_name="Short description",
