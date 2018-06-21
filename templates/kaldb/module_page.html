@@ -27,7 +27,7 @@
       <h3 class="kings-header">Related Themes</h3>
       <p>
         {% for t in module.theme_set.all %}
-        <a href="/landing/themes/{{ t.short_name}}">
+        <a href="{% if t.url %}{{ t.url }}{% else %}{% url 'theme_page' t.short_name %}{% endif %}" {% if t.url %}target="_top"{% endif %}>
           <span class="kings-header">{{ t.name }} &rsaquo;</span>
         </a>
         {% if not foorlop.last %}<br>{% endif %}
