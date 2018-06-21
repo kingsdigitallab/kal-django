@@ -3,7 +3,7 @@
 {% block body %}
 <section class="main">
   <div class="row">
-    <div class="large-9 columns">
+    <div class="large-9 small-9 columns">
       <h3 class="kings-header" >{{ researcher.first_name }} {{ researcher.last_name }}</h3>
 
       <div class="rich-text">
@@ -52,7 +52,7 @@
         <p>
           {% for s in researcher.get_themes %}
           {% ifchanged s.name %}
-          <a href="/landing/themes/{{ s.short_name}}">{{ s.name }} &rsaquo;</a>
+          <a href="{% if s.url %}{{ s.url }}{% else %}{% url 'theme_page' s.short_name %}{% endif %}" {% if s.url %}target="_top"{% endif %}>{{ s.name }} &rsaquo;</a>
           {% if not forloop.last %}<br>{% endif %}
           {% endifchanged %}
           {% endfor %}
@@ -60,7 +60,7 @@
       </div>
     </div>
 
-    <div class="large-3 columns">
+    <div class="large-3 small-3 columns">
       {% if researcher.image_file %}
       <img class="researcher" src="{{ researcher.image_file.url }}" width="100%">
       {% endif %}
