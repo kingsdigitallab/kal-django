@@ -59,13 +59,17 @@
     </div>
 
     {% if forloop.counter|divisibleby:"2" and not forloop.last %}
-  </div><div class="row">
+  </div>
+  <div class="row">
     {% endif %}
     {% endfor %}
   </div>
 
   <div class="row">
     <div class="large-12 small-12 columns">
+      <h3 class="kings-header">Map</h3>
+      <p>The pins within the map show King’s modules taking place across London. Click on each pin to learn more.</p>
+
       <div id="map" class="large-12 small-12 columns">&#160;</div>
     </div>
   </div>
