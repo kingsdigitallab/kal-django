@@ -65,6 +65,7 @@
     {% endfor %}
   </div>
 
+  {% if theme.has_locations %}
   <div class="row">
     <div class="large-12 small-12 columns">
       <h3 class="kings-header">Map</h3>
@@ -73,10 +74,13 @@
       <div id="map" class="large-12 small-12 columns">&#160;</div>
     </div>
   </div>
+  {% endif %}
 </section>
 {% endblock %}
 
 {% block footer_scripts %}
+
+{% if theme.has_locations %}
 {% compress js %}
 <script src="{% static 'js/leaflet.js' %}"></script>
 <script src="{% static 'js/leaflet.markercluster.js' %}"></script>
@@ -98,9 +102,9 @@ var locGroup =  L.markerClusterGroup()
 {% for l in m.locations.all %}
 L.marker( {{ l.transform }} )
 .bindPopup("<h2 class='kings-header'><a href='/module/{{ m.id }}'>{{ m.name }}</a></h2>" +
-           "<h3 class='kings-subheader'>{{ l.name }}</h3>" +
-           "<p>Convened by {% for c in m.convenors.all %}{{ c }}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</p>"
-           )
+ "<h3 class='kings-subheader'>{{ l.name }}</h3>" +
+ "<p>Convened by {% for c in m.convenors.all %}{{ c }}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</p>"
+ )
 .addTo(locGroup)
 {% endfor %}
 {% endfor %}
@@ -110,9 +114,9 @@ L.marker( {{ l.transform }} )
 {% for l in i.location.all %}
 L.marker( {{ l.transform }}, {icon:greenIcon} )
 .bindPopup("<h2 class='kings-header'>{{ i.name }}</h2>" +
-           "<h3 class='kings-subheader'>{{ l.name }}</h3>" +
-           "<p>Module:<a href='/module/{{ m.id }}'> {{ m.name }} </a></p>"
-           )
+ "<h3 class='kings-subheader'>{{ l.name }}</h3>" +
+ "<p>Module:<a href='/module/{{ m.id }}'> {{ m.name }} </a></p>"
+ )
 {% endfor %}
 .addTo(locGroup)
 {% endfor %}
@@ -123,4 +127,6 @@ bounds =  locGroup.getBounds()
 londonMap.fitBounds(bounds)
 </script>
 {% endcompress %}
+{% endif %}
+
 {% endblock %}
