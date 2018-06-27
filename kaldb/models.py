@@ -44,11 +44,14 @@ class Institution(models.Model):
     sector = models.ForeignKey(InstitutionSector, null=True)
     location = models.ManyToManyField("OutReachLocation", blank=True)
 
+    class Meta:
+        ordering = ['name']
+
     def __unicode__(self):
         return self.name
 
-    class Meta:
-        ordering = ['name']
+    def has_locations(self):
+        return self.location.count() > 0
 
 
 # Specialisms
@@ -227,8 +230,8 @@ class Module(models.Model):
     institutions = models.ManyToManyField("Institution",
                                           blank=True)
 
-    def get_absolute_url(self):
-        return reverse('module_detail', None, [str(self.id)])
+    class Meta:
+        ordering = ['name']
 
     def __unicode__(self):
         if self.department:
@@ -236,8 +239,18 @@ class Module(models.Model):
         else:
             return self.name
 
-    class Meta:
-        ordering = ['name']
+    def get_absolute_url(self):
+        return reverse('module_detail', None, [str(self.id)])
+
+    def has_locations(self):
+        if self.locations.count() > 0:
+            return True
+
+        for i in self.instituions.all():
+            if i.has_locations():
+                return True
+
+        return False
 
 
 # A generic theme. This lets us link everything together nicely
@@ -261,6 +274,9 @@ class Theme(models.Model):
     specialisms = models.ManyToManyField(Specialism, verbose_name="Related\
                                    London Specialisms", blank=True)
 
+    def __unicode__(self):
+        return self.name
+
     def get_absolute_url(self):
         return reverse('theme_detail', None, [str(self.id)])
 
@@ -275,8 +291,12 @@ class Theme(models.Model):
 
         return res
 
-    def __unicode__(self):
-        return self.name
+    def has_locations(self):
+        for m in self.modules.all():
+            if m.has_locations():
+                return True
+
+        return False
 
 
 # A collaboration:
