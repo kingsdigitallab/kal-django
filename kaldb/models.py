@@ -246,7 +246,7 @@ class Module(models.Model):
         if self.locations.count() > 0:
             return True
 
-        for i in self.instituions.all():
+        for i in self.institutions.all():
             if i.has_locations():
                 return True
 
