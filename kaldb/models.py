@@ -10,7 +10,7 @@ from models_authlists import (AwardType, Department, Faculty,
                               InstitutionCategory, InstitutionSector,
                               JobPosition, JobRole, ModuleLevel,
                               OutReachFrequency, OutReachLocation,
-                              OutReachMedium, StageType, Title)
+                              OutReachMedium, StageType, Title,)
 from tinymce import models as tinymce_models
 
 # An interest. This can be teaching/research
